@@ -35,12 +35,12 @@ export default function TransportFee() {
 
     const transportActions = [
         { label: 'Fees Master', icon: Receipt, onClick: () => navigate('/fees-management/fees_master'), color: 'text-blue-600', bg: 'bg-blue-50' },
-        { label: 'Pickup Point', icon: MapPin, onClick: () => navigate('/fees-management/Transport_fee'), color: 'text-indigo-600', bg: 'bg-indigo-50' },
-        { label: 'Routes', icon: Map, onClick: () => navigate('/fees-management/Transport_fee'), color: 'text-purple-600', bg: 'bg-purple-50' },
-        { label: 'Vehicles', icon: Truck, onClick: () => navigate('/fees-management/Transport_fee'), color: 'text-teal-600', bg: 'bg-teal-50' },
-        { label: 'Assign Vehicle', icon: Car, onClick: () => navigate('/fees-management/Transport_fee'), color: 'text-pink-600', bg: 'bg-pink-50' },
-        { label: 'Route Pickup Point', icon: Navigation, onClick: () => navigate('/fees-management/Transport_fee'), color: 'text-orange-600', bg: 'bg-orange-50' },
-        { label: 'Student Transport Fees', icon: DollarSign, onClick: () => navigate('/fees-management/Transport_fee'), color: 'text-cyan-600', bg: 'bg-cyan-50' },
+        { label: 'Pickup Point', icon: MapPin, onClick: () => navigate('/fees-management/pickup-point'), color: 'text-indigo-600', bg: 'bg-indigo-50' },
+        { label: 'Routes', icon: Map, onClick: () => navigate('/fees-management/routes'), color: 'text-purple-600', bg: 'bg-purple-50' },
+        { label: 'Vehicles', icon: Truck, onClick: () => navigate('/fees-management/Transport_fee#vehicles'), color: 'text-teal-600', bg: 'bg-teal-50' },
+        { label: 'Assign Vehicle', icon: Car, onClick: () => navigate('/fees-management/Transport_fee#assign_vehicle'), color: 'text-pink-600', bg: 'bg-pink-50' },
+        { label: 'Route Pickup Point', icon: Navigation, onClick: () => navigate('/fees-management/Transport_fee#route_pickup_point'), color: 'text-orange-600', bg: 'bg-orange-50' },
+        { label: 'Student Transport Fees', icon: DollarSign, onClick: () => navigate('/fees-management/Transport_fee#student_transport_fees'), color: 'text-cyan-600', bg: 'bg-cyan-50' },
     ];
 
     const transportSummary = [

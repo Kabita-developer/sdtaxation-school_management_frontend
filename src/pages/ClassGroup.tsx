@@ -5,20 +5,19 @@ import {
     Users,
     Edit2,
     Trash2,
-    ChevronRight,
-    FolderPlus,
+    Plus,
     Tag,
-    BarChart3
+    BarChart3,
+    Layers,
+    ChevronDown,
+    Filter,
+    Download
 } from 'lucide-react';
 
 export default function ClassGroup() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState({
         groupName: '',
         classesIncluded: '',
-        groupHead: '',
-        status: 'Active',
-        description: ''
     });
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -32,268 +31,178 @@ export default function ClassGroup() {
     ];
 
     const stats = [
-        { name: 'Total Groups', value: '5', icon: LayoutGrid, color: 'text-orange-600', bg: 'bg-orange-50' },
-        { name: 'Grouped Students', value: '1,065', icon: Users, color: 'text-indigo-600', bg: 'bg-indigo-50' },
-        { name: 'Active Headings', value: '4', icon: Tag, color: 'text-teal-600', bg: 'bg-teal-50' },
-        { name: 'Revenue Contribution', value: '₹1.8 Cr', icon: BarChart3, color: 'text-blue-600', bg: 'bg-blue-50' },
+        { name: 'Total Groups', value: '5', icon: LayoutGrid, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+        { name: 'Grouped Students', value: '1,065', icon: Users, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+        { name: 'Active Headings', value: '4', icon: Tag, color: 'text-amber-600', bg: 'bg-amber-50' },
+        { name: 'Managed Assets', value: '12', icon: BarChart3, color: 'text-rose-600', bg: 'bg-rose-50' },
     ];
 
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-center">
-                <h1 className="text-xl font-black text-gray-900 uppercase tracking-widest">class group</h1>
+        <div className="space-y-6 animate-in fade-in duration-500">
+            {/* Header */}
+            <div className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-2">
+                <div>
+                    <h1 className="text-xl font-black text-gray-900 uppercase tracking-widest flex items-center">
+                        <LayoutGrid size={22} className="mr-3 text-indigo-600" />
+                        Class Group Management
+                    </h1>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase mt-1 tracking-widest font-mono">Academic categorization & organizational hierarchy</p>
+                </div>
             </div>
+
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {stats.map((stat) => (
-                    <div key={stat.name} className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 group hover:border-orange-100 transition-colors">
-                        <div className="flex justify-between items-start">
-                            <div className={`p-2.5 rounded-lg ${stat.bg}`}>
-                                <stat.icon size={20} className={stat.color} />
+                    <div key={stat.name} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 group hover:border-indigo-100 transition-all hover:shadow-md">
+                        <div className="flex justify-between items-center">
+                            <div className={`p-3 rounded-xl ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform`}>
+                                <stat.icon size={22} />
                             </div>
                             <div className="text-right">
-                                <p className="text-2xl font-black text-gray-900 leading-none">{stat.value}</p>
-                                <p className="text-[10px] text-gray-400 font-bold uppercase mt-1.5 tracking-wider">{stat.name}</p>
+                                <p className="text-2xl font-black text-gray-900 leading-none tracking-tight">{stat.value}</p>
+                                <p className="text-[10px] text-gray-400 font-bold uppercase mt-2 tracking-wider font-mono">{stat.name}</p>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="p-4 border-b border-gray-100 flex items-center justify-between flex-wrap gap-4">
-                    <h2 className="font-bold text-gray-900 flex items-center text-sm uppercase tracking-wider">
-                        <LayoutGrid size={16} className="mr-2 text-orange-600" />
-                        Academic Groupings
-                    </h2>
-                    <div className="flex items-center space-x-2">
-                        <div className="relative">
-                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                            <input
-                                type="text"
-                                placeholder="Search groups..."
-                                className="pl-8 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-orange-500 w-56 font-medium"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Left Side: Create Form */}
+                <div className="lg:col-span-4">
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col sticky top-6">
+                        <div className="px-6 py-5 border-b border-gray-50 bg-gray-50/30">
+                            <h2 className="text-sm font-black text-gray-800 uppercase tracking-widest italic decoration-indigo-500/30 underline decoration-4 underline-offset-4">Add Class Group</h2>
                         </div>
-                        <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="flex items-center space-x-2 px-4 py-1.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-xs font-bold leading-none shadow-md shadow-orange-100"
-                        >
-                            <FolderPlus size={14} />
-                            <span>NEW CLASS GROUP</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div className="p-0">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 divide-x divide-y divide-gray-100 border-b border-gray-100">
-                        {groups.filter(g => g.name.toLowerCase().includes(searchTerm.toLowerCase())).map((g) => (
-                            <div key={g.id} className="p-5 hover:bg-gray-50/80 transition-all group cursor-pointer relative overflow-hidden">
-                                <div className="flex justify-between items-start mb-4">
-                                    <div className="flex flex-col">
-                                        <span className="text-[10px] font-mono font-bold text-orange-600 mb-1">{g.id}</span>
-                                        <h3 className="text-base font-bold text-gray-900 group-hover:text-orange-600 transition-colors">{g.name}</h3>
-                                    </div>
-                                    <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase ${g.status === 'Active' ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'}`}>
-                                        {g.status}
-                                    </span>
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-[11px] text-gray-400 font-bold uppercase tracking-tight">Classes Included</span>
-                                        <span className="text-xs font-bold text-gray-700">{g.classes}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-[11px] text-gray-400 font-bold uppercase tracking-tight">Group Head</span>
-                                        <span className="text-xs font-bold text-gray-700">{g.head}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-[11px] text-gray-400 font-bold uppercase tracking-tight">Total Student Pop.</span>
-                                        <div className="flex items-center space-x-1.5">
-                                            <Users size={12} className="text-orange-500" />
-                                            <span className="text-xs font-black text-gray-900">{g.totalStudents}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="mt-5 flex items-center justify-between">
-                                    <div className="flex space-x-1">
-                                        <button className="p-1.5 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded transition-colors">
-                                            <Edit2 size={13} />
-                                        </button>
-                                        <button className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
-                                            <Trash2 size={13} />
-                                        </button>
-                                    </div>
-                                    <button className="flex items-center space-x-1 text-[10px] font-black text-orange-600 uppercase hover:underline">
-                                        <span>Full Analytics</span>
-                                        <ChevronRight size={12} />
-                                    </button>
-                                </div>
-                                <div className="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <div className="w-1.5 h-1.5 bg-orange-600 rounded-full"></div>
+                        
+                        <div className="p-8 space-y-8">
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Group Designation <span className="text-rose-500">*</span></label>
+                                <div className="relative group/input">
+                                    <input
+                                        type="text"
+                                        className="w-full px-5 py-3.5 bg-gray-50/50 border border-gray-200 rounded-2xl text-[13px] font-bold text-gray-700 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all"
+                                        placeholder="Ex: Senior Secondary"
+                                        value={formData.groupName}
+                                        onChange={(e) => setFormData({ ...formData, groupName: e.target.value })}
+                                    />
+                                    <Tag className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within/input:text-indigo-400 transition-colors" size={16} />
                                 </div>
                             </div>
-                        ))}
-                    </div>
-                </div>
 
-                <div className="p-4 bg-gray-50 flex items-center justify-between">
-                    <p className="text-[10px] text-gray-400 font-bold uppercase italic tracking-widest">Manage academic hierachy for fee categorization</p>
-                    <div className="text-[10px] font-black text-gray-900 bg-white px-3 py-1 rounded shadow-sm border border-gray-100">
-                        Total Groups: {groups.length}
-                    </div>
-                </div>
-            </div>
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1 text-left block">Range Included <span className="text-rose-500">*</span></label>
+                                <div className="relative group/input">
+                                    <input
+                                        type="text"
+                                        className="w-full px-5 py-3.5 bg-gray-50/50 border border-gray-200 rounded-2xl text-[13px] font-bold text-gray-700 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all"
+                                        placeholder="Ex: Class 9 - 10"
+                                        value={formData.classesIncluded}
+                                        onChange={(e) => setFormData({ ...formData, classesIncluded: e.target.value })}
+                                    />
+                                    <Layers className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within/input:text-indigo-400 transition-colors" size={16} />
+                                </div>
+                            </div>
 
-            {/* Additional Information */}
-            <div className="bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl p-8 text-white shadow-xl shadow-orange-100 relative overflow-hidden">
-                <div className="relative z-10 max-w-xl">
-                    <h2 className="text-2xl font-black mb-3">Group-wise Fee Allocation</h2>
-                    <p className="text-orange-50 mb-6 opacity-90 leading-relaxed">
-                        Efficiently manage fee structures by grouping classes. Apply concessions, scholarship rules, and late fee policies to entire groups with a single click.
-                    </p>
-                    <div className="flex space-x-4">
-                        <button className="px-6 py-2.5 bg-white text-orange-600 rounded-lg text-xs font-black uppercase tracking-wider hover:shadow-lg transition-all active:scale-95">
-                            Bulk Manage Fees
-                        </button>
-                        <button className="px-6 py-2.5 bg-transparent border-2 border-white/30 text-white rounded-lg text-xs font-black uppercase tracking-wider hover:bg-white/10 transition-all">
-                            View Documentation
-                        </button>
-                    </div>
-                </div>
-                <LayoutGrid size={240} className="absolute -bottom-12 -right-12 text-white opacity-10 rotate-12" />
-            </div>
+                            <div className="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100/50">
+                                <p className="text-[10px] text-indigo-600/70 font-bold leading-relaxed">
+                                    * Groups allow you to categorize classes for specific fee structures and reporting.
+                                </p>
+                            </div>
+                        </div>
 
-            {/* New Class Group Modal */}
-            {isModalOpen && (
-                <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 text-left">
-                    <div
-                        className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity"
-                        onClick={() => setIsModalOpen(false)}
-                    ></div>
-
-                    <div className="relative bg-white rounded-2xl shadow-2xl border border-gray-100 max-w-lg w-full overflow-hidden transform transition-all animate-in fade-in zoom-in duration-300 font-sans">
-                        <div className="bg-orange-600 px-6 py-2 flex items-center justify-between">
-                            <h2 className="text-white font-black uppercase tracking-widest flex items-center text-sm">
-                                <FolderPlus size={18} className="mr-2" />
-                                Create New Class Group
-                            </h2>
-                            <button
-                                onClick={() => setIsModalOpen(false)}
-                                className="text-orange-100 hover:text-white transition-colors"
-                            >
-                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
+                        <div className="px-8 py-6 bg-gray-50 border-t border-gray-100 flex justify-end">
+                            <button className="flex items-center space-x-2 px-10 py-3 bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-95 group">
+                                <span>Initialize Group</span>
+                                <Plus size={14} className="group-hover:rotate-90 transition-transform" />
                             </button>
                         </div>
-
-                        <form className="p-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div className="space-y-1 md:col-span-2">
-                                    <label className="text-[10px] font-black text-black uppercase tracking-widest ml-1">Group Name</label>
-                                    <div className="relative">
-                                        <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                                        <input
-                                            type="text"
-                                            placeholder="Ex: Senior Secondary Wing"
-                                            className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all font-bold text-black placeholder:text-black/30"
-                                            value={formData.groupName}
-                                            onChange={(e) => setFormData({ ...formData, groupName: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-black uppercase tracking-widest ml-1">Classes Included</label>
-                                    <div className="relative">
-                                        <LayoutGrid className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                                        <input
-                                            type="text"
-                                            placeholder="Ex: Grade 11 - 12"
-                                            className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all font-bold text-black placeholder:text-black/30"
-                                            value={formData.classesIncluded}
-                                            onChange={(e) => setFormData({ ...formData, classesIncluded: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-black uppercase tracking-widest ml-1">Group Head</label>
-                                    <div className="relative">
-                                        <Users className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                                        <input
-                                            type="text"
-                                            placeholder="Assign a lead head..."
-                                            className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all font-bold text-black placeholder:text-black/30"
-                                            value={formData.groupHead}
-                                            onChange={(e) => setFormData({ ...formData, groupHead: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-1 md:col-span-2">
-                                    <label className="text-[10px] font-black text-black uppercase tracking-widest ml-1">Group Status</label>
-                                    <div className="flex items-center space-x-4 ml-1 mt-1">
-                                        <label className="flex items-center space-x-2 cursor-pointer">
-                                            <input
-                                                type="radio"
-                                                className="w-4 h-4 text-orange-600 focus:ring-orange-500"
-                                                checked={formData.status === 'Active'}
-                                                onChange={() => setFormData({ ...formData, status: 'Active' })}
-                                            />
-                                            <span className="text-xs font-bold text-gray-700">Active Group</span>
-                                        </label>
-                                        <label className="flex items-center space-x-2 cursor-pointer">
-                                            <input
-                                                type="radio"
-                                                className="w-4 h-4 text-orange-600 focus:ring-orange-500"
-                                                checked={formData.status === 'Inactive'}
-                                                onChange={() => setFormData({ ...formData, status: 'Inactive' })}
-                                            />
-                                            <span className="text-xs font-bold text-gray-700">Inactive</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="mt-4 space-y-1">
-                                <label className="text-[10px] font-black text-black uppercase tracking-widest ml-1">Group Description</label>
-                                <textarea
-                                    rows={2}
-                                    placeholder="Define the purpose and scope of this academic group..."
-                                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all font-bold text-black placeholder:text-black/30"
-                                    value={formData.description}
-                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                ></textarea>
-                            </div>
-
-                            <div className="mt-6 flex items-center space-x-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="flex-1 py-1.5 border border-gray-200 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all active:scale-95"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setIsModalOpen(false);
-                                    }}
-                                    className="flex-2 py-1.5 bg-orange-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-700 transition-all shadow-lg shadow-orange-200 active:scale-95 px-6"
-                                >
-                                    Create Group
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            )}
+
+                {/* Right Side: List Table */}
+                <div className="lg:col-span-8">
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
+                        <div className="p-6 border-b border-gray-50 flex flex-wrap items-center justify-between gap-4">
+                            <h2 className="text-sm font-black text-gray-800 uppercase tracking-widest">Master Registry</h2>
+
+                            <div className="flex flex-wrap items-center gap-3">
+                                <div className="relative group">
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors" size={14} />
+                                    <input
+                                        type="text"
+                                        placeholder="Search groups..."
+                                        className="pl-9 pr-4 py-2 bg-gray-50/50 border border-gray-200 rounded-xl text-[11px] font-bold text-gray-700 outline-none focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all w-48"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                    />
+                                </div>
+                                <div className="flex items-center space-x-1 p-1 bg-gray-50/50 rounded-xl border border-gray-200">
+                                    <button className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all" title="Filter"><Filter size={13} /></button>
+                                    <button className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all" title="Export"><Download size={13} /></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex-1 overflow-x-auto no-scrollbar">
+                            <table className="w-full text-left border-separate border-spacing-0">
+                                <thead className="sticky top-0 z-10">
+                                    <tr className="bg-gray-50/80 backdrop-blur-sm">
+                                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Identifier</th>
+                                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Designation</th>
+                                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Coverage</th>
+                                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Status</th>
+                                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-50">
+                                    {groups.filter(g => g.name.toLowerCase().includes(searchTerm.toLowerCase())).map((g) => (
+                                        <tr key={g.id} className="hover:bg-indigo-50/20 transition-all group">
+                                            <td className="px-6 py-6 vertical-middle whitespace-nowrap">
+                                                <span className="text-[10px] font-mono font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-lg">{g.id}</span>
+                                            </td>
+                                            <td className="px-6 py-6 vertical-middle">
+                                                <div className="flex flex-col">
+                                                    <span className="text-[12px] font-black text-gray-900 uppercase tracking-widest group-hover:text-indigo-600 transition-colors">{g.name}</span>
+                                                    <span className="text-[10px] text-gray-400 font-bold group-hover:text-gray-500 uppercase mt-0.5 tracking-tight">{g.head}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-6 vertical-middle">
+                                                <span className="text-[11px] font-bold text-gray-600 whitespace-nowrap">{g.classes}</span>
+                                            </td>
+                                            <td className="px-6 py-6 vertical-middle">
+                                                <span className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${g.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
+                                                    {g.status}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-6 text-right vertical-middle">
+                                                <div className="flex items-center justify-end space-x-2">
+                                                    <button className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all group-hover:scale-105 shadow-sm hover:shadow-indigo-100">
+                                                        <Edit2 size={13} />
+                                                    </button>
+                                                    <button className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all group-hover:scale-105 shadow-sm hover:shadow-rose-100">
+                                                        <Trash2 size={13} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="p-6 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between">
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest font-mono">
+                                System ready for categorization
+                            </span>
+                            <div className="flex space-x-1">
+                                <button className="w-8 h-8 flex items-center justify-center bg-indigo-600 text-white rounded-lg text-[10px] font-black shadow-lg shadow-indigo-100">1</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

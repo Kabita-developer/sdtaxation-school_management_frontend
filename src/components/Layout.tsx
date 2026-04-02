@@ -307,19 +307,6 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
       return 'text-white hover:bg-white hover:bg-opacity-10';
     }
 
-    // Commented out dark mode support
-    // if (isDarkMode) {
-    //   const activeClassMap: Record<string, string> = {
-    //     blue: 'bg-gray-700 dark:bg-gray-700 text-blue-300 dark:text-blue-400 rounded-lg',
-    //     purple: 'bg-gray-700 dark:bg-gray-700 text-purple-300 dark:text-purple-400 rounded-lg',
-    //     green: 'bg-gray-700 dark:bg-gray-700 text-green-300 dark:text-green-400 rounded-lg',
-    //     orange: 'bg-gray-700 dark:bg-gray-700 text-orange-300 dark:text-orange-400 rounded-lg',
-    //     red: 'bg-gray-700 dark:bg-gray-700 text-red-300 dark:text-red-400 rounded-lg',
-    //     indigo: 'bg-gray-700 dark:bg-gray-700 text-indigo-300 dark:text-indigo-400 rounded-lg',
-    //   };
-    //   return activeClassMap[theme.name] || activeClassMap.blue;
-    // }
-
     const activeClassMap: Record<string, string> = {
       blue: 'bg-white text-blue-600 rounded-lg border-2 border-black',
       purple: 'bg-white text-purple-600 rounded-lg border-2 border-black',
@@ -340,18 +327,6 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
   // Get inactive icon color classes
   const getInactiveIconClasses = (isActive: boolean) => {
     if (isActive) {
-      // Commented out dark mode support
-      // if (isDarkMode) {
-      //   const iconColorMap: Record<string, string> = {
-      //     blue: 'text-blue-300 dark:text-blue-400',
-      //     purple: 'text-purple-300 dark:text-purple-400',
-      //     green: 'text-green-300 dark:text-green-400',
-      //     orange: 'text-orange-300 dark:text-orange-400',
-      //     red: 'text-red-300 dark:text-red-400',
-      //     indigo: 'text-indigo-300 dark:text-indigo-400',
-      //   };
-      //   return iconColorMap[theme.name] || iconColorMap.blue;
-      // }
       const iconColorMap: Record<string, string> = {
         blue: 'text-blue-600',
         purple: 'text-purple-600',
@@ -376,18 +351,6 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
 
   // Get dropdown menu item classes based on theme
   const getDropdownItemClasses = () => {
-    // Commented out dark mode support
-    // if (isDarkMode) {
-    //   const itemClassMap: Record<string, string> = {
-    //     blue: 'text-gray-300 hover:bg-blue-900 hover:text-blue-300',
-    //     purple: 'text-gray-300 hover:bg-purple-900 hover:text-purple-300',
-    //     green: 'text-gray-300 hover:bg-green-900 hover:text-green-300',
-    //     orange: 'text-gray-300 hover:bg-orange-900 hover:text-orange-300',
-    //     red: 'text-gray-300 hover:bg-red-900 hover:text-red-300',
-    //     indigo: 'text-gray-300 hover:bg-indigo-900 hover:text-indigo-300',
-    //   };
-    //   return itemClassMap[theme.name] || itemClassMap.blue;
-    // }
     const itemClassMap: Record<string, string> = {
       blue: 'text-gray-700 hover:bg-blue-50 hover:text-blue-600',
       purple: 'text-gray-700 hover:bg-purple-50 hover:text-purple-600',
@@ -424,10 +387,6 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
 
   // Get sidebar header gradient classes
   const getSidebarHeaderClasses = () => {
-    // Commented out dark mode support
-    // if (isDarkMode) {
-    //   return 'bg-gray-800 dark:bg-gray-900';
-    // }
     const headerClassMap: Record<string, string> = {
       blue: 'bg-gradient-to-r from-blue-600 to-blue-700',
       purple: 'bg-gradient-to-r from-purple-600 to-purple-700',
@@ -447,10 +406,6 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
 
   // Get sidebar background gradient classes
   const getSidebarBgClasses = () => {
-    // Commented out dark mode support
-    // if (isDarkMode) {
-    //   return 'bg-gray-800 dark:bg-gray-900';
-    // }
     const sidebarBgMap: Record<string, string> = {
       blue: 'bg-gradient-to-b from-blue-600 to-blue-700',
       purple: 'bg-gradient-to-b from-purple-600 to-purple-700',
@@ -470,10 +425,6 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
 
   // Get page background color classes
   const getPageBgClasses = () => {
-    // Commented out dark mode support
-    // if (isDarkMode) {
-    //   return 'bg-gray-900';
-    // }
     const pageBgMap: Record<string, string> = {
       blue: 'bg-blue-50',
       purple: 'bg-purple-50',
@@ -575,8 +526,8 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
       label: 'Student Information', 
       icon: Users2,
       subMenu: [
-        { path: '/fees-management/academy/admission-create', label: 'Student Admission' },
-        { path: '/fees-management/academy/student-list', label: 'Student Details' },
+        { path: '/student_information/admission-create', label: 'Student Admission' },
+        { path: '/student_information/student-list', label: 'Student Details' },
         { path: '/fees-management/academy/disabled-students', label: 'Disabled Students' },
         { path: '/fees-management/academy/bulk-delete', label: 'Bulk Delete' },
         { path: '/crm/Labels', label: 'Student Categories' },
@@ -590,20 +541,55 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
       icon: Truck,
       subMenu: [
         { path: '/fees-management/fees_master', label: 'Fees Master' },
-        { path: '/fees-management/Transport_fee', label: 'Pickup Point' },
-        { path: '/fees-management/Transport_fee', label: 'Routes' },
-        { path: '/fees-management/Transport_fee', label: 'Vehicles' },
-        { path: '/fees-management/Transport_fee', label: 'Assign Vehicle' },
-        { path: '/fees-management/Transport_fee', label: 'Route Pickup Point' },
-        { path: '/fees-management/Transport_fee', label: 'Student Transport Fees' },
+        { path: '/fees-management/pickup-point', label: 'Pickup Point' },
+        { path: '/fees-management/routes', label: 'Routes' },
+        { path: '/fees-management/Transport_fee#vehicles', label: 'Vehicles' },
+        { path: '/fees-management/Transport_fee#assign_vehicle', label: 'Assign Vehicle' },
+        { path: '/fees-management/Transport_fee#route_pickup_point', label: 'Route Pickup Point' },
+        { path: '/fees-management/Transport_fee#student_transport_fees', label: 'Student Transport Fees' },
       ]
     },
-    { path: '/fees-management', label: 'Fees Management', icon: Receipt },
-    { path: '/master', label: 'Master', icon: Database },
-    { path: '/erp', label: 'Classes', icon: Database },
+    { 
+      path: '#', 
+      label: 'Fees Management', 
+      icon: Receipt,
+      subMenu: [
+        { path: '/fees-management/collect-fees', label: 'Collect Fees' },
+        { path: '/fees-management/search-fees-payment', label: 'Search Fees Payment' },
+        { path: '/fees-management/search-due-fees', label: 'Search Due Fees' },
+        { path: '/fees-management/fees-discount', label: 'Fees Discount' },
+        { path: '/fees-management/fees-carry-forward', label: 'Fees Carry Forward' },
+        { path: '/fees-management/fees-reminder', label: 'Fees Reminder' },
+        { path: '/fees-management/list-of-classes', label: 'List of Classes' },
+      ]
+    },
+    { 
+      path: '#', 
+      label: 'Master', 
+      icon: Database,
+      subMenu: [
+        { path: '/master/account_create', label: 'Account Create' },
+        { path: '/master/academy', label: 'Academics' },
+      ]
+    },
+    { 
+      path: '#', 
+      label: 'ERP', 
+      icon: Package,
+      subMenu: [
+        { path: '/erp/receipt', label: 'Receipt' },
+        { path: '/erp/payment', label: 'Payment' },
+        { path: '/erp/contra', label: 'Contra' },
+        { path: '/erp/journal', label: 'Journal' },
+        { path: '/erp/sale', label: 'Sale' },
+        { path: '/erp/purchase', label: 'Purchase' },
+        { path: '/erp/credit-note', label: 'Credit Note' },
+        { path: '/erp/debit-note', label: 'Debit Note' },
+      ]
+    },
+    { path: '/daybook', label: 'Daybook', icon: FileText },
+    { path: '/summary', label: 'Summary', icon: BarChart3 },
     { path: '/reports', label: 'Reports', icon: BarChart },
-    { path: '/subjects', label: 'Subjects', icon: Package },
-    { path: '/exams', label: 'Exams', icon: FileText },
     { path: '/calendar', label: 'Calendar', icon: Calendar },
     { path: '/setting', label: 'Setting', icon: Settings },
   ];
@@ -737,7 +723,7 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
                                 navigate(sub.path);
                                 setMobileMenuOpen(false);
                               }}
-                              className={`w-full flex items-center px-3 py-1.5 text-xs font-semibold transition-all duration-200 rounded-md
+                              className={`w-full flex items-center px-3 py-1.5 text-sm font-semibold transition-all duration-200 rounded-md
                                 ${isSubActive 
                                   ? (theme.name === 'white' ? 'bg-gray-200 text-gray-900' : 'bg-white bg-opacity-20 text-white') 
                                   : (theme.name === 'white' ? 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' : 'text-white text-opacity-70 hover:bg-white hover:bg-opacity-10 hover:text-white')

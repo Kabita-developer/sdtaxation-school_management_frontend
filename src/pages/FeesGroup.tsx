@@ -2,7 +2,7 @@ import { useState } from 'react';
 import {
     Plus,
     Search,
-    Layers,
+    CreditCard,
     Edit2,
     Trash2,
     ChevronDown,
@@ -11,132 +11,113 @@ import {
     FileText,
     Copy,
     Share2,
-    CheckCircle2,
-    X,
-    Filter
+    Filter,
+    Tag,
+    AlignLeft
 } from 'lucide-react';
 
-export default function ClassNameCreate() {
+export default function FeesGroup() {
     const [formData, setFormData] = useState({
-        className: '',
-        sections: [] as string[]
+        groupName: '',
+        description: ''
     });
 
     const [searchTerm, setSearchTerm] = useState('');
     const [rowsPerPage, setRowsPerPage] = useState(50);
 
-    const sectionOptions = ['A', 'B', 'C', 'D', 'E'];
-
-    const classes = [
-        { id: 1, name: 'class 6', sections: ['A', 'B'] },
-        { id: 2, name: 'Class 5', sections: ['A', 'B', 'C', 'D'] },
-        { id: 3, name: 'Class 4', sections: ['A', 'B', 'C', 'D'] },
-        { id: 4, name: 'Class 3', sections: ['A', 'B', 'C', 'D'] },
-        { id: 5, name: 'Class 2', sections: ['A', 'B', 'C'] },
-        { id: 6, name: 'Class 1', sections: ['A', 'B', 'C', 'D'] },
+    const feeGroups = [
+        { id: 1, name: 'Tuition Fees', description: 'Monthly institutional tuition charges' },
+        { id: 2, name: 'Examination Fees', description: 'Periodic academic evaluation charges' },
+        { id: 3, name: 'Transport Fees', description: 'Fleet and logistical service charges' },
+        { id: 4, name: 'Hostel Fees', description: 'Residential and mess maintenance charges' },
+        { id: 5, name: 'Admission Fees', description: 'One-time registration and onboarding charges' },
     ];
-
-    const toggleSection = (section: string) => {
-        setFormData(prev => ({
-            ...prev,
-            sections: prev.sections.includes(section)
-                ? prev.sections.filter(s => s !== section)
-                : [...prev.sections, section]
-        }));
-    };
 
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
             {/* Header */}
             <div className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                 <div>
-                    <h1 className="text-xl font-black text-gray-900 uppercase tracking-widest flex items-center">
-                        <Layers size={22} className="mr-3 text-indigo-600" />
-                        Class Configuration
+                    <h1 className="text-xl font-black text-gray-900 uppercase tracking-widest flex items-center text-left">
+                        <CreditCard size={22} className="mr-3 text-indigo-600" />
+                        Fees Group Configuration
                     </h1>
-                    <p className="text-[10px] text-gray-400 font-bold uppercase mt-1 tracking-widest">Manage academic levels and section assignments</p>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase mt-1 tracking-widest text-left font-mono italic">Financial Architecture Ledger v1.0</p>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                {/* Left Side: Add Class Form */}
+                {/* Left Side: Add Fees Group Form */}
                 <div className="lg:col-span-4 h-fit">
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
                         <div className="px-6 py-5 border-b border-gray-50 bg-gray-50/30">
-                            <h2 className="text-sm font-black text-gray-800 uppercase tracking-widest">Add Class</h2>
+                            <h2 className="text-sm font-black text-gray-800 uppercase tracking-widest italic decoration-indigo-500/30 underline decoration-4 underline-offset-4 text-left font-sans">
+                                Add Fees Group
+                            </h2>
                         </div>
                         
                         <div className="p-8 space-y-8">
-                            {/* Class Name Input */}
+                            {/* Group Name Input */}
                             <div className="space-y-2 text-left">
                                 <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1 flex items-center">
-                                    Class <span className="text-rose-500 ml-1 text-sm">*</span>
+                                    <Tag size={12} className="mr-2 text-indigo-400" />
+                                    Fees Group Name <span className="text-rose-500 ml-1 text-sm">*</span>
                                 </label>
                                 <div className="relative group">
                                     <input
                                         type="text"
-                                        className="w-full px-5 py-3.5 bg-gray-50/50 border border-gray-200 rounded-2xl text-[13px] font-bold text-gray-700 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all group-hover:border-indigo-200"
-                                        placeholder="Enter class name..."
-                                        value={formData.className}
-                                        onChange={(e) => setFormData({ ...formData, className: e.target.value })}
+                                        className="w-full px-5 py-3.5 bg-gray-50/50 border border-gray-200 rounded-2xl text-[13px] font-bold text-gray-700 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all group-hover:border-indigo-200 shadow-inner"
+                                        placeholder="Ex: Annual Development Fee"
+                                        value={formData.groupName}
+                                        onChange={(e) => setFormData({ ...formData, groupName: e.target.value })}
                                     />
                                 </div>
                             </div>
 
-                            {/* Section Checkboxes */}
-                            <div className="space-y-4 text-left">
+                            {/* Description Input */}
+                            <div className="space-y-2 text-left">
                                 <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1 flex items-center">
-                                    Sections <span className="text-rose-500 ml-1 text-sm">*</span>
+                                    <AlignLeft size={12} className="mr-2 text-indigo-400" />
+                                    Strategic Description
                                 </label>
-                                <div className="space-y-3">
-                                    {sectionOptions.map((section) => (
-                                        <label 
-                                            key={section} 
-                                            className={`flex items-center space-x-3 p-3.5 rounded-2xl border transition-all cursor-pointer group ${
-                                                formData.sections.includes(section) 
-                                                ? 'bg-indigo-50 border-indigo-200 shadow-sm' 
-                                                : 'hover:bg-gray-50 border-gray-100'
-                                            }`}
-                                        >
-                                            <div className="relative flex items-center">
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-0 cursor-pointer shadow-sm appearance-none border-2 checked:bg-indigo-600 checked:border-indigo-600 transition-all"
-                                                    checked={formData.sections.includes(section)}
-                                                    onChange={() => toggleSection(section)}
-                                                />
-                                                {formData.sections.includes(section) && (
-                                                    <CheckCircle2 size={10} className="absolute inset-0 m-auto text-white" />
-                                                )}
-                                            </div>
-                                            <span className={`text-[11px] font-black uppercase tracking-widest transition-colors ${
-                                                formData.sections.includes(section) ? 'text-indigo-700' : 'text-gray-600 group-hover:text-indigo-600'
-                                            }`}>
-                                                Section {section}
-                                            </span>
-                                        </label>
-                                    ))}
+                                <div className="relative group">
+                                    <textarea
+                                        className="w-full px-5 py-3.5 bg-gray-50/50 border border-gray-200 rounded-2xl text-[13px] font-bold text-gray-700 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all group-hover:border-indigo-200 resize-none min-h-[120px] shadow-inner"
+                                        placeholder="Define the scope and objectives for this fee group..."
+                                        value={formData.description}
+                                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                    />
                                 </div>
+                            </div>
+                            
+                            {/* Tip Box */}
+                            <div className="p-5 bg-indigo-50/50 rounded-2xl border border-indigo-100 flex items-start space-x-3">
+                               <div className="p-2 bg-white rounded-xl shadow-sm text-indigo-600">
+                                  <CreditCard size={16} />
+                               </div>
+                               <p className="text-[10px] text-gray-500 font-bold leading-relaxed text-left">
+                                  Fee groups aggregate related charges for simplified student billing and financial ledger auditing.
+                               </p>
                             </div>
                         </div>
 
                         {/* Form Footer */}
                         <div className="px-8 py-6 bg-gray-50 border-t border-gray-100 flex justify-end">
                             <button className="flex items-center space-x-2 px-10 py-3 bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-95 group">
-                                <span>Save Class</span>
+                                <span>Save Hierarchy</span>
                                 <Plus size={14} className="group-hover:rotate-90 transition-transform" />
                             </button>
                         </div>
                     </div>
                 </div>
 
-                {/* Right Side: Class List */}
+                {/* Right Side: Fees Group List */}
                 <div className="lg:col-span-8">
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full min-h-[600px]">
                         {/* Table Header Controls */}
                         <div className="p-6 border-b border-gray-50 flex flex-wrap items-center justify-between gap-4">
-                            <h2 className="text-sm font-black text-gray-800 uppercase tracking-widest flex items-center italic underline decoration-indigo-200 decoration-4 underline-offset-4">
-                                Class List
+                            <h2 className="text-sm font-black text-gray-800 uppercase tracking-widest flex items-center italic underline decoration-indigo-200 decoration-4 underline-offset-4 text-left font-sans">
+                                Fees Group Registry
                             </h2>
 
                             <div className="flex flex-wrap items-center gap-3">
@@ -144,16 +125,16 @@ export default function ClassNameCreate() {
                                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors" size={14} />
                                     <input
                                         type="text"
-                                        placeholder="Search records..."
-                                        className="pl-9 pr-4 py-2 bg-gray-50/50 border border-gray-200 rounded-xl text-[11px] font-bold text-gray-700 outline-none focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all w-48 font-mono"
+                                        placeholder="Trace records..."
+                                        className="pl-9 pr-4 py-2 bg-gray-50/50 border border-gray-200 rounded-xl text-[11px] font-bold text-gray-700 outline-none focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all w-48 font-mono shadow-inner"
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                     />
                                 </div>
 
                                 <div className="flex items-center space-x-2 bg-gray-50/50 border border-gray-200 rounded-xl px-2 py-1">
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-tighter ml-2">{rowsPerPage}</span>
-                                    <button className="p-1 hover:bg-white rounded-lg transition-all text-gray-400 hover:text-indigo-600">
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-tighter ml-2 font-mono">{rowsPerPage}</span>
+                                    <button className="p-1 hover:bg-white rounded-lg transition-all text-gray-400 hover:text-indigo-600 font-mono">
                                         <ChevronDown size={14} />
                                     </button>
                                 </div>
@@ -173,10 +154,10 @@ export default function ClassNameCreate() {
                         <div className="flex-1 overflow-x-auto overflow-y-auto no-scrollbar">
                             <table className="w-full text-left border-separate border-spacing-0">
                                 <thead className="sticky top-0 z-10">
-                                    <tr className="bg-gray-50/90 backdrop-blur-sm">
+                                    <tr className="bg-gray-50/90 backdrop-blur-sm shadow-sm">
                                         <th className="px-6 py-4 text-[10px] font-black text-gray-500 uppercase tracking-widest border-b border-gray-100">
                                             <div className="flex items-center cursor-pointer group">
-                                                <span>Class</span>
+                                                <span>Group Integrity Name</span>
                                                 <div className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                                     <ChevronDown size={10} className="text-indigo-500" />
                                                 </div>
@@ -184,34 +165,30 @@ export default function ClassNameCreate() {
                                         </th>
                                         <th className="px-6 py-4 text-[10px] font-black text-gray-500 uppercase tracking-widest border-b border-gray-100">
                                             <div className="flex items-center cursor-pointer group">
-                                                <span>Sections</span>
+                                                <span>Functional Description</span>
                                                 <div className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                                     <ChevronDown size={10} className="text-indigo-500" />
                                                 </div>
                                             </div>
                                         </th>
-                                        <th className="px-6 py-4 text-[10px] font-black text-gray-500 uppercase tracking-widest border-b border-gray-100 text-right">Action</th>
+                                        <th className="px-6 py-4 text-[10px] font-black text-gray-500 uppercase tracking-widest border-b border-gray-100 text-right">Action Gateway</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-50">
-                                    {classes.filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase())).map((c) => (
-                                        <tr key={c.id} className="hover:bg-indigo-50/20 transition-all group">
-                                            <td className="px-6 py-6 vertical-middle whitespace-nowrap">
-                                                <span className="text-[12px] font-black text-gray-900 uppercase tracking-widest">{c.name}</span>
+                                    {feeGroups.filter(g => g.name.toLowerCase().includes(searchTerm.toLowerCase())).map((g) => (
+                                        <tr key={g.id} className="hover:bg-indigo-50/20 transition-all group">
+                                            <td className="px-6 py-6 vertical-middle whitespace-nowrap text-left border-b border-gray-50">
+                                                <span className="text-[12px] font-black text-gray-900 uppercase tracking-widest">{g.name}</span>
                                             </td>
-                                            <td className="px-6 py-6 vertical-middle">
-                                                <div className="flex flex-col gap-1">
-                                                    {c.sections.map(s => (
-                                                        <span key={s} className="text-[12px] font-bold text-gray-600 block">{s}</span>
-                                                    ))}
-                                                </div>
+                                            <td className="px-6 py-6 vertical-middle text-left border-b border-gray-50">
+                                                <span className="text-[12px] font-bold text-gray-600 block leading-relaxed">{g.description}</span>
                                             </td>
-                                            <td className="px-6 py-6 text-right vertical-middle">
+                                            <td className="px-6 py-6 text-right vertical-middle border-b border-gray-50">
                                                 <div className="flex items-center justify-end space-x-2">
-                                                    <button className="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition-all shadow-sm hover:shadow-indigo-100 group-hover:scale-105">
+                                                    <button className="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition-all shadow-sm hover:shadow-indigo-100 group-hover:scale-105 active:scale-90">
                                                         <Edit2 size={14} />
                                                     </button>
-                                                    <button className="p-2.5 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition-all shadow-sm hover:shadow-rose-100 group-hover:scale-105">
+                                                    <button className="p-2.5 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition-all shadow-sm hover:shadow-rose-100 group-hover:scale-105 active:scale-90">
                                                         <Trash2 size={14} />
                                                     </button>
                                                 </div>
@@ -223,9 +200,9 @@ export default function ClassNameCreate() {
                         </div>
 
                         {/* Pagination Footer */}
-                        <div className="p-6 bg-gray-50/50 border-t border-gray-50 flex items-center justify-between">
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none">
-                                Showing 1 to {classes.length} of {classes.length} entries
+                        <div className="p-6 bg-gray-50/50 border-t border-gray-50 flex items-center justify-between mt-auto">
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none font-mono">
+                                Quantifying {feeGroups.length} total group records
                             </span>
                             <div className="flex items-center space-x-1">
                                 <button className="p-2 text-gray-400 hover:text-indigo-600 transition-all"><ChevronDown size={14} className="rotate-90" /></button>

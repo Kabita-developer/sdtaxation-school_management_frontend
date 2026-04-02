@@ -30,19 +30,32 @@ import FeesManagement from './pages/FeesManagement';
 import FeesManagementLayout from './components/FeesManagementLayout';
 import AcademyFee from './pages/AcademyFee';
 import AcademyFeeLayout from './components/AcademyFeeLayout';
+import AccountLayout from './components/AccountLayout';
+import Layout from './components/Layout';
+import AccountMaster from './pages/AccountMaster';
+import AccountGroups from './pages/AccountGroups';
+import AccountLedgers from './pages/AccountLedgers';
+import AccountVouchers from './pages/AccountVouchers';
+import AccountCostCentres from './pages/AccountCostCentres';
+import ERPReceipt from './pages/ERPReceipt';
+import ERPPayment from './pages/ERPPayment';
 import TransportFee from './pages/TransportFee';
 import HostalFee from './pages/HostalFee';
 import FeesMaster from './pages/FeesMaster';
+import PickupPoint from './pages/PickupPoint';
 import ClassMaster from './pages/ClassMaster';
 import ClassGroup from './pages/ClassGroup';
+import ClassGroupCreate from './pages/ClassGroupCreate';
 import ClassNameCreate from './pages/ClassNameCreate';
 import SectionCreate from './pages/SectionCreate';
 import SubjectCreate from './pages/SubjectCreate';
 import AdmissionCreate from './pages/AdmissionCreate';
 import OnlineAdmission from './pages/OnlineAdmission';
 import DisabledStudents from './pages/DisabledStudents';
-import StudentList from './pages/StudentList';
+import FeesGroup from './pages/FeesGroup';
+import FeesType from './pages/FeesType';
 import BulkDelete from './pages/BulkDelete';
+import StudentList from './pages/StudentList';
 import AssignTeacher from './pages/AssignTeacher';
 import HRM from './pages/HRM';
 import Payroll from './pages/Payroll';
@@ -58,6 +71,16 @@ import ITR from './pages/ITR';
 import Profile from './pages/Profile';
 import SubscriptionPlans from './pages/SubscriptionPlans';
 import CompanySubscriptions from './pages/CompanySubscriptions';
+import TransportRoutes from './pages/TransportRoutes';
+import CollectFees from './pages/CollectFees';
+import OfflineBankPayments from './pages/OfflineBankPayments';
+import SearchFeesPayment from './pages/SearchFeesPayment';
+import SearchDueFees from './pages/SearchDueFees';
+import QuickFees from './pages/QuickFees';
+import FeesDiscount from './pages/FeesDiscount';
+import FeesCarryForward from './pages/FeesCarryForward';
+import FeesReminder from './pages/FeesReminder';
+import ListOfClasses from './pages/ListOfClasses';
 import { Loader2 } from 'lucide-react';
 
 function LoadingScreen() {
@@ -195,11 +218,48 @@ function AppContent() {
               <ContactType />
             </ProtectedRoute>
           } />
-          <Route path="/erp" element={
+          <Route path="erp" element={
             <ProtectedRoute>
               <ERP />
             </ProtectedRoute>
           } />
+          
+          <Route path="erp/receipt" element={
+            <ProtectedRoute>
+              <Layout title="Receipt"><ERPReceipt /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="erp/payment" element={
+            <ProtectedRoute>
+              <Layout title="Payment"><ERPPayment /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/master" element={
+            <ProtectedRoute>
+              <FeesManagementLayout />
+            </ProtectedRoute>
+          }>
+            <Route index element={<Navigate to="/master/academy" replace />} />
+            <Route path="account_create" element={<AccountLayout />}>
+                <Route index element={<AccountMaster />} />
+                <Route path="account-groups" element={<AccountGroups />} />
+                <Route path="account-ledgers" element={<AccountLedgers />} />
+                <Route path="account-vouchers" element={<AccountVouchers />} />
+                <Route path="account-cost-centres" element={<AccountCostCentres />} />
+            </Route>
+            <Route path="academy" element={<AcademyFeeLayout />}>
+                <Route index element={<AcademyFee />} />
+                <Route path="class_group" element={<ClassGroupCreate />} />
+                <Route path="class-create" element={<ClassNameCreate />} />
+                <Route path="section-create" element={<SectionCreate />} />
+                <Route path="subject-create" element={<SubjectCreate />} />
+                <Route path="fees-group" element={<FeesGroup />} />
+                <Route path="fees-type" element={<FeesType />} />
+                <Route path="online-admission" element={<OnlineAdmission />} />
+                <Route path="disabled-students" element={<DisabledStudents />} />
+                <Route path="bulk-delete" element={<BulkDelete />} />
+            </Route>
+          </Route>
 
           <Route path="/fees-management" element={
             <ProtectedRoute>
@@ -207,24 +267,40 @@ function AppContent() {
             </ProtectedRoute>
           }>
             <Route index element={<FeesManagement />} />
-            <Route path="academy" element={<AcademyFeeLayout />}>
-              <Route index element={<AcademyFee />} />
-              <Route path="class_group" element={<ClassGroup />} />
-              <Route path="class-create" element={<ClassNameCreate />} />
-              <Route path="section-create" element={<SectionCreate />} />
-              <Route path="subject-create" element={<SubjectCreate />} />
-              <Route path="admission-create" element={<AdmissionCreate />} />
-              <Route path="online-admission" element={<OnlineAdmission />} />
-              <Route path="disabled-students" element={<DisabledStudents />} />
-              <Route path="student-list" element={<StudentList />} />
-              <Route path="assign-teacher" element={<AssignTeacher />} />
-            </Route>
-            <Route path="academy_fee" element={<Navigate to="/fees-management/academy" replace />} />
+            <Route path="academy_fee" element={<Navigate to="/master/academy" replace />} />
             <Route path="Transport_fee" element={<TransportFee />} />
+            <Route path="routes" element={<TransportRoutes />} />
+            <Route path="pickup-point" element={<PickupPoint />} />
             <Route path="hostal_fee" element={<HostalFee />} />
+
             <Route path="fees_master" element={<FeesMaster />} />
             <Route path="class_master" element={<ClassMaster />} />
+            <Route path="collect-fees" element={<CollectFees />} />
+            <Route path="offline-bank-payments" element={<OfflineBankPayments />} />
+            <Route path="search-fees-payment" element={<SearchFeesPayment />} />
+            <Route path="search-due-fees" element={<SearchDueFees />} />
+            <Route path="quick-fees" element={<QuickFees />} />
+            <Route path="fees-discount" element={<FeesDiscount />} />
+            <Route path="fees-carry-forward" element={<FeesCarryForward />} />
+            <Route path="fees-reminder" element={<FeesReminder />} />
+            <Route path="list-of-classes" element={<ListOfClasses />} />
           </Route>
+
+          <Route path="/student_information/admission-create" element={
+            <ProtectedRoute>
+              <Layout title="">
+                <AdmissionCreate />
+              </Layout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/student_information/student-list" element={
+            <ProtectedRoute>
+              <Layout title="">
+                <StudentList />
+              </Layout>
+            </ProtectedRoute>
+          } />
 
           <Route path="/hrms" element={
             <ProtectedRoute>

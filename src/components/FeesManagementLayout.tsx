@@ -1,4 +1,3 @@
-import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Layout from './Layout';
 import {
@@ -33,16 +32,16 @@ const FeesManagementLayout = () => {
         {
             label: 'Academy Fee',
             icon: Plus,
-            onClick: () => navigate('/fees-management/academy'),
+            onClick: () => navigate('/master/academy'),
             variant: 'primary' as const,
             subMenu: [
-                { label: 'Class Group Create', icon: LayoutGrid, onClick: () => navigate('/fees-management/academy/class_group') },
-                { label: 'Class Name Create', icon: Layers, onClick: () => navigate('/fees-management/academy/class-create') },
-                { label: 'Section Create', icon: SplitSquareVertical, onClick: () => navigate('/fees-management/academy/section-create') },
-                { label: 'Subject Create', icon: BookMarked, onClick: () => navigate('/fees-management/academy/subject-create') },
-                { label: 'Student Admission Create', icon: GraduationCap, onClick: () => navigate('/fees-management/academy/admission-create') },
-                { label: 'Student List (Class-wise & Section-wise)', icon: List, onClick: () => navigate('/fees-management/academy/student-list') },
-                { label: 'Assign Class Teacher', icon: UserCheck, onClick: () => navigate('/fees-management/academy/assign-teacher') },
+                { label: 'Class Group Create', icon: LayoutGrid, onClick: () => navigate('/master/academy/class_group') },
+                { label: 'Class Name Create', icon: Layers, onClick: () => navigate('/master/academy/class-create') },
+                { label: 'Section Create', icon: SplitSquareVertical, onClick: () => navigate('/master/academy/section-create') },
+                { label: 'Subject Create', icon: BookMarked, onClick: () => navigate('/master/academy/subject-create') },
+                { label: 'Student Admission Create', icon: GraduationCap, onClick: () => navigate('/student_information/admission-create') },
+                { label: 'Student List (Class-wise & Section-wise)', icon: List, onClick: () => navigate('/student_information/student-list') },
+                { label: 'Assign Class Teacher', icon: UserCheck, onClick: () => navigate('/master/academy/assign-teacher') },
             ]
         },
         {
@@ -52,12 +51,12 @@ const FeesManagementLayout = () => {
             variant: 'white' as const,
             subMenu: [
                 { label: 'Fees Master', icon: Receipt, onClick: () => navigate('/fees-management/fees_master') },
-                { label: 'Pickup Point', icon: MapPin, onClick: () => navigate('/fees-management/Transport_fee') },
-                { label: 'Routes', icon: Map, onClick: () => navigate('/fees-management/Transport_fee') },
-                { label: 'Vehicles', icon: Truck, onClick: () => navigate('/fees-management/Transport_fee') },
-                { label: 'Assign Vehicle', icon: Car, onClick: () => navigate('/fees-management/Transport_fee') },
-                { label: 'Route Pickup Point', icon: Navigation, onClick: () => navigate('/fees-management/Transport_fee') },
-                { label: 'Student Transport Fees', icon: DollarSign, onClick: () => navigate('/fees-management/Transport_fee') },
+                { label: 'Pickup Point', icon: MapPin, onClick: () => navigate('/fees-management/pickup-point') },
+                { label: 'Routes', icon: Map, onClick: () => navigate('/fees-management/routes') },
+                { label: 'Vehicles', icon: Truck, onClick: () => navigate('/fees-management/Transport_fee#vehicles') },
+                { label: 'Assign Vehicle', icon: Car, onClick: () => navigate('/fees-management/Transport_fee#assign_vehicle') },
+                { label: 'Route Pickup Point', icon: Navigation, onClick: () => navigate('/fees-management/Transport_fee#route_pickup_point') },
+                { label: 'Student Transport Fees', icon: DollarSign, onClick: () => navigate('/fees-management/Transport_fee#student_transport_fees') },
             ]
         },
         { label: 'Hostal Fee', icon: History, onClick: () => navigate('/fees-management/hostal_fee'), variant: 'white' as const },
@@ -74,11 +73,11 @@ const FeesManagementLayout = () => {
             ]
         },
         { label: 'Class Master', icon: Layers, onClick: () => navigate('/fees-management/class_master'), variant: 'white' as const },
-        { label: 'Class Group', icon: LayoutGrid, onClick: () => navigate('/fees-management/academy/class_group'), variant: 'white' as const },
+        { label: 'Class Group', icon: LayoutGrid, onClick: () => navigate('/master/academy/class_group'), variant: 'white' as const },
     ];
 
     return (
-        <Layout title="" shortcuts={feesShortcuts}>
+        <Layout title="" shortcuts={[]}>
             <Outlet />
         </Layout>
     );

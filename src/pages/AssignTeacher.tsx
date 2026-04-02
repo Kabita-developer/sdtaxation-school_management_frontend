@@ -2,21 +2,26 @@ import { useState } from 'react';
 import {
     Plus,
     Search,
-    History,
     Edit2,
     Trash2,
-    CheckCircle2,
     UserCheck,
     Users,
     Briefcase,
-    ChevronRight,
-    Star,
-    UserPlus,
-    ShieldCheck
+    ChevronDown,
+    Filter,
+    Download,
+    LayoutGrid,
+    ShieldCheck,
+    UserPlus
 } from 'lucide-react';
 
 export default function AssignTeacher() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [formData, setFormData] = useState({
+        class: '',
+        section: '',
+        teacher: '',
+    });
+
     const [searchTerm, setSearchTerm] = useState('');
 
     const assignments = [
@@ -28,266 +33,189 @@ export default function AssignTeacher() {
     ];
 
     const stats = [
-        { name: 'Total Classes', value: '42', icon: Briefcase, color: 'text-amber-600', bg: 'bg-amber-50' },
-        { name: 'Teachers Assigned', value: '38', icon: UserCheck, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-        { name: 'Vacant Positions', value: '04', icon: UserPlus, color: 'text-rose-600', bg: 'bg-rose-50' },
-        { name: 'Faculty Strength', value: '120+', icon: ShieldCheck, color: 'text-blue-600', bg: 'bg-blue-50' },
+        { name: 'Total Classes', value: '42', icon: Briefcase, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+        { name: 'Assigned', value: '38', icon: UserCheck, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+        { name: 'Vacant', value: '04', icon: UserPlus, color: 'text-rose-600', bg: 'bg-rose-50' },
+        { name: 'Faculty', value: '120+', icon: ShieldCheck, color: 'text-amber-600', bg: 'bg-amber-50' },
     ];
 
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-center">
-                <h1 className="text-xl font-black text-gray-900 uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">assign class teacher</h1>
+        <div className="space-y-6 animate-in fade-in duration-500 text-left">
+            {/* Header */}
+            <div className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-2">
+                <div>
+                    <h1 className="text-xl font-black text-gray-900 uppercase tracking-widest flex items-center">
+                        <UserCheck size={22} className="mr-3 text-indigo-600" />
+                        Teacher Assignments
+                    </h1>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase mt-1 tracking-widest font-mono">Academic mentorship & faculty resource allocation</p>
+                </div>
             </div>
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {stats.map((stat) => (
-                    <div key={stat.name} className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 group hover:border-emerald-100 transition-colors">
-                        <div className="flex justify-between items-start">
-                            <div className={`p-2.5 rounded-lg ${stat.bg}`}>
-                                <stat.icon size={20} className={stat.color} />
+                    <div key={stat.name} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 group hover:border-indigo-100 transition-all hover:shadow-md">
+                        <div className="flex justify-between items-center">
+                            <div className={`p-3 rounded-xl ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform`}>
+                                <stat.icon size={22} />
                             </div>
                             <div className="text-right">
-                                <p className="text-2xl font-black text-gray-900 leading-none">{stat.value}</p>
-                                <p className="text-[10px] text-gray-400 font-bold uppercase mt-1.5 tracking-wider">{stat.name}</p>
+                                <p className="text-2xl font-black text-gray-900 leading-none tracking-tight">{stat.value}</p>
+                                <p className="text-[10px] text-gray-400 font-bold uppercase mt-2 tracking-wider font-mono">{stat.name}</p>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
 
-            {/* Assignment Registry */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="p-4 border-b border-gray-100 flex items-center justify-between flex-wrap gap-4 text-left">
-                    <h2 className="font-bold text-gray-900 flex items-center text-sm uppercase tracking-wider">
-                        <Briefcase size={16} className="mr-2 text-emerald-600" />
-                        Academic Roles & Responsibilities
-                    </h2>
-                    <div className="flex items-center space-x-2">
-                        <div className="relative">
-                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                            <input
-                                type="text"
-                                placeholder="Search by teacher or class..."
-                                className="pl-8 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 w-64 font-medium"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Left Side: Create Form */}
+                <div className="lg:col-span-4">
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col sticky top-6">
+                        <div className="px-6 py-5 border-b border-gray-50 bg-gray-50/30">
+                            <h2 className="text-sm font-black text-gray-800 uppercase tracking-widest italic decoration-indigo-500/30 underline decoration-4 underline-offset-4">Assign Class Mentor</h2>
                         </div>
-                        <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="flex items-center space-x-2 px-4 py-1.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-all text-xs font-bold leading-none shadow-md shadow-emerald-100 active:scale-95"
-                        >
-                            <Plus size={14} />
-                            <span>ASSIGN FACULTY</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                        <thead>
-                            <tr className="bg-gray-50 border-b border-gray-100">
-                                <th className="px-6 py-4 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Academic Grade</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Faculty In-Charge</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Experience</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Status</th>
-                                <th className="px-6 py-4 text-[10px] font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {assignments.filter(a => a.teacher.toLowerCase().includes(searchTerm.toLowerCase()) || a.class.toLowerCase().includes(searchTerm.toLowerCase())).map((a) => (
-                                <tr key={a.id} className="hover:bg-gray-50/80 transition-colors group">
-                                    <td className="px-6 py-4">
-                                        <div className="flex items-center space-x-2">
-                                            <span className="text-xs font-black text-gray-700 uppercase">{a.class}</span>
-                                            <ChevronRight size={10} className="text-gray-300" />
-                                            <span className="text-xs font-black text-emerald-700 bg-emerald-50 w-6 h-6 flex items-center justify-center rounded-lg border border-emerald-100">{a.section}</span>
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="flex items-center space-x-3">
-                                            <img src={a.photo} alt="" className="w-8 h-8 rounded-full object-cover ring-2 ring-emerald-50" />
-                                            <div className="flex flex-col">
-                                                <span className="text-xs font-bold text-gray-900">{a.teacher}</span>
-                                                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">Lead Mentor</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="flex items-center space-x-1.5">
-                                            <Star size={12} className="text-amber-400 fill-amber-400" />
-                                            <span className="text-xs font-black text-gray-600">{a.experience} Seniority</span>
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tight ${a.status === 'Active' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-amber-50 text-amber-600 border border-amber-100'
-                                            }`}>
-                                            {a.status}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 text-right">
-                                        <div className="flex items-center justify-end space-x-1">
-                                            <button className="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all active:scale-90">
-                                                <Edit2 size={14} />
-                                            </button>
-                                            <button className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all active:scale-90">
-                                                <Trash2 size={14} />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div className="p-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between font-sans">
-                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest italic font-sans">Faculty Management System v2.0</p>
-                    <div className="flex space-x-1">
-                        <button className="px-2.5 py-1 border border-emerald-200 rounded text-[10px] font-black text-emerald-600 bg-white shadow-sm ring-1 ring-emerald-50">1</button>
-                        <button className="px-2.5 py-1 border border-transparent rounded text-[10px] font-black text-gray-300">2</button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Info Panel */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 relative overflow-hidden group text-left">
-                    <div className="relative z-10 text-left">
-                        <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-4 flex items-center">
-                            <History size={16} className="mr-2 text-emerald-500" />
-                            Recent Assignments
-                        </h3>
-                        <div className="space-y-4">
-                            {[
-                                { title: 'Grade 10-A Assigned', desc: 'Assigned to Mrs. Sanchita Roy (Dept. of Mathematics)', time: '2 hours ago' },
-                                { title: 'Grade 12-C Re-assigned', desc: 'Transitioned from Mr. Rahul to Ms. Anjali', time: 'Yesterday' },
-                            ].map((item, i) => (
-                                <div key={i} className="flex gap-4 p-3 bg-gray-50/50 rounded-xl border border-transparent hover:border-emerald-100 hover:bg-emerald-50/30 transition-all cursor-pointer">
-                                    <div className="w-1.5 h-full rounded-full bg-emerald-500 mt-1"></div>
-                                    <div>
-                                        <p className="text-[11px] font-black text-gray-900 uppercase">{item.title}</p>
-                                        <p className="text-[10px] text-gray-500 font-medium leading-relaxed">{item.desc}</p>
-                                        <p className="text-[9px] font-bold text-emerald-600 mt-1 uppercase">{item.time}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-emerald-600 via-teal-600 to-teal-800 rounded-xl p-6 text-white shadow-lg relative overflow-hidden group">
-                    <div className="relative z-10 text-left">
-                        <h3 className="text-lg font-bold mb-2 tracking-tight">Faculty Deployment</h3>
-                        <p className="text-sm text-emerald-50 mb-6 opacity-90 leading-relaxed font-medium">Coordinate class teachers and secondary supervisors across the multi-campus academic structure.</p>
-                        <div className="flex space-x-3">
-                            <button className="px-6 py-2.5 bg-white text-emerald-700 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-emerald-50 transition-all shadow-xl active:scale-95">
-                                Sync Records
-                            </button>
-                            <button className="px-6 py-2.5 bg-emerald-500/30 backdrop-blur-md border border-white/20 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all active:scale-95">
-                                View Faculty List
-                            </button>
-                        </div>
-                    </div>
-                    <CheckCircle2 size={130} className="absolute bottom-0 right-0 p-4 transform translate-x-10 translate-y-10 text-white/10 group-hover:rotate-12 transition-transform duration-500" />
-                </div>
-            </div>
-
-            {/* Assignment Modal */}
-            {isModalOpen && (
-                <div className="fixed inset-0 z-[999] flex items-center justify-center p-4">
-                    <div
-                        className="absolute inset-0 bg-gray-900/60 backdrop-blur-md transition-opacity duration-500"
-                        onClick={() => setIsModalOpen(false)}
-                    ></div>
-
-                    <div className="relative bg-white rounded-3xl shadow-[0_32px_64px_-12px_rgba(5,150,105,0.25)] border border-gray-100 max-w-lg w-full overflow-hidden transform transition-all animate-in fade-in zoom-in-95 duration-300">
-                        <div className="bg-emerald-600 px-8 py-6 flex items-center justify-between text-left">
-                            <h2 className="text-white font-black uppercase tracking-[0.2em] flex items-center text-sm">
-                                <UserCheck size={20} className="mr-3 text-emerald-200" />
-                                Assign Class Faculty
-                            </h2>
-                            <button
-                                onClick={() => setIsModalOpen(false)}
-                                className="text-white/60 hover:text-white transition-colors"
-                            >
-                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <form className="p-8 space-y-6 text-left">
+                        
+                        <div className="p-8 space-y-8">
                             <div className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-1.5">
-                                        <label className="text-[10px] font-black text-emerald-600 uppercase tracking-widest ml-1">Academic Grade</label>
-                                        <select className="w-full px-4 py-3 bg-emerald-50/50 border-2 border-transparent rounded-2xl text-xs focus:outline-none focus:border-emerald-500 focus:bg-white transition-all font-bold text-gray-900 appearance-none">
-                                            <option>Select Class</option>
-                                            <option>Grade 9</option>
-                                            <option>Grade 10</option>
-                                            <option>Grade 11</option>
-                                            <option>Grade 12</option>
-                                        </select>
-                                    </div>
-                                    <div className="space-y-1.5">
-                                        <label className="text-[10px] font-black text-emerald-600 uppercase tracking-widest ml-1">Section Branch</label>
-                                        <select className="w-full px-4 py-3 bg-emerald-50/50 border-2 border-transparent rounded-2xl text-xs focus:outline-none focus:border-emerald-500 focus:bg-white transition-all font-bold text-gray-900 appearance-none">
-                                            <option>Select Section</option>
-                                            <option>Section A</option>
-                                            <option>Section B</option>
-                                            <option>Section C</option>
-                                        </select>
-                                    </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1 text-left block">Target Class <span className="text-rose-500">*</span></label>
+                                    <select className="w-full px-5 py-3.5 bg-gray-50/50 border border-gray-200 rounded-2xl text-[13px] font-bold text-gray-700 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all appearance-none cursor-pointer">
+                                        <option>Select Class</option>
+                                        <option>Grade 9</option>
+                                        <option>Grade 10</option>
+                                        <option>Grade 11</option>
+                                        <option>Grade 12</option>
+                                    </select>
                                 </div>
 
-                                <div className="space-y-1.5">
-                                    <label className="text-[10px] font-black text-emerald-600 uppercase tracking-widest ml-1">Select Lead Faculty</label>
-                                    <div className="relative">
-                                        <Users className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400" size={18} />
-                                        <select className="w-full pl-12 pr-4 py-3 bg-emerald-50/50 border-2 border-transparent rounded-2xl text-xs focus:outline-none focus:border-emerald-500 focus:bg-white transition-all font-bold text-gray-900 appearance-none">
-                                            <option>Find teacher by name...</option>
-                                            <option>Mrs. Sanchita Roy (Senior Mentor)</option>
-                                            <option>Mr. Pradeep Kumar (Facilitator)</option>
-                                            <option>Ms. Anjali Sharma (Head of Dept)</option>
-                                        </select>
-                                    </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1 text-left block">Assigned Section <span className="text-rose-500">*</span></label>
+                                    <select className="w-full px-5 py-3.5 bg-gray-50/50 border border-gray-200 rounded-2xl text-[13px] font-bold text-gray-700 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all appearance-none cursor-pointer">
+                                        <option>Select Section</option>
+                                        <option>Section A</option>
+                                        <option>Section B</option>
+                                        <option>Section C</option>
+                                    </select>
                                 </div>
 
-                                <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
-                                    <div className="flex items-center space-x-3 mb-2">
-                                        <ShieldCheck size={16} className="text-emerald-600" />
-                                        <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">Responsibility Scope</span>
-                                    </div>
-                                    <p className="text-[10px] text-emerald-600 font-bold leading-relaxed opacity-80 uppercase italic">Selected faculty will oversee daily attendance, academic tracking, and parent communications for the designated cohort.</p>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1 text-left block">Lead Faculty <span className="text-rose-500">*</span></label>
+                                    <select className="w-full px-5 py-3.5 bg-gray-50/50 border border-gray-200 rounded-2xl text-[13px] font-bold text-gray-700 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all appearance-none cursor-pointer">
+                                        <option>Select Teacher</option>
+                                        <option>Mrs. Sanchita Roy</option>
+                                        <option>Mr. Pradeep Kumar</option>
+                                        <option>Ms. Anjali Sharma</option>
+                                    </select>
                                 </div>
                             </div>
 
-                            <div className="flex gap-4 pt-4">
-                                <button
-                                    type="button"
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="flex-1 py-4 border-2 border-gray-100 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:bg-gray-50 transition-all active:scale-95"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setIsModalOpen(false);
-                                    }}
-                                    className="flex-[1.5] py-4 bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:shadow-[0_20px_40px_-12px_rgba(5,150,105,0.4)] transition-all active:scale-95 shadow-lg shadow-emerald-200"
-                                >
-                                    CONFIRM DEPLOYMENT
-                                </button>
+                            <div className="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100/50">
+                                <p className="text-[10px] text-indigo-600/70 font-bold leading-relaxed">
+                                    * Faculty assigned here will oversee daily cohort operations, attendance, and student performance metrics.
+                                </p>
                             </div>
-                        </form>
+                        </div>
+
+                        <div className="px-8 py-6 bg-gray-50 border-t border-gray-100 flex justify-end">
+                            <button className="flex items-center space-x-2 px-10 py-3 bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-95 group">
+                                <span>Confirm Deploy</span>
+                                <Plus size={14} className="group-hover:rotate-90 transition-transform" />
+                            </button>
+                        </div>
                     </div>
                 </div>
-            )}
+
+                {/* Right Side: List Table */}
+                <div className="lg:col-span-8">
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
+                        <div className="p-6 border-b border-gray-50 flex flex-wrap items-center justify-between gap-4">
+                            <h2 className="text-sm font-black text-gray-800 uppercase tracking-widest">Faculty Deployment Matrix</h2>
+
+                            <div className="flex flex-wrap items-center gap-3">
+                                <div className="relative group">
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors" size={14} />
+                                    <input
+                                        type="text"
+                                        placeholder="Search faculty..."
+                                        className="pl-9 pr-4 py-2 bg-gray-50/50 border border-gray-200 rounded-xl text-[11px] font-bold text-gray-700 outline-none focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all w-48"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                    />
+                                </div>
+                                <div className="flex items-center space-x-1 p-1 bg-gray-50/50 rounded-xl border border-gray-200">
+                                    <button className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all" title="Filter"><Filter size={13} /></button>
+                                    <button className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all" title="Export"><Download size={13} /></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex-1 overflow-x-auto no-scrollbar">
+                            <table className="w-full text-left border-separate border-spacing-0">
+                                <thead className="sticky top-0 z-10">
+                                    <tr className="bg-gray-50/80 backdrop-blur-sm">
+                                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Mentor</th>
+                                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Grade Assignment</th>
+                                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Experience</th>
+                                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Status</th>
+                                        <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-50">
+                                    {assignments.filter(a => a.teacher.toLowerCase().includes(searchTerm.toLowerCase())).map((a) => (
+                                        <tr key={a.id} className="hover:bg-indigo-50/20 transition-all group">
+                                            <td className="px-6 py-4 vertical-middle">
+                                                <div className="flex items-center space-x-3">
+                                                    <img src={a.photo} alt="" className="w-9 h-9 rounded-full object-cover ring-2 ring-indigo-50" />
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[12px] font-black text-gray-900 uppercase tracking-widest group-hover:text-indigo-600 transition-colors">{a.teacher}</span>
+                                                        <span className="text-[10px] font-mono text-gray-400">{a.id}</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 vertical-middle">
+                                                <div className="flex items-center space-x-2">
+                                                    <span className="text-[11px] font-bold text-gray-900">{a.class}</span>
+                                                    <span className="w-5 h-5 flex items-center justify-center bg-indigo-50 text-indigo-600 rounded-lg text-[10px] font-black">{a.section}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 vertical-middle">
+                                                <span className="text-[11px] font-black text-gray-600">{a.experience}</span>
+                                            </td>
+                                            <td className="px-6 py-4 vertical-middle">
+                                                <span className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${a.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>
+                                                    {a.status}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-right vertical-middle">
+                                                <div className="flex items-center justify-end space-x-2">
+                                                    <button className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all group-hover:scale-105 shadow-sm hover:shadow-indigo-100">
+                                                        <Edit2 size={13} />
+                                                    </button>
+                                                    <button className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all group-hover:scale-105 shadow-sm hover:shadow-rose-100">
+                                                        <Trash2 size={13} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="p-6 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between">
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest font-mono italic">
+                                Faculty distribution verified
+                            </span>
+                            <div className="flex space-x-1">
+                                <button className="w-8 h-8 flex items-center justify-center bg-indigo-600 text-white rounded-lg text-[10px] font-black shadow-lg shadow-indigo-100">1</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
