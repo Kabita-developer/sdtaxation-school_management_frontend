@@ -1,15 +1,9 @@
-import { useState } from 'react';
-import {
-    Save,
-    Calendar,
-    Settings2,
-    ArrowRight,
-    Copy,
-    Info,
-    ChevronRight,
-    Clock,
-    Percent,
-    DollarSign
+import { 
+    Home, 
+    Receipt, 
+    ChevronRight, 
+    Plus,
+    Filter
 } from 'lucide-react';
 
 const months = [
@@ -17,149 +11,98 @@ const months = [
     "October", "November", "December", "January", "February", "March"
 ];
 
-export default function FeesMaster() {
-    const [copyAll, setCopyAll] = useState(false);
-    
-    // Mock state for month data
-    const [monthData, setMonthData] = useState(
-        months.map((month, index) => ({
-            name: month,
-            dueDate: `2025-${String((index + 4) > 12 ? (index - 8) : (index + 4)).padStart(2, '0')}-05`,
-            fineType: 'None',
-            percentage: '',
-            fixAmount: ''
-        }))
-    );
+const feeData = [
+    { id: 1, dueDate: "10/04", fineType: "Fixed", values: Array(12).fill("2000"), updatedBy: "admin@school.com" },
+    { id: 2, dueDate: "15/04", fineType: "Percent", values: Array(12).fill("5000"), updatedBy: "admin@school.com" },
+    { id: 3, dueDate: "20/04", fineType: "Fixed", values: Array(12).fill("1500"), updatedBy: "admin@school.com" },
+    { id: 4, dueDate: "25/04", fineType: "Percent", values: Array(12).fill("500"), updatedBy: "admin@school.com" },
+    { id: 5, dueDate: "30/04", fineType: "None", values: Array(12).fill("800"), updatedBy: "admin@school.com" },
+];
 
+export default function FeesMaster() {
     return (
-        <div className="space-y-6 text-left animate-in fade-in duration-700">
-            {/* Professional Header */}
-            <div className="flex items-center justify-between bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm relative overflow-hidden">
-                <div className="relative z-10 text-left">
-                    <div className="inline-flex items-center px-3 py-1 bg-indigo-50 rounded-full border border-indigo-100 text-[9px] font-black uppercase tracking-[0.2em] text-indigo-600 mb-3">
-                        Financial Protocol v2.0
-                    </div>
-                    <h1 className="text-2xl font-black text-gray-900 uppercase tracking-tighter italic leading-none">Transport Fees Master</h1>
-                    <p className="text-[11px] text-gray-500 font-medium mt-2 max-w-md opacity-80 leading-relaxed text-left">
-                        Define global transport billing cycles, due dates, and penalty structures for the active academic session.
-                    </p>
+        <div className="flex flex-col h-full bg-gray-50 overflow-hidden font-sans">
+            {/* Header Section */}
+            <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                    <h1 className="text-xl font-medium text-gray-800">Fees Management</h1>
+                    <span className="text-gray-400 text-sm">Control Panel</span>
                 </div>
-                <div className="shrink-0 hidden lg:block opacity-20">
-                   <Settings2 size={80} className="text-indigo-600 rotate-12" />
+                <div className="flex items-center space-x-2 text-xs text-gray-500">
+                    <Home size={14} />
+                    <span className="hover:text-blue-600 cursor-pointer">Home</span>
+                    <ChevronRight size={12} />
+                    <Receipt size={14} />
+                    <span className="hover:text-blue-600 cursor-pointer">Fees</span>
+                    <ChevronRight size={12} />
+                    <span className="text-gray-400">Fees Master List</span>
                 </div>
             </div>
 
-            {/* Main Configuration Card */}
-            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden relative group transition-all">
-                {/* Control Bar */}
-                <div className="px-8 py-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                    <label className="flex items-center space-x-3 cursor-pointer group/label">
-                        <div className="relative">
-                            <input 
-                                type="checkbox" 
-                                checked={copyAll}
-                                onChange={(e) => setCopyAll(e.target.checked)}
-                                className="peer sr-only" 
-                            />
-                            <div className="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-all after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5 shadow-inner"></div>
+            {/* Content Section */}
+            <div className="p-6 flex-1 overflow-auto">
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    {/* Toolbar */}
+                    <div className="p-4 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                        <h2 className="text-lg font-semibold text-gray-700">Fees Structure List</h2>
+                        <div className="flex items-center space-x-3">
+                            <button className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm">
+                                <Plus size={16} />
+                                <span>Add New Fee</span>
+                            </button>
+                            <button className="p-2 text-gray-500 hover:bg-gray-200 rounded-md transition-colors">
+                                <Filter size={18} />
+                            </button>
                         </div>
-                        <span className="text-[11px] font-black text-gray-600 uppercase tracking-widest group-hover/label:text-indigo-600 transition-colors italic">Copy First Fees Detail For All Months</span>
-                    </label>
-                    <div className="flex items-center space-x-2 text-indigo-600">
-                        <Info size={14} />
-                        <span className="text-[10px] font-black uppercase tracking-widest">Structural sync enabled</span>
                     </div>
-                </div>
 
-                {/* Months Grid / List */}
-                <div className="p-8 space-y-4">
-                    {monthData.map((data, idx) => (
-                        <div key={data.name} className="flex flex-col lg:flex-row lg:items-center justify-between py-6 px-8 rounded-3xl border border-gray-100 hover:border-indigo-200 hover:bg-indigo-50/30 transition-all group/item relative overflow-hidden bg-white shadow-sm">
-                            {/* Month Badge */}
-                            <div className="lg:w-36 mb-4 lg:mb-0">
-                                <span className="px-6 py-2.5 bg-gray-900 border border-gray-900 rounded-xl text-xs font-black text-white uppercase tracking-[0.2em] italic shadow-lg shadow-gray-200 group-hover/item:bg-indigo-600 group-hover/item:border-indigo-600 transition-all block text-center truncate">{data.name}</span>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-3 lg:flex lg:items-center gap-10 flex-1 lg:ml-16">
-                                {/* Due Date Field */}
-                                <div className="space-y-2.5">
-                                    <label className="text-[10px] font-black text-gray-700 uppercase tracking-widest ml-1 flex items-center">
-                                        <Clock size={12} className="mr-2 text-indigo-600" /> Due Date
-                                    </label>
-                                    <div className="relative">
-                                        <input 
-                                            type="date" 
-                                            defaultValue={data.dueDate}
-                                            className="w-full lg:w-48 px-4 py-3 bg-gray-50 border border-gray-200 focus:bg-white focus:border-indigo-500 rounded-2xl text-[12px] font-bold text-gray-900 transition-all outline-none shadow-sm focus:ring-4 focus:ring-indigo-50"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Fine Type Selection */}
-                                <div className="space-y-2.5 flex-1 max-w-sm">
-                                    <label className="text-[10px] font-black text-gray-700 uppercase tracking-widest ml-1 flex items-center text-left">
-                                        <Percent size={12} className="mr-2 text-indigo-600" /> Fine Protocol
-                                    </label>
-                                    <div className="flex items-center space-x-2">
-                                        {['None', 'Percentage', 'Fix Amount'].map((type) => (
-                                            <label key={type} className="flex-1 flex items-center cursor-pointer">
-                                                <input 
-                                                    type="radio" 
-                                                    name={`fine-${data.name}`} 
-                                                    checked={data.fineType === type}
-                                                    onChange={() => {
-                                                        const NewData = [...monthData];
-                                                        NewData[idx].fineType = type;
-                                                        setMonthData(NewData);
-                                                    }}
-                                                    className="peer sr-only" 
-                                                />
-                                                <div className="w-full py-2.5 text-center bg-gray-100 border border-gray-200 rounded-xl text-[9px] font-black uppercase tracking-widest text-gray-500 peer-checked:bg-indigo-600 peer-checked:border-indigo-600 peer-checked:text-white transition-all shadow-sm group-hover/item:border-indigo-200 group-hover/item:shadow-md">
-                                                    {type === 'Fix Amount' ? 'Fixed' : type}
-                                                </div>
-                                            </label>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Dynamic Values */}
-                                <div className="space-y-2.5 lg:w-56">
-                                    <label className="text-[10px] font-black text-gray-700 uppercase tracking-widest ml-1 text-left block">
-                                        Value Coefficient
-                                    </label>
-                                    <div className="relative group/input">
-                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-indigo-600 font-bold text-[11px]">
-                                            {data.fineType === 'Percentage' ? '%' : '₹'}
+                    {/* Table Section */}
+                    <div className="overflow-x-auto">
+                        <table className="w-full border-collapse">
+                            <thead>
+                                <tr className="bg-[#438EB9] text-white">
+                                    <th className="px-1 py-6 text-base font-semibold border border-white/20 min-w-[50px] h-32 align-bottom pb-4">
+                                        <div className="flex justify-center -rotate-90 whitespace-nowrap origin-center translate-y-[-10px]">
+                                            Due Date
                                         </div>
-                                        <input 
-                                            type="number" 
-                                            placeholder="0.00"
-                                            disabled={data.fineType === 'None'}
-                                            className="w-full px-4 py-3 pl-10 bg-gray-50 border border-gray-200 focus:bg-white focus:border-indigo-500 disabled:opacity-50 disabled:bg-gray-100 rounded-2xl text-[12px] font-black text-gray-900 transition-all outline-none shadow-sm focus:ring-4 focus:ring-indigo-50 placeholder:text-gray-400"
-                                            defaultValue={data.fineType === 'Percentage' ? '10.00' : '3500.00'}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            {/* Decorative Line */}
-                            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-12 bg-indigo-100 rounded-full group-hover/item:bg-indigo-600 transition-all mr-2" />
-                        </div>
-                    ))}
-                </div>
-
-                {/* Global Actions Footer */}
-                <div className="px-8 py-10 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-                    <div className="flex flex-col">
-                        <span className="text-[11px] font-black text-gray-800 uppercase tracking-widest italic">Institutional Data Integrity Lock</span>
-                        <span className="text-[10px] text-indigo-600 font-bold uppercase mt-1.5 flex items-center italic">
-                            <Info size={14} className="mr-2" /> All modifications will be logged for financial audit
-                        </span>
+                                    </th>
+                                    <th className="px-1 py-6 text-base font-semibold border border-white/20 min-w-[50px] h-32 align-bottom pb-4">
+                                        <div className="flex justify-center -rotate-90 whitespace-nowrap origin-center translate-y-[-10px]">
+                                            Fine Type
+                                        </div>
+                                    </th>
+                                    {months.map(month => (
+                                        <th key={month} className="px-1 py-6 text-[13px] font-semibold border border-white/20 min-w-[45px] h-32 align-bottom pb-4">
+                                            <div className="flex justify-center -rotate-90 whitespace-nowrap origin-center translate-y-[-10px]">
+                                                {month}
+                                            </div>
+                                        </th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {feeData.map((item, idx) => (
+                                    <tr key={item.id} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                        <td className="px-2 py-2 text-base font-medium text-gray-800 border-r border-gray-100 text-center text-sm">{item.dueDate}</td>
+                                        <td className="px-2 py-2 text-[11px] font-bold text-indigo-600 uppercase tracking-tighter border-r border-gray-100 text-center">{item.fineType}</td>
+                                        {item.values.map((val, vIdx) => (
+                                            <td key={vIdx} className="px-1 py-2 text-[15px] font-medium text-gray-700 text-center border-r border-gray-100">{val}</td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-                    <button className="px-12 py-4 bg-gray-900 text-white rounded-2xl text-[12px] font-black uppercase tracking-[0.2em] shadow-2xl shadow-gray-300 hover:bg-indigo-600 transition-all active:scale-95 flex items-center space-x-4 group text-left">
-                        <Save size={20} className="group-hover:scale-110 transition-transform" />
-                        <span>Update Master Record</span>
-                    </button>
+
+                    {/* Pagination or Footer Summary */}
+                    <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500 font-medium">
+                        <span>Showing {feeData.length} entries</span>
+                        <div className="flex items-center space-x-2">
+                             <span className="px-3 py-1 border border-gray-300 rounded cursor-pointer hover:bg-white transition-colors">Previous</span>
+                             <span className="px-3 py-1 bg-blue-600 text-white border border-blue-600 rounded">1</span>
+                             <span className="px-3 py-1 border border-gray-300 rounded cursor-pointer hover:bg-white transition-colors">Next</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
