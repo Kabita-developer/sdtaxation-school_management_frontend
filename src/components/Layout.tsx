@@ -32,7 +32,8 @@ import {
   FileText,
   Package,
   BarChart3,
-  Search as SearchIcon
+  Search as SearchIcon,
+  ArrowRightLeft
 } from 'lucide-react';
 
 import { LucideIcon } from 'lucide-react';
@@ -577,12 +578,6 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
       label: 'ERP', 
       icon: Package,
       subMenu: [
-        { path: '/erp/receipt', label: 'Receipt' },
-        { path: '/erp/payment', label: 'Payment' },
-        { path: '/erp/contra', label: 'Contra' },
-        { path: '/erp/journal', label: 'Journal' },
-        { path: '/erp/sale', label: 'Sale' },
-        { path: '/erp/purchase', label: 'Purchase' },
         { path: '/erp/credit-note', label: 'Credit Note' },
         { path: '/erp/debit-note', label: 'Debit Note' },
       ]
@@ -623,7 +618,7 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
               key={`${s.label}-${index}`}
               onClick={s.onClick}
               className={`flex items-center space-x-1 px-3 py-1.5 ${bgColor} ${textColor} ${theme.name === 'white' ? 'border border-gray-300' : ''
-                } rounded-md text-xs font-bold hover:opacity-90 transition-all whitespace-nowrap`}
+                } rounded-md text-sm font-medium hover:opacity-90 transition-all whitespace-nowrap`}
             >
               <Icon size={14} className="mr-1" />
               <span>{s.label}</span>
@@ -782,6 +777,25 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
                   themeName={theme.name} 
                   itemClasses={getDropdownItemClasses()} 
                 />
+                <div className="flex items-center space-x-2">
+                  {[
+                    { label: 'Receipt', icon: Receipt, path: '/erp/receipt' },
+                    { label: 'Payment', icon: Wallet, path: '/erp/payment' },
+                    { label: 'Contra', icon: ArrowRightLeft, path: '/erp/contra' },
+                    { label: 'Journal', icon: FileText, path: '/erp/journal' },
+                    { label: 'Sale', icon: ShoppingCart, path: '/erp/sale' },
+                    { label: 'Purchase', icon: Package, path: '/erp/purchase' },
+                  ].map((s) => (
+                    <button
+                      key={s.label}
+                      onClick={() => navigate(s.path)}
+                      className={`flex items-center space-x-1 px-3 py-1.5 ${getThemeBgClass()} ${theme.name === 'white' ? 'text-gray-900' : 'text-white'} ${theme.name === 'white' ? 'border border-gray-300' : ''} rounded-md text-sm font-medium hover:opacity-90 transition-all whitespace-nowrap`}
+                    >
+                      <s.icon size={14} className="mr-1" />
+                      <span>{s.label}</span>
+                    </button>
+                  ))}
+                </div>
                 {renderShortcuts()}
               </div>
             </div>

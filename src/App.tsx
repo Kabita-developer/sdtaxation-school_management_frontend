@@ -109,20 +109,13 @@ function AppContent() {
 
   // ProtectedRoute component must be inside AppContent to access useAuth
   function ProtectedRoute({ children }: { children: React.ReactNode }) {
-    const { isAuthenticated, loading } = useAuth();
-
-    if (loading) {
-      return <LoadingScreen />;
-    }
-
-    return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+    return <>{children}</>;
   }
 
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />
@@ -226,7 +219,7 @@ function AppContent() {
           
           <Route path="erp/receipt" element={
             <ProtectedRoute>
-              <Layout title="Receipt"><ERPReceipt /></Layout>
+              <Layout title=""><ERPReceipt /></Layout>
             </ProtectedRoute>
           } />
           <Route path="erp/payment" element={
@@ -382,7 +375,7 @@ function AppContent() {
               <CompanySubscriptions />
             </ProtectedRoute>
           } />
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/" element={<Navigate to="/dashboard" />} />
         </Routes>
       </Router>
       <NotificationContainer

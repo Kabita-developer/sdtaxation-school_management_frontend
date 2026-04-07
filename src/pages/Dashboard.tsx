@@ -98,15 +98,11 @@ export default function Dashboard() {
     };
   }) || [];
 
-  const dashboardShortcuts = [
-    { label: 'Refresh Data', icon: RefreshCw, onClick: fetchDashboardData, variant: 'primary' as const },
-    { label: 'Settings', icon: Settings, onClick: () => navigate('/setting'), variant: 'white' as const },
-    { label: 'All Reports', icon: BarChartIcon, onClick: () => navigate('/reports'), variant: 'white' as const },
-  ];
+  const dashboardShortcuts = [];
 
   if (loading) {
     return (
-      <Layout title="School Overview" shortcuts={dashboardShortcuts}>
+      <Layout title="" shortcuts={dashboardShortcuts}>
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <LoadingSpinner size="lg" />
@@ -119,7 +115,7 @@ export default function Dashboard() {
 
   if (!dashboardData) {
     return (
-      <Layout title="School Overview" shortcuts={dashboardShortcuts}>
+      <Layout title="" shortcuts={dashboardShortcuts}>
         <div className="text-center py-12">
           <p className="text-gray-600">Failed to load dashboard data</p>
           <button
@@ -134,12 +130,12 @@ export default function Dashboard() {
   }
 
   return (
-    <Layout title="Dashboard" shortcuts={dashboardShortcuts}>
+    <Layout title="" shortcuts={dashboardShortcuts}>
     <div className="space-y-6">
         {/* Header with Refresh */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">School Dashboard</h1>
+            <h1 className="text-2xl font-bold text-gray-900">School Overview</h1>
             <p className="text-gray-600">Welcome back! Here's the current school status.</p>
           </div>
           <button

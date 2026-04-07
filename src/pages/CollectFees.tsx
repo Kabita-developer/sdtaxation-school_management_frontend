@@ -140,8 +140,8 @@ function StudentFeesModal({ student, onClose }: { student: Student; onClose: () 
                                     { label: 'RTE', value: 'No', highlight: true, color: 'text-red-500 font-bold' },
                                 ].map(({ label, value, highlight, color }) => (
                                     <div key={label}>
-                                        <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5">{label}</p>
-                                        <p className={`text-sm font-semibold ${highlight && color ? color : 'text-gray-800'}`}>{value}</p>
+                                        <p className="text-sm font-medium text-gray-900 uppercase tracking-wider mb-0.5">{label}</p>
+                                        <p className={`text-sm font-medium ${highlight && color ? color : 'text-gray-900'}`}>{value}</p>
                                     </div>
                                 ))}
                             </div>
@@ -161,8 +161,8 @@ function StudentFeesModal({ student, onClose }: { student: Student; onClose: () 
                             </button>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Date:</span>
-                            <span className="text-sm font-semibold text-gray-700">{today}</span>
+                            <span className="text-sm font-medium text-gray-900 uppercase tracking-wider">Date:</span>
+                            <span className="text-sm font-medium text-gray-900">{today}</span>
                         </div>
                     </div>
 
@@ -185,7 +185,7 @@ function StudentFeesModal({ student, onClose }: { student: Student; onClose: () 
                             ].map((btn, i) => (
                                 <button
                                     key={i}
-                                    className={`relative flex flex-col items-center justify-center px-4 py-2 text-gray-400 transition-all active:scale-95 ${btn.hoverBg} ${btn.hoverText} group`}
+                                    className={`relative flex flex-col items-center justify-center px-4 py-2 text-gray-900 transition-all active:scale-95 ${btn.hoverBg} ${btn.hoverText} group`}
                                 >
                                     <span className="transition-transform group-hover:scale-110">{btn.icon}</span>
                                     {/* Tooltip */}
@@ -198,7 +198,7 @@ function StudentFeesModal({ student, onClose }: { student: Student; onClose: () 
                             <div className="relative">
                                 <button
                                     onClick={() => setShowColSettings(!showColSettings)}
-                                    className={`relative flex flex-col items-center justify-center px-4 py-2 transition-all active:scale-95 group ${showColSettings ? 'bg-indigo-50 text-indigo-600' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-700'}`}
+                                    className={`relative flex flex-col items-center justify-center px-4 py-2 transition-all active:scale-95 group ${showColSettings ? 'bg-indigo-50 text-indigo-600' : 'text-gray-900 hover:bg-gray-100 hover:text-gray-700'}`}
                                 >
                                     <span className="transition-transform group-hover:scale-110">
                                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -206,7 +206,7 @@ function StudentFeesModal({ student, onClose }: { student: Student; onClose: () 
                                         </svg>
                                     </span>
                                     {/* Tooltip */}
-                                    <span className="absolute -top-8 right-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-[10px] font-bold px-2 py-1 rounded-md whitespace-nowrap z-20 pointer-events-none shadow-lg">
+                                    <span className="absolute -top-8 right-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-sm font-medium px-2 py-1 rounded-md whitespace-nowrap z-20 pointer-events-none shadow-lg">
                                         Column visibility
                                     </span>
                                 </button>
@@ -215,12 +215,12 @@ function StudentFeesModal({ student, onClose }: { student: Student; onClose: () 
                                 {showColSettings && (
                                     <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
                                         <div className="px-4 py-3 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
-                                            <span className="text-[10px] font-black text-gray-700 uppercase tracking-widest">Columns</span>
+                                            <span className="text-sm font-medium text-gray-700 uppercase tracking-widest">Columns</span>
                                         </div>
                                         <div className="max-h-64 overflow-y-auto p-2 space-y-0.5">
                                             {Object.entries(visibleCols).map(([col, isVisible]) => (
                                                 <label key={col} className="flex items-center justify-between px-3 py-2 hover:bg-indigo-50 rounded-lg cursor-pointer transition-colors group">
-                                                    <span className={`text-[11px] font-semibold transition-colors ${isVisible ? 'text-indigo-600' : 'text-gray-500 group-hover:text-gray-700'}`}>{col}</span>
+                                                    <span className={`text-sm font-medium transition-colors ${isVisible ? 'text-indigo-600' : 'text-gray-900 group-hover:text-gray-700'}`}>{col}</span>
                                                     <input
                                                         type="checkbox"
                                                         checked={isVisible}
@@ -266,29 +266,29 @@ function StudentFeesModal({ student, onClose }: { student: Student; onClose: () 
                                                         className="rounded accent-indigo-600 cursor-pointer" />
                                                 </td>
                                                 {visibleCols['Fees'] && <td className="px-3 py-3"><span className="text-xs font-semibold text-indigo-600 leading-tight whitespace-pre-line">{fee.feeName}</span></td>}
-                                                {visibleCols['Due Date'] && <td className="px-3 py-3 text-xs font-medium text-gray-600 whitespace-nowrap">{fee.dueDate}</td>}
+                                                {visibleCols['Due Date'] && <td className="px-3 py-3 text-xs font-medium text-gray-900 whitespace-nowrap">{fee.dueDate}</td>}
                                                 {visibleCols['Status'] && <td className="px-3 py-3">
-                                                    <span className={`inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide ${fee.status === 'Paid' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-red-100 text-red-600 border border-red-200'}`}>
+                                                    <span className={`inline-flex px-2 py-0.5 rounded-md text-sm font-medium tracking-wide ${fee.status === 'Paid' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-red-100 text-red-600 border border-red-200'}`}>
                                                         {fee.status}
                                                     </span>
                                                 </td>}
-                                                {visibleCols['Amount ($)'] && <td className="px-3 py-3 text-xs font-medium text-gray-800">
+                                                {visibleCols['Amount ($)'] && <td className="px-3 py-3 text-xs font-medium text-gray-900">
                                                     {fee.amount.toFixed(2)}
                                                     {fee.fine > 0 && <span className="text-red-500"> + {fee.fine.toFixed(2)}</span>}
                                                 </td>}
-                                                {visibleCols['Payment ID'] && <td className="px-3 py-3 text-xs text-gray-400">—</td>}
-                                                {visibleCols['Mode'] && <td className="px-3 py-3 text-xs text-gray-400">—</td>}
-                                                {visibleCols['Date'] && <td className="px-3 py-3 text-xs text-gray-400">—</td>}
-                                                {visibleCols['Discount ($)'] && <td className="px-3 py-3 text-xs font-medium text-gray-700">{fee.discount.toFixed(2)}</td>}
-                                                {visibleCols['Fine ($)'] && <td className="px-3 py-3 text-xs font-medium text-gray-700">{fee.fine.toFixed(2)}</td>}
-                                                {visibleCols['Paid ($)'] && <td className="px-3 py-3 text-xs font-medium text-gray-700">{fee.paid.toFixed(2)}</td>}
+                                                {visibleCols['Payment ID'] && <td className="px-3 py-3 text-xs text-gray-900">—</td>}
+                                                {visibleCols['Mode'] && <td className="px-3 py-3 text-xs text-gray-900">—</td>}
+                                                {visibleCols['Date'] && <td className="px-3 py-3 text-xs text-gray-900">—</td>}
+                                                {visibleCols['Discount ($)'] && <td className="px-3 py-3 text-xs font-medium text-gray-900">{fee.discount.toFixed(2)}</td>}
+                                                {visibleCols['Fine ($)'] && <td className="px-3 py-3 text-xs font-medium text-gray-900">{fee.fine.toFixed(2)}</td>}
+                                                {visibleCols['Paid ($)'] && <td className="px-3 py-3 text-xs font-medium text-gray-900">{fee.paid.toFixed(2)}</td>}
                                                 {visibleCols['Balance ($)'] && <td className="px-3 py-3 text-xs font-semibold text-gray-900">{fee.balance.toFixed(2)}</td>}
                                                 {visibleCols['Action'] && <td className="px-3 py-3">
                                                     <div className="flex items-center gap-1.5">
                                                         {fee.status === 'Unpaid' && (
                                                             <button className="w-6 h-6 flex items-center justify-center rounded-md bg-indigo-600 text-white hover:bg-indigo-700 transition-all text-xs font-bold shadow">+</button>
                                                         )}
-                                                        <button className="w-6 h-6 flex items-center justify-center rounded-md bg-gray-100 text-gray-500 hover:bg-gray-200 transition-all">
+                                                        <button className="w-6 h-6 flex items-center justify-center rounded-md bg-gray-100 text-gray-900 hover:bg-gray-200 transition-all">
                                                             <Printer size={11} />
                                                         </button>
                                                     </div>
@@ -298,21 +298,21 @@ function StudentFeesModal({ student, onClose }: { student: Student; onClose: () 
                                             {fee.payments && fee.payments.map((p, pi) => (
                                                 <tr key={`${fee.id}-p${pi}`} className="border-b border-gray-100 bg-gray-50/50">
                                                     <td className="px-4 py-2"></td>
-                                                    {visibleCols['Fees'] && <td className="px-3 py-2"><div className="flex items-center justify-end space-x-2 text-gray-400"><CornerDownRight size={13} /></div></td>}
+                                                    {visibleCols['Fees'] && <td className="px-3 py-2"><div className="flex items-center justify-end space-x-2 text-gray-900"><CornerDownRight size={13} /></div></td>}
                                                     {visibleCols['Due Date'] && <td className="px-3 py-2"></td>}
                                                     {visibleCols['Status'] && <td className="px-3 py-2"></td>}
                                                     {visibleCols['Amount ($)'] && <td className="px-3 py-2"></td>}
-                                                    {visibleCols['Payment ID'] && <td className="px-3 py-2 text-xs font-semibold text-gray-600">{p.paymentId}</td>}
-                                                    {visibleCols['Mode'] && <td className="px-3 py-2 text-xs font-medium text-gray-600">{p.mode}</td>}
-                                                    {visibleCols['Date'] && <td className="px-3 py-2 text-xs font-medium text-gray-600">{p.date}</td>}
+                                                    {visibleCols['Payment ID'] && <td className="px-3 py-2 text-xs font-semibold text-gray-900">{p.paymentId}</td>}
+                                                    {visibleCols['Mode'] && <td className="px-3 py-2 text-xs font-medium text-gray-900">{p.mode}</td>}
+                                                    {visibleCols['Date'] && <td className="px-3 py-2 text-xs font-medium text-gray-900">{p.date}</td>}
                                                     {visibleCols['Discount ($)'] && <td className="px-3 py-2 text-xs font-semibold text-indigo-500">{p.amount.toFixed(2)}</td>}
-                                                    {visibleCols['Fine ($)'] && <td className="px-3 py-2 text-xs text-gray-500">0.00</td>}
-                                                    {visibleCols['Paid ($)'] && <td className="px-3 py-2 text-xs text-gray-500">0.00</td>}
-                                                    {visibleCols['Balance ($)'] && <td className="px-3 py-2 text-xs text-gray-500">0.00</td>}
+                                                    {visibleCols['Fine ($)'] && <td className="px-3 py-2 text-xs text-gray-900">0.00</td>}
+                                                    {visibleCols['Paid ($)'] && <td className="px-3 py-2 text-xs text-gray-900">0.00</td>}
+                                                    {visibleCols['Balance ($)'] && <td className="px-3 py-2 text-xs text-gray-900">0.00</td>}
                                                     {visibleCols['Action'] && <td className="px-3 py-2">
                                                         <div className="flex items-center gap-1.5">
-                                                            <button className="w-6 h-6 flex items-center justify-center rounded-md bg-gray-100 text-gray-400 hover:bg-amber-100 hover:text-amber-600 transition-all"><RefreshCw size={10} /></button>
-                                                            <button className="w-6 h-6 flex items-center justify-center rounded-md bg-gray-100 text-gray-400 hover:bg-gray-200 transition-all"><Printer size={11} /></button>
+                                                            <button className="w-6 h-6 flex items-center justify-center rounded-md bg-gray-100 text-gray-900 hover:bg-amber-100 hover:text-amber-600 transition-all"><RefreshCw size={10} /></button>
+                                                            <button className="w-6 h-6 flex items-center justify-center rounded-md bg-gray-100 text-gray-900 hover:bg-gray-200 transition-all"><Printer size={11} /></button>
                                                         </div>
                                                     </td>}
                                                 </tr>
@@ -364,26 +364,26 @@ function StudentFeesModal({ student, onClose }: { student: Student; onClose: () 
                             <div className="space-y-5 bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
                                 {/* Date */}
                                 <div className="flex items-center">
-                                    <label className="w-1/3 text-sm font-semibold text-gray-600">Date <span className="text-red-500">*</span></label>
+                                    <label className="w-1/3 text-sm font-semibold text-gray-900">Date <span className="text-red-500">*</span></label>
                                     <div className="w-2/3">
                                         <input type="date" className="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all text-sm text-gray-700 shadow-sm" />
                                     </div>
                                 </div>
                                 {/* Payment Mode */}
                                 <div className="flex items-start">
-                                    <label className="w-1/3 text-sm font-semibold text-gray-600 pt-1">Payment Mode</label>
+                                    <label className="w-1/3 text-sm font-semibold text-gray-900 pt-1">Payment Mode</label>
                                     <div className="w-2/3 flex flex-wrap gap-x-5 gap-y-3">
                                         {['Cash', 'Cheque', 'DD', 'Bank Transfer', 'UPI', 'Card'].map(mode => (
                                             <label key={mode} className="flex items-center gap-2 cursor-pointer group">
                                                 <input type="radio" name="payment_mode" value={mode} defaultChecked={mode === 'Cash'} className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500 cursor-pointer" />
-                                                <span className="text-sm font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">{mode}</span>
+                                                <span className="text-sm font-medium text-gray-900 group-hover:text-indigo-600 transition-colors">{mode}</span>
                                             </label>
                                         ))}
                                     </div>
                                 </div>
                                 {/* Note */}
                                 <div className="flex items-start">
-                                    <label className="w-1/3 text-sm font-semibold text-gray-600 pt-2">Note</label>
+                                    <label className="w-1/3 text-sm font-semibold text-gray-900 pt-2">Note</label>
                                     <div className="w-2/3">
                                         <textarea rows={2} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all text-sm text-gray-700 shadow-sm resize-none"></textarea>
                                     </div>
@@ -467,35 +467,35 @@ export default function CollectFees() {
                                 <path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" /><path d="m21 21-4.3-4.3" />
                             </svg>
                         </div>
-                        <h2 className="text-base font-semibold text-gray-800">Select Criteria</h2>
+                        <h2 className="text-base font-semibold text-gray-900">Select Criteria</h2>
                     </div>
                     <div className="border-t border-gray-100" />
                     <div className="px-6 py-6">
                         <div className="flex flex-wrap items-end gap-6">
                             {/* Class */}
                             <div className="space-y-1.5 min-w-[150px]">
-                                <label className="text-xs font-semibold text-gray-500 flex items-center">
+                                 <label className="text-sm font-medium text-gray-900 flex items-center">
                                     Class <span className="text-red-500 ml-0.5">*</span>
                                 </label>
                                 <div className="relative">
-                                    <select className="w-full pl-4 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 appearance-none transition-all cursor-pointer hover:border-gray-400 shadow-sm"
+                                    <select className="w-full pl-4 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 appearance-none transition-all cursor-pointer hover:border-gray-400 shadow-sm"
                                         value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
                                         <option value="">Select</option>
                                         {classes.map(c => <option key={c} value={c}>{c}</option>)}
                                     </select>
-                                    <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-900 pointer-events-none" />
                                 </div>
                             </div>
                             {/* Section */}
                             <div className="space-y-1.5 min-w-[150px]">
-                                <label className="text-xs font-semibold text-gray-500">Section</label>
+                                <label className="text-sm font-medium text-gray-900">Section</label>
                                 <div className="relative">
-                                    <select className="w-full pl-4 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 appearance-none transition-all cursor-pointer hover:border-gray-400 shadow-sm"
+                                    <select className="w-full pl-4 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 appearance-none transition-all cursor-pointer hover:border-gray-400 shadow-sm"
                                         value={selectedSection} onChange={(e) => setSelectedSection(e.target.value)}>
                                         <option value="">Select</option>
                                         {sections.map(s => <option key={s} value={s}>{s}</option>)}
                                     </select>
-                                    <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-900 pointer-events-none" />
                                 </div>
                             </div>
                             <div className="pb-0">
@@ -505,9 +505,9 @@ export default function CollectFees() {
                             </div>
                             <div className="hidden lg:block w-px h-10 bg-gray-200 self-end mb-0.5" />
                             <div className="space-y-1.5 flex-1 min-w-[280px]">
-                                <label className="text-xs font-semibold text-gray-500">Search By Keyword</label>
+                                <label className="text-sm font-medium text-gray-900">Search By Keyword</label>
                                 <input type="text" placeholder="Search by Keyword..."
-                                    className="w-full pl-4 pr-4 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-600 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all hover:border-gray-400 shadow-sm"
+                                    className="w-full pl-4 pr-4 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all hover:border-gray-400 shadow-sm"
                                     value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} />
                             </div>
                             <div className="pb-0">
@@ -522,28 +522,28 @@ export default function CollectFees() {
                 {/* Student List Section */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-100">
-                        <h2 className="text-xl font-black text-gray-800 tracking-tight uppercase italic underline decoration-purple-500/30 decoration-4 underline-offset-4">Student List</h2>
+                        <h2 className="text-xl font-semibold text-gray-900 tracking-tight">Student List</h2>
                     </div>
                     <div className="p-6 overflow-hidden">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
                             <div className="relative flex-1 max-w-xs">
                                 <input type="text" placeholder="Search..."
-                                    className="w-full pl-6 pr-6 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-xs font-black text-gray-800 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all shadow-sm"
+                                    className="w-full pl-6 pr-6 py-3 bg-gray-50 border border-gray-200 rounded-2xl text-sm font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all shadow-sm"
                                     value={tableSearch} onChange={(e) => setTableSearch(e.target.value)} />
                             </div>
                             <div className="flex items-center space-x-6">
-                                <div className="relative">
-                                    <select className="appearance-none pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-[11px] font-black uppercase text-gray-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 cursor-pointer shadow-sm">
+                                 <div className="relative">
+                                    <select className="appearance-none pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium uppercase text-gray-900 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 cursor-pointer shadow-sm">
                                         <option>50</option><option>100</option>
                                     </select>
-                                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-900 pointer-events-none" />
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     {[
-                                        { icon: <Copy size={16} />, color: 'text-gray-400 hover:text-indigo-600' },
-                                        { icon: <FileSpreadsheet size={16} />, color: 'text-gray-400 hover:text-emerald-600' },
-                                        { icon: <FileText size={16} />, color: 'text-gray-400 hover:text-amber-600' },
-                                        { icon: <Printer size={16} />, color: 'text-gray-400 hover:text-indigo-600' }
+                                        { icon: <Copy size={16} />, color: 'text-gray-900 hover:text-indigo-600' },
+                                        { icon: <FileSpreadsheet size={16} />, color: 'text-gray-900 hover:text-emerald-600' },
+                                        { icon: <FileText size={16} />, color: 'text-gray-900 hover:text-amber-600' },
+                                        { icon: <Printer size={16} />, color: 'text-gray-900 hover:text-indigo-600' }
                                     ].map((btn, i) => (
                                         <button key={i} className={`p-2.5 rounded-xl bg-gray-50 border border-gray-100 shadow-sm transition-all hover:scale-110 active:scale-95 ${btn.color}`}>
                                             {btn.icon}
@@ -557,8 +557,8 @@ export default function CollectFees() {
                             <table className="w-full text-left border-collapse">
                                 <thead>
                                     <tr className="bg-gray-50/50">
-                                        {['Class', 'Section', 'Admission No', 'Student Name', 'Father Name', 'Date Of Birth', 'Mobile No.', 'Action'].map(head => (
-                                            <th key={head} className={`px-4 py-3 text-sm font-medium text-gray-500 border-b border-gray-100 ${head === 'Action' ? 'text-right' : ''}`}>
+                                         {['Class', 'Section', 'Admission No', 'Student Name', 'Father Name', 'Date Of Birth', 'Mobile No.', 'Action'].map(head => (
+                                            <th key={head} className={`px-4 py-3 text-sm font-medium text-gray-900 border-b border-gray-100 ${head === 'Action' ? 'text-right' : ''}`}>
                                                 {head}
                                             </th>
                                         ))}
@@ -567,19 +567,19 @@ export default function CollectFees() {
                                 <tbody className="divide-y divide-gray-100">
                                     {filteredStudents.length === 0 ? (
                                         <tr>
-                                            <td colSpan={8} className="px-4 py-10 text-center text-sm font-medium text-gray-400">
+                                            <td colSpan={8} className="px-4 py-10 text-center text-sm font-medium text-gray-900">
                                                 No students found matching your search.
                                             </td>
                                         </tr>
                                     ) : filteredStudents.map((student, idx) => (
-                                        <tr key={idx} className="hover:bg-indigo-50/20 transition-colors group">
-                                            <td className="px-4 py-3 text-sm font-medium text-gray-600">{student.class}</td>
-                                            <td className="px-4 py-3 text-sm font-medium text-gray-600">{student.section}</td>
+                                         <tr key={idx} className="hover:bg-indigo-50/20 transition-colors group">
+                                            <td className="px-4 py-3 text-sm font-medium text-gray-900">{student.class}</td>
+                                            <td className="px-4 py-3 text-sm font-medium text-gray-900">{student.section}</td>
                                             <td className="px-4 py-3 text-sm font-medium text-gray-900">{student.admNo}</td>
                                             <td className="px-4 py-3">
                                                 <span className="text-sm font-medium text-indigo-600 hover:underline cursor-pointer">{student.name}</span>
                                             </td>
-                                            <td className="px-4 py-3 text-sm font-medium text-gray-500">{student.father}</td>
+                                            <td className="px-4 py-3 text-sm font-medium text-gray-900">{student.father}</td>
                                             <td className="px-4 py-3 text-sm font-medium text-gray-900">{student.dob}</td>
                                             <td className="px-4 py-3 text-sm font-medium text-gray-900">{student.mobile || '-'}</td>
                                             <td className="px-4 py-3 text-right">
@@ -597,13 +597,13 @@ export default function CollectFees() {
                         </div>
 
                         <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between mt-4">
-                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">
+                            <p className="text-sm font-medium text-gray-900 uppercase tracking-widest">
                                 Showing 1 to {filteredStudents.length} of {students.length} entries
                             </p>
                             <div className="flex items-center space-x-2">
-                                <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-50 text-gray-400 text-xs font-black shadow-sm">{'<'}</button>
-                                <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-indigo-600 text-white text-xs font-black shadow-lg shadow-indigo-100">1</button>
-                                <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-50 text-gray-400 text-xs font-black shadow-sm">{'>'}</button>
+                                <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-50 text-gray-900 text-sm font-medium shadow-sm">{'<'}</button>
+                                <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-medium shadow-lg shadow-indigo-100">1</button>
+                                <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-50 text-gray-900 text-sm font-medium shadow-sm">{'>'}</button>
                             </div>
                         </div>
                     </div>
