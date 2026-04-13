@@ -1,177 +1,452 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import {
     FolderTree,
     BookOpen,
     FileText,
     Target,
-    TrendingUp,
-    ShieldCheck,
-    ArrowUpRight,
-    ArrowDownRight,
-    Clock,
+    Plus,
     Search,
     Filter,
     MoreVertical,
-    Activity
+    Edit,
+    Trash2,
+    ChevronRight,
+    Save,
+    X
 } from 'lucide-react';
+import { useState } from 'react';
+import { useTheme } from '../contexts/ThemeContext';
 
 const AccountMaster = () => {
+    const { theme, themeName } = useTheme();
     const navigate = useNavigate();
+    const location = useLocation();
+    const [activeSection, setActiveSection] = useState<string | null>(null);
+
+    // Sync activeSection with URL
+    useEffect(() => {
+        if (location.pathname.endsWith('/groups')) {
+            setActiveSection('groups');
+        } else if (location.pathname.endsWith('/ledgers')) {
+            setActiveSection('ledgers');
+        } else if (location.pathname.endsWith('/vouchers')) {
+            setActiveSection('vouchers');
+        } else if (location.pathname.endsWith('/cost-centres')) {
+            setActiveSection('cost-centres');
+        } else {
+            setActiveSection(null);
+        }
+    }, [location.pathname]);
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [isAddingGroup, setIsAddingGroup] = useState(false);
+
+    const [groups] = useState([
+        { id: 'GRP-001', name: 'Fixed Assets', parent: 'Primary', type: 'Asset', status: 'Active' },
+        { id: 'GRP-002', name: 'Current Liabilities', parent: 'Primary', type: 'Liability', status: 'Active' },
+        { id: 'GRP-003', name: 'Direct Expenses', parent: 'Primary', type: 'Expense', status: 'Active' },
+        { id: 'GRP-004', name: 'Indirect Incomes', parent: 'Primary', type: 'Income', status: 'Active' },
+        { id: 'GRP-005', name: 'Bank Accounts', parent: 'Current Assets', type: 'Asset', status: 'Active' },
+    ]);
 
     const accountActions = [
-        { label: 'Groups', icon: FolderTree, onClick: () => navigate('/master/account_create/account-groups'), color: 'text-indigo-600', bg: 'bg-indigo-50' },
-        { label: 'Ledgers', icon: BookOpen, onClick: () => navigate('/master/account_create/account-ledgers'), color: 'text-purple-600', bg: 'bg-purple-50' },
-        { label: 'Voucher', icon: FileText, onClick: () => navigate('/master/account_create/account-vouchers'), color: 'text-rose-600', bg: 'bg-rose-50' },
-        { label: 'Cost Centres', icon: Target, onClick: () => navigate('/master/account_create/account-cost-centres'), color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    ];
-
-    const financialStats = [
-        { name: 'Total Assets', amount: '₹4.2 Cr', change: '+2.4%', trend: 'up', icon: TrendingUp },
-        { name: 'Monthly Burn', amount: '₹12.5 L', change: '-1.1%', trend: 'down', icon: Activity },
-        { name: 'Primary Reserve', amount: '₹85.4 L', change: '+0.5%', trend: 'up', icon: ShieldCheck },
-        { name: 'Pending Audits', amount: '08', change: 'Stable', trend: 'neutral', icon: Clock },
-    ];
-
-    const recentLogs = [
-        { id: 'LOG-8821', action: 'Ledger Created', entity: 'State Bank of India', user: 'Admin User', time: '2 mins ago', status: 'Verified' },
-        { id: 'LOG-8819', action: 'Voucher Modified', entity: 'Journal V-002', user: 'Finance Lead', time: '14 mins ago', status: 'Pending' },
-        { id: 'LOG-8815', action: 'Group Migration', entity: 'Fixed Assets', user: 'System', time: '1 hour ago', status: 'Success' },
-        { id: 'LOG-8812', action: 'Audit Completed', entity: 'Q4 Final Audit', user: 'Internal Auditor', time: '4 hours ago', status: 'Verified' },
+        { 
+            label: 'Groups', 
+            icon: FolderTree, 
+            onClick: () => navigate(activeSection === 'groups' ? '/master/account_create' : '/master/account_create/groups'), 
+            color: `text-${theme.colors.primary}`, 
+            bg: `bg-${theme.colors.primaryLight}`,
+            isActive: activeSection === 'groups'
+        },
+        { 
+            label: 'Ledgers', 
+            icon: BookOpen, 
+            onClick: () => navigate(activeSection === 'ledgers' ? '/master/account_create' : '/master/account_create/ledgers'),
+            color: 'text-purple-600', 
+            bg: 'bg-purple-50',
+            isActive: activeSection === 'ledgers'
+        },
+        { 
+            label: 'Voucher', 
+            icon: FileText, 
+            onClick: () => navigate(activeSection === 'vouchers' ? '/master/account_create' : '/master/account_create/vouchers'),
+            color: 'text-rose-600', 
+            bg: 'bg-rose-50',
+            isActive: activeSection === 'vouchers'
+        },
+        { 
+            label: 'Cost Centres', 
+            icon: Target, 
+            onClick: () => navigate(activeSection === 'cost-centres' ? '/master/account_create' : '/master/account_create/cost-centres'),
+            color: 'text-emerald-600', 
+            bg: 'bg-emerald-50',
+            isActive: activeSection === 'cost-centres'
+        },
     ];
 
     return (
-        <div className="space-y-8 animate-in fade-in duration-700 text-left">
-            {/* Action Cards - Matches User's Compact Style */}
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 transition-all">
+        <div className="space-y-6 animate-in fade-in duration-500 text-left">
+            {/* Simple Header */}
+            <div>
+                <h1 className="text-2xl font-bold text-gray-900">Account Master</h1>
+                <p className="text-sm text-gray-500 mt-1">Configure your primary financial architecture through groups, ledgers, and voucher protocols.</p>
+            </div>
+
+            {/* Compact Action Shortcuts Grid */}
+            <div className="flex flex-wrap items-center gap-3">
                 {accountActions.map((action) => (
                     <button
                         key={action.label}
                         onClick={action.onClick}
-                        className="bg-white p-3 rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-indigo-100 transition-all flex flex-col items-center text-center group"
+                        className={`px-4 py-2 rounded-xl border shadow-sm transition-all flex items-center space-x-3 group ${
+                            action.isActive 
+                            ? (themeName === 'white' ? 'bg-white border-gray-400 ring-2 ring-gray-100' : `bg-${theme.colors.primary} border-${theme.colors.primary} ring-2 ring-${theme.colors.primaryLight}`) 
+                            : (themeName === 'white' ? 'bg-white border-gray-400 hover:shadow-md hover:border-gray-500' : `bg-white border-gray-400 hover:shadow-md hover:border-${theme.colors.primaryLight}`)
+                        }`}
                     >
-                        <div className={`p-2 rounded-lg ${action.bg} ${action.color} mb-2 group-hover:scale-110 transition-transform`}>
+                        <div className={`p-2 rounded-lg ${action.isActive ? (themeName === 'white' ? 'bg-gray-100 text-black' : 'bg-white/20 text-white') : `${action.bg} ${action.color}`} group-hover:scale-110 transition-transform`}>
                             <action.icon size={18} />
                         </div>
-                        <span className="text-[10px] font-bold text-gray-700 leading-tight tracking-tight uppercase">{action.label}</span>
+                        <span className={`text-sm font-medium ${action.isActive ? (themeName === 'white' ? 'text-black' : 'text-white') : 'text-gray-700'}`}>{action.label}</span>
                     </button>
                 ))}
             </div>
 
-            {/* Header / Hero - Compact Style */}
-            <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
-                <div className="max-w-xl relative z-10">
-                   <div className="inline-flex items-center px-3 py-1 bg-indigo-50 rounded-full border border-indigo-100 text-[9px] font-black uppercase tracking-[0.2em] text-indigo-600 mb-4">
-                        Enterprise Ledger Control v1.0
-                   </div>
-                   <h1 className="text-2xl font-black text-gray-900 uppercase tracking-tighter italic mb-2 leading-none">Accounts Master Hub</h1>
-                   <p className="text-[11px] text-gray-500 font-medium leading-relaxed opacity-80">
-                      Configure your primary financial architecture through groups, ledgers, and voucher protocols. Ensure accurate financial reporting and institutional-grade data integrity.
-                   </p>
-                </div>
-                <div className="shrink-0 relative z-10 hidden lg:block">
-                   <div className="w-24 h-24 bg-indigo-600 rounded-full flex items-center justify-center shadow-2xl shadow-indigo-200">
-                      <TrendingUp size={32} className="text-white" />
-                   </div>
-                </div>
-            </div>
-
-            {/* Financial Status Summary - Compact Style */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-                {financialStats.map((stat) => (
-                    <div key={stat.name} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden relative">
-                         <div className="flex justify-between items-start mb-4">
-                            <div className="p-2.5 bg-gray-50 rounded-xl text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-inner border border-gray-100">
-                                <stat.icon size={18} />
+            {/* In-page Groups UI Section */}
+            {activeSection === 'groups' && (
+                <div className="animate-in slide-in-from-top-4 duration-500 space-y-4 pt-4">
+                    
+                    {/* Groups Header & Add Trigger */}
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                            <div className={`p-2 bg-${theme.colors.primaryLight} text-${theme.colors.primary} rounded-lg`}>
+                                <FolderTree size={20} />
                             </div>
-                            <div className={`flex items-center text-[9px] font-black px-2 py-0.5 rounded-full ${
-                                stat.trend === 'up' ? 'bg-emerald-50 text-emerald-600' : 
-                                stat.trend === 'down' ? 'bg-rose-50 text-rose-600' : 'bg-gray-50 text-gray-400'
-                            }`}>
-                                {stat.trend === 'up' && <ArrowUpRight size={10} className="mr-1" />}
-                                {stat.trend === 'down' && <ArrowDownRight size={10} className="mr-1" />}
-                                {stat.change}
-                            </div>
-                         </div>
-                         <h3 className="text-xl font-black text-gray-900 tracking-tighter italic leading-none mb-1 uppercase">{stat.amount}</h3>
-                         <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">{stat.name}</p>
-                    </div>
-                ))}
-            </div>
-
-            {/* Recent Operational Logs */}
-            <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden lg:col-span-12 mt-4">
-                <div className="px-8 py-6 border-b border-gray-50 flex flex-wrap items-center justify-between gap-4">
-                    <div className="flex items-center space-x-3">
-                        <div className="p-2.5 bg-rose-50 text-rose-600 rounded-xl">
-                            <Clock size={20} />
+                            <h2 className="text-lg font-bold text-gray-800">Account Groups Registry</h2>
                         </div>
-                        <h2 className="text-sm font-black text-gray-800 uppercase tracking-widest italic decoration-rose-500/30 underline decoration-4 underline-offset-4">Registry Transaction Logs</h2>
-                    </div>
-
-                    <div className="flex items-center space-x-3">
-                        <div className="relative group">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors" size={14} />
-                            <input
-                                type="text"
-                                placeholder="Audit trail..."
-                                className="pl-9 pr-4 py-2 bg-gray-50/50 border border-gray-200 rounded-xl text-[11px] font-bold text-gray-700 outline-none focus:bg-white focus:border-indigo-500 transition-all w-48 font-mono shadow-inner"
-                            />
-                        </div>
-                        <button className="p-2.5 bg-gray-50 text-gray-400 hover:text-indigo-600 rounded-xl transition-all border border-gray-100">
-                             <Filter size={16} />
+                        <button 
+                            onClick={() => {
+                                setIsAddingGroup(!isAddingGroup);
+                                setIsEditing(false);
+                            }}
+                            className={`p-2.5 rounded-xl border transition-all flex items-center space-x-2 shadow-sm ${
+                                isAddingGroup 
+                                ? 'bg-rose-50 border-rose-200 text-rose-600' 
+                                : (themeName === 'white' ? 'bg-white border-gray-400 text-black hover:border-black' : `bg-${theme.colors.primary} border-${theme.colors.primary} text-white hover:bg-${theme.colors.primaryDark}`)
+                            }`}
+                        >
+                            {isAddingGroup ? <X size={18} /> : <Plus size={18} />}
+                            <span className="text-xs font-bold">{isAddingGroup ? 'Cancel' : 'Add New Group'}</span>
                         </button>
                     </div>
-                </div>
 
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-separate border-spacing-0">
-                        <thead>
-                            <tr className="bg-gray-50/50">
-                                <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest border-b border-gray-50">Log ID</th>
-                                <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest border-b border-gray-50 text-center">Action Class</th>
-                                <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest border-b border-gray-50">Entity Identification</th>
-                                <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest border-b border-gray-50">Security User</th>
-                                <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest border-b border-gray-50">Integrity Status</th>
-                                <th className="px-8 py-5 text-[10px] font-black text-gray-500 uppercase tracking-widest border-b border-gray-50 text-right pr-12">Portal</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-50">
-                            {recentLogs.map((log) => (
-                                <tr key={log.id} className="hover:bg-indigo-50/20 transition-all group">
-                                    <td className="px-8 py-6 font-mono font-black text-[11px] text-gray-400 group-hover:text-indigo-600 transition-colors">{log.id}</td>
-                                    <td className="px-8 py-6 text-center">
-                                         <span className="px-3 py-1 bg-white border border-gray-200 rounded-lg text-[9px] font-black text-gray-600 uppercase tracking-widest shadow-sm group-hover:border-indigo-100 group-hover:text-indigo-600">{log.action}</span>
-                                    </td>
-                                    <td className="px-8 py-6 text-[12px] font-black text-gray-900 uppercase tracking-widest">{log.entity}</td>
-                                    <td className="px-8 py-6">
-                                        <div className="flex flex-col">
-                                            <span className="text-[12px] font-bold text-gray-700">{log.user}</span>
-                                            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-tighter italic">{log.time}</span>
-                                        </div>
-                                    </td>
-                                    <td className="px-8 py-6">
-                                        <div className="flex items-center">
-                                            <div className={`w-2 h-2 rounded-full mr-2 ${log.status === 'Verified' || log.status === 'Success' ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
-                                            <span className={`text-[10px] font-black uppercase tracking-widest ${log.status === 'Verified' || log.status === 'Success' ? 'text-emerald-600' : 'text-amber-600'}`}>{log.status}</span>
-                                        </div>
-                                    </td>
-                                    <td className="px-8 py-6 text-right pr-12">
-                                        <button className="p-2 text-gray-400 hover:text-indigo-600 transition-all rounded-lg hover:bg-white group-hover:shadow-sm shadow-inner"><MoreVertical size={16} /></button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                    {/* Conditional Form - Shown only when adding/editing */}
+                    {(isAddingGroup || isEditing) && (
+                        <div className="animate-in fade-in zoom-in-95 duration-300">
+                            <div className={`bg-white rounded-2xl shadow-sm border border-${theme.colors.primaryLight} overflow-hidden`}>
+                                <div className={`bg-${theme.colors.primaryLight}/50 px-6 py-3 border-b border-${theme.colors.primaryLight} flex items-center justify-between`}>
+                                    <div className={`flex items-center space-x-2 text-${theme.colors.primary} font-bold text-sm`}>
+                                        <Plus size={16} />
+                                        <span>{isEditing ? 'Update Group Details' : 'Initialize New Account Group'}</span>
+                                    </div>
+                                    <button onClick={() => { setIsAddingGroup(false); setIsEditing(false); }} className="text-gray-400 hover:text-gray-600">
+                                        <X size={16} />
+                                    </button>
+                                </div>
+                                <form className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4" onSubmit={(e) => e.preventDefault()}>
+                                    <div className="space-y-1.5 text-left">
+                                        <label className="text-xs font-semibold text-gray-500 ml-1">Group Name</label>
+                                        <input
+                                            type="text"
+                                            placeholder="e.g. Current Assets"
+                                            className={`w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-${theme.colors.primary} focus:bg-white transition-all underline-none`}
+                                        />
+                                    </div>
 
-                <div className="px-8 py-6 bg-gray-50/50 border-t border-gray-50 flex items-center justify-between">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest italic">Monitoring Active Session Security Logs</p>
-                    <button className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:translate-x-2 transition-transform flex items-center">
-                         Full Operational Audit <ArrowUpRight size={14} className="ml-2" />
-                    </button>
+                                    <div className="space-y-1.5 text-left">
+                                        <label className="text-xs font-semibold text-gray-500 ml-1">Parent Category</label>
+                                        <select className={`w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-${theme.colors.primary} appearance-none`}>
+                                            <option>Primary Group</option>
+                                            <option>Current Assets</option>
+                                            <option>Fixed Assets</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="space-y-1.5 text-left">
+                                        <label className="text-xs font-semibold text-gray-500 ml-1">Classification Type</label>
+                                        <div className="flex items-center space-x-2">
+                                            {['Asset', 'Liability', 'Income', 'Expense'].map((type) => (
+                                                <button
+                                                    key={type}
+                                                    type="button"
+                                                    className={`px-3 py-2 rounded-lg text-[10px] font-bold transition-all border ${
+                                                        type === 'Asset' 
+                                                        ? (themeName === 'white' ? 'bg-white border-black text-black' : `bg-${theme.colors.primary} text-white border-${theme.colors.primary}`) 
+                                                        : `bg-white text-gray-400 border-gray-200 hover:border-${theme.colors.primaryLight}`
+                                                    }`}
+                                                >
+                                                    {type}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="md:col-span-3 flex justify-end space-x-3 pt-2">
+                                        <button className={`px-8 py-2 ${themeName === 'white' ? 'bg-white text-black border border-gray-400 hover:border-black' : `bg-${theme.colors.primary} text-white`} rounded-xl text-sm font-bold transition-all shadow-sm flex items-center space-x-2`}>
+                                            <Save size={16} />
+                                            <span>{isEditing ? 'Update Configuration' : 'Confirm & Save Group'}</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Table Section - Always Shown as the 'List' */}
+                    <div className="bg-white rounded-2xl shadow-sm border border-black overflow-hidden">
+                        <div className="px-8 py-4 border-b border-black flex flex-wrap items-center justify-between gap-4">
+                            <h2 className="text-sm font-bold text-gray-600 uppercase tracking-wider">Active Groups List</h2>
+                            <div className="flex items-center space-x-3">
+                                <div className="relative">
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                                    <input
+                                        type="text"
+                                        placeholder="Quick search..."
+                                        className={`pl-9 pr-4 py-1.5 bg-gray-50/50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 outline-none focus:bg-white focus:border-${theme.colors.primary} transition-all w-56 shadow-sm`}
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left border-separate border-spacing-0">
+                                <thead>
+                                    <tr className="bg-gray-50/30">
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200">Reference ID</th>
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200">Group Name</th>
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200">Parent Hierarchy</th>
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200">Taxonomy Type</th>
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200 text-right pr-12">Operations</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-100">
+                                    {groups.filter(g => g.name.toLowerCase().includes(searchTerm.toLowerCase())).map((group) => (
+                                        <tr key={group.id} className="hover:bg-indigo-50/10 transition-all group">
+                                            <td className="px-8 py-4 border-b border-gray-50">
+                                                <span className={`text-sm font-medium text-${theme.colors.primary}`}>{group.id}</span>
+                                            </td>
+                                            <td className="px-8 py-4 border-b border-gray-50">
+                                                <span className="text-sm font-medium text-gray-900">{group.name}</span>
+                                            </td>
+                                            <td className="px-8 py-4 border-b border-gray-50">
+                                                <div className="flex items-center space-x-1 text-sm font-medium text-gray-500">
+                                                    <span>{group.parent}</span>
+                                                    <ChevronRight size={14} className="text-gray-300" />
+                                                </div>
+                                            </td>
+                                            <td className="px-8 py-4 border-b border-gray-50">
+                                                <span className={`px-3 py-1 rounded-lg text-[11px] font-semibold ${
+                                                    group.type === 'Asset' ? 'bg-indigo-50 text-indigo-600' :
+                                                    group.type === 'Liability' ? 'bg-amber-50 text-amber-600' :
+                                                    group.type === 'Expense' ? 'bg-rose-50 text-rose-600' :
+                                                    'bg-emerald-50 text-emerald-600'
+                                                }`}>
+                                                    {group.type}
+                                                </span>
+                                            </td>
+                                            <td className="px-8 py-4 text-right pr-12 border-b border-gray-50">
+                                                <div className="flex items-center justify-end space-x-1">
+                                                    <button 
+                                                        onClick={() => {
+                                                            setIsEditing(true);
+                                                            setIsAddingGroup(false);
+                                                        }}
+                                                        className={`p-2 text-gray-400 hover:text-${theme.colors.primary} hover:bg-${theme.colors.primaryLight} rounded-lg transition-all`}
+                                                    >
+                                                        <Edit size={16} />
+                                                    </button>
+                                                    <button className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all">
+                                                        <Trash2 size={16} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            )}
+
+            {/* In-page Ledgers UI Section */}
+            {activeSection === 'ledgers' && (
+                <div className="animate-in slide-in-from-top-4 duration-500 space-y-4 pt-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                            <div className={`p-2 bg-purple-50 text-purple-600 rounded-lg`}>
+                                <BookOpen size={20} />
+                            </div>
+                            <h2 className="text-lg font-bold text-gray-800">Account Ledgers Registry</h2>
+                        </div>
+                        <button 
+                            onClick={() => setIsAddingGroup(!isAddingGroup)}
+                            className={`p-2.5 rounded-xl border transition-all flex items-center space-x-2 shadow-sm ${
+                                isAddingGroup 
+                                ? 'bg-rose-50 border-rose-200 text-rose-600' 
+                                : (themeName === 'white' ? 'bg-white border-gray-400 text-black hover:border-black' : `bg-purple-600 border-purple-600 text-white hover:bg-purple-700`)
+                            }`}
+                        >
+                            {isAddingGroup ? <X size={18} /> : <Plus size={18} />}
+                            <span className="text-xs font-bold">{isAddingGroup ? 'Cancel' : 'Add New Ledger'}</span>
+                        </button>
+                    </div>
+
+                    <div className="bg-white rounded-2xl shadow-sm border border-black overflow-hidden">
+                        <div className="px-8 py-4 border-b border-black flex flex-wrap items-center justify-between gap-4">
+                            <h2 className="text-sm font-bold text-gray-600 uppercase tracking-wider">Active Ledgers List</h2>
+                        </div>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left border-separate border-spacing-0">
+                                <thead>
+                                    <tr className="bg-gray-50/30">
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200">Ledger Name</th>
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200">Under Group</th>
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200">Opening Balance</th>
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200 text-right pr-12">Operations</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-100">
+                                    {[
+                                        { id: 1, name: 'HDFC Bank Account', group: 'Bank Accounts', balance: '₹ 45,00,000.00 Dr' },
+                                        { id: 2, name: 'Cash in Hand', group: 'Cash-in-hand', balance: '₹ 1,20,500.00 Dr' },
+                                    ].map((ledger) => (
+                                        <tr key={ledger.id} className="hover:bg-purple-50/10 transition-all group font-medium">
+                                            <td className="px-8 py-4 border-b border-gray-50 text-sm">{ledger.name}</td>
+                                            <td className="px-8 py-4 border-b border-gray-50 text-sm text-gray-600">{ledger.group}</td>
+                                            <td className="px-8 py-4 border-b border-gray-50 text-sm text-gray-900">{ledger.balance}</td>
+                                            <td className="px-8 py-4 text-right pr-12 border-b border-gray-50">
+                                                <div className="flex items-center justify-end space-x-1">
+                                                    <button className="p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all"><Edit size={16} /></button>
+                                                    <button className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"><Trash2 size={16} /></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* In-page Voucher UI Section */}
+            {activeSection === 'vouchers' && (
+                <div className="animate-in slide-in-from-top-4 duration-500 space-y-4 pt-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                            <div className={`p-2 bg-rose-50 text-rose-600 rounded-lg`}>
+                                <FileText size={20} />
+                            </div>
+                            <h2 className="text-lg font-bold text-gray-800">Voucher Types Registry</h2>
+                        </div>
+                        <button className={`p-2.5 rounded-xl border transition-all flex items-center space-x-2 shadow-sm ${themeName === 'white' ? 'bg-white border-gray-400 text-black hover:border-black' : 'bg-rose-600 border-rose-600 text-white hover:bg-rose-700'}`}>
+                            <Plus size={18} />
+                            <span className="text-xs font-bold">Add Voucher Type</span>
+                        </button>
+                    </div>
+                    <div className="bg-white rounded-2xl shadow-sm border border-black overflow-hidden">
+                        <div className="px-8 py-4 border-b border-black flex flex-wrap items-center justify-between gap-4">
+                            <h2 className="text-sm font-bold text-gray-600 uppercase tracking-wider">Active Vouchers List</h2>
+                        </div>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left border-separate border-spacing-0">
+                                <thead>
+                                    <tr className="bg-gray-50/30">
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200">Voucher Name</th>
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200">Voucher Type</th>
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200">Numbering</th>
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200 text-right pr-12">Operations</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-100">
+                                    {[
+                                        { id: 1, name: 'Sales Invoice', type: 'Sales', method: 'Automatic' },
+                                        { id: 2, name: 'Purchase Voucher', type: 'Purchase', method: 'Manual' },
+                                    ].map((v) => (
+                                        <tr key={v.id} className="hover:bg-rose-50/10 transition-all group font-medium">
+                                            <td className="px-8 py-4 border-b border-gray-50 text-sm">{v.name}</td>
+                                            <td className="px-8 py-4 border-b border-gray-50 text-sm text-gray-600">{v.type}</td>
+                                            <td className="px-8 py-4 border-b border-gray-50 text-sm text-gray-900">{v.method}</td>
+                                            <td className="px-8 py-4 text-right pr-12 border-b border-gray-50">
+                                                <div className="flex items-center justify-end space-x-1">
+                                                    <button className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"><Edit size={16} /></button>
+                                                    <button className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"><Trash2 size={16} /></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* In-page Cost Centres UI Section */}
+            {activeSection === 'cost-centres' && (
+                <div className="animate-in slide-in-from-top-4 duration-500 space-y-4 pt-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                            <div className={`p-2 bg-emerald-50 text-emerald-600 rounded-lg`}>
+                                <Target size={20} />
+                            </div>
+                            <h2 className="text-lg font-bold text-gray-800">Cost Centres Registry</h2>
+                        </div>
+                        <button className={`p-2.5 rounded-xl border transition-all flex items-center space-x-2 shadow-sm ${themeName === 'white' ? 'bg-white border-gray-400 text-black hover:border-black' : 'bg-emerald-600 border-emerald-600 text-white hover:bg-emerald-700'}`}>
+                            <Plus size={18} />
+                            <span className="text-xs font-bold">Add Cost Centre</span>
+                        </button>
+                    </div>
+                    <div className="bg-white rounded-2xl shadow-sm border border-black overflow-hidden">
+                        <div className="px-8 py-4 border-b border-black flex flex-wrap items-center justify-between gap-4">
+                            <h2 className="text-sm font-bold text-gray-600 uppercase tracking-wider">Active Cost Centres List</h2>
+                        </div>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left border-separate border-spacing-0">
+                                <thead>
+                                    <tr className="bg-gray-50/30">
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200">Centre Name</th>
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200">Category</th>
+                                        <th className="px-8 py-4 text-sm font-medium text-gray-900 border-b border-gray-200 text-right pr-12">Operations</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-100">
+                                    {[
+                                        { id: 1, name: 'Marketing Dept', cat: 'Departments' },
+                                        { id: 2, name: 'Sales Betul', cat: 'Regions' },
+                                    ].map((c) => (
+                                        <tr key={c.id} className="hover:bg-emerald-50/10 transition-all group font-medium">
+                                            <td className="px-8 py-4 border-b border-gray-50 text-sm">{c.name}</td>
+                                            <td className="px-8 py-4 border-b border-gray-50 text-sm text-gray-600">{c.cat}</td>
+                                            <td className="px-8 py-4 text-right pr-12 border-b border-gray-50">
+                                                <div className="flex items-center justify-end space-x-1">
+                                                    <button className="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all"><Edit size={16} /></button>
+                                                    <button className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"><Trash2 size={16} /></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -6,7 +6,7 @@ import {
     Calendar
 } from 'lucide-react';
 
-const ERPReceipt = () => {
+const ERPContra = () => {
     const { theme, themeName } = useTheme();
     const dateInputRef = useRef<HTMLInputElement>(null);
     const [selectedDate, setSelectedDate] = useState("2026-03-31");
@@ -15,8 +15,8 @@ const ERPReceipt = () => {
         <div className="min-h-screen bg-[#dce1de] flex flex-col animate-in fade-in duration-500 overflow-hidden font-sans">
             <div className="flex-1 flex overflow-hidden">
                 {/* ── Main Voucher Canvas ── */}
-                <div className="flex-1 flex flex-col bg-[#e9f0ea] relative">
-
+                <div className="flex-1 flex flex-col bg-[#e0f2fe] relative">
+                    
                     {/* Voucher Header Bar */}
                     <div className={`${themeName === 'white' ? 'bg-gray-50 border border-gray-400' : `bg-${theme.colors.primary}`} px-4 py-1.5 grid grid-cols-3 items-center shadow-sm`}>
                         <span className={`text-sm font-medium ${themeName === 'white' ? 'text-black' : 'text-white'} uppercase tracking-tight`}>Accounting voucher creation</span>
@@ -28,20 +28,20 @@ const ERPReceipt = () => {
 
                     {/* Voucher Body Scroll Area */}
                     <div className="flex-1 p-4 space-y-4 overflow-y-auto">
-
-                        {/* Receipt Meta Section */}
+                        
+                        {/* Contra Meta Section */}
                         <div className="flex flex-col space-y-3">
-                            {/* Row 1: Receipt No and Date */}
+                            {/* Row 1: Contra No and Date */}
                             <div className="flex items-center justify-between">
-                                {/* Left: Receipt No */}
+                                {/* Left: Contra No */}
                                 <div className="flex items-center">
                                     <div className={`${themeName === 'white' ? 'bg-white border border-gray-400' : `bg-${theme.colors.primary} border-2 border-[#007b83]`} px-4 shadow-sm rounded min-w-[140px] h-8 flex items-center justify-center`}>
-                                        <span className={`text-sm font-medium ${themeName === 'white' ? 'text-black' : 'text-white'} italic whitespace-nowrap`}>Receipt No.</span>
+                                        <span className={`text-sm font-medium ${themeName === 'white' ? 'text-black' : 'text-white'} italic whitespace-nowrap`}>Contra No.</span>
                                     </div>
                                     <div className="ml-2 relative group">
                                         <div className={`flex items-center ${themeName === 'white' ? 'border border-gray-400' : 'border-2 border-[#007b83]'} rounded px-2 bg-white w-[240px] h-8`}>
-                                            <input
-                                                type="text"
+                                            <input 
+                                                type="text" 
                                                 defaultValue="1148"
                                                 className="w-full bg-transparent border-none focus:ring-0 text-sm font-medium p-0 text-gray-900 outline-none"
                                             />
@@ -58,22 +58,22 @@ const ERPReceipt = () => {
                                     <div className={`${themeName === 'white' ? 'bg-white border border-gray-400' : `bg-${theme.colors.primary} border-2 border-[#007b83]`} px-6 shadow-sm rounded h-8 flex items-center justify-center`}>
                                         <span className={`text-sm font-medium ${themeName === 'white' ? 'text-black' : 'text-white'} italic`}>Date</span>
                                     </div>
-                                    <div className={`ml-2 flex items-center ${themeName === 'white' ? 'border border-gray-400' : 'border-2 border-[#007b83]'} rounded px-2 bg-white min-w-[130px] h-8 relative`}>
-                                        <input
-                                            type="text"
+                                    <div className={`ml-2 flex items-center ${themeName === 'white' ? 'border border-gray-400' : 'border-2 border-[#007b83]'} rounded px-2 bg-white w-[240px] h-8 relative`}>
+                                        <input 
+                                            type="text" 
                                             value={new Date(selectedDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-')}
                                             readOnly
                                             className="w-full bg-transparent border-none focus:ring-0 text-sm font-medium p-0 text-gray-900 outline-none cursor-pointer"
                                             onClick={() => dateInputRef.current?.showPicker()}
                                         />
-                                        <input
+                                        <input 
                                             ref={dateInputRef}
                                             type="date"
                                             value={selectedDate}
                                             onChange={(e) => setSelectedDate(e.target.value)}
                                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer pointer-events-none"
                                         />
-                                        <div
+                                        <div 
                                             className={`${themeName === 'white' ? 'text-gray-400' : 'text-teal-700'} ml-2 cursor-pointer hover:text-teal-500 transition-colors`}
                                             onClick={() => dateInputRef.current?.showPicker()}
                                         >
@@ -83,7 +83,7 @@ const ERPReceipt = () => {
                                 </div>
                             </div>
 
-                            {/* Row 2: Payment Type (Under Receipt) */}
+                            {/* Row 2: Payment Type (Under Contra) */}
                             <div className="flex items-center">
                                 <div className={`${themeName === 'white' ? 'bg-white border border-gray-400' : `bg-${theme.colors.primary} border-2 border-[#007b83]`} px-4 shadow-sm rounded flex-none min-w-[140px] h-8 flex items-center justify-center`}>
                                     <span className={`text-sm font-medium ${themeName === 'white' ? 'text-black' : 'text-white'} italic whitespace-nowrap`}>Payment Type</span>
@@ -127,14 +127,14 @@ const ERPReceipt = () => {
                                     {[...Array(13)].map((_, i) => (
                                         <tr key={i} className="group hover:bg-gray-50/50 transition-colors">
                                             <td className="border-r border-gray-400 font-medium text-sm text-gray-900 h-8">
-                                                <input
-                                                    type="text"
+                                                <input 
+                                                    type="text" 
                                                     className="w-full h-full bg-transparent border-none focus:ring-1 focus:ring-inset focus:ring-[#007b83]/30 text-sm font-medium px-4 py-0 outline-none"
                                                 />
                                             </td>
                                             <td className="text-right font-medium text-sm text-gray-900 h-8">
-                                                <input
-                                                    type="number"
+                                                <input 
+                                                    type="number" 
                                                     className="w-full h-full bg-transparent border-none focus:ring-1 focus:ring-inset focus:ring-[#007b83]/30 text-right text-sm font-medium px-4 py-0 outline-none"
                                                 />
                                             </td>
@@ -149,7 +149,7 @@ const ERPReceipt = () => {
                             <label className="text-sm font-medium text-gray-900">Narration</label>
                             <span className="mx-2 text-gray-900">:</span>
                             <div className="flex-1">
-                                <input
+                                <input 
                                     type="text"
                                     placeholder="Enter narrative details..."
                                     className="w-full bg-white border border-[#007b83]/30 rounded px-3 py-1.5 text-sm font-medium focus:border-[#007b83] focus:ring-1 focus:ring-[#007b83] outline-none transition-all placeholder:text-gray-400 shadow-sm"
@@ -173,4 +173,4 @@ const ERPReceipt = () => {
     );
 };
 
-export default ERPReceipt;
+export default ERPContra;

@@ -35,7 +35,7 @@ const FeesManagementLayout = () => {
             onClick: () => navigate('/master/academy'),
             variant: 'primary' as const,
             subMenu: [
-                { label: 'Class Group Create', icon: LayoutGrid, onClick: () => navigate('/master/academy/class_group') },
+                { label: 'Class Group Create', icon: LayoutGrid, onClick: () => navigate('/master/academy/subject_group') },
                 { label: 'Class Name Create', icon: Layers, onClick: () => navigate('/master/academy/class-create') },
                 { label: 'Section Create', icon: SplitSquareVertical, onClick: () => navigate('/master/academy/section-create') },
                 { label: 'Subject Create', icon: BookMarked, onClick: () => navigate('/master/academy/subject-create') },
@@ -73,7 +73,7 @@ const FeesManagementLayout = () => {
             ]
         },
         { label: 'Class Master', icon: Layers, onClick: () => navigate('/fees-management/class_master'), variant: 'white' as const },
-        { label: 'Class Group', icon: LayoutGrid, onClick: () => navigate('/master/academy/class_group'), variant: 'white' as const },
+        { label: 'Class Group', icon: LayoutGrid, onClick: () => navigate('/master/academy/subject_group'), variant: 'white' as const },
     ];
 
     return (

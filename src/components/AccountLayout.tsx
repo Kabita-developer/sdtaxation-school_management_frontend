@@ -1,4 +1,3 @@
-import React from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
     FolderTree,
@@ -11,8 +10,8 @@ const AccountLayout = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Hide persistent shortcuts only on the Account Master dashboard to avoid duplication
-    const hideShortcuts = location.pathname === '/master/account_create' || location.pathname === '/master/account_create/';
+    // Hide persistent shortcuts on all pages in this layout
+    const hideShortcuts = true;
 
     const accountActions = [
         { label: 'Groups', icon: FolderTree, path: '/master/account_create/account-groups', color: 'text-indigo-600', bg: 'bg-indigo-50' },

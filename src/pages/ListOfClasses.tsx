@@ -6,13 +6,15 @@ interface TreeItem {
     id: string;
     label: string;
     type: 'category' | 'class' | 'section';
+    color?: string;
+    bgColor?: string; // Add bgColor property
     children?: TreeItem[];
 }
 
 export default function ListOfClasses() {
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
-    const [expanded, setExpanded] = useState<string[]>(['pre-primary', 'primary', 'middle-school', 'high-school']);
+    const [expanded, setExpanded] = useState<string[]>([]);
 
     // Animate open on mount
     useEffect(() => {
@@ -30,12 +32,14 @@ export default function ListOfClasses() {
         );
     };
 
-    // Corrected tree structure from the user's image
+    // Tree structure with custom colors and backgrounds
     const treeData: TreeItem[] = [
         {
             id: 'pre-primary',
             label: 'Pre-Primary',
             type: 'category',
+            color: 'text-blue-600',
+            bgColor: 'bg-blue-50/60',
             children: [
                 {
                     id: 'nursery',
@@ -47,21 +51,21 @@ export default function ListOfClasses() {
                     ]
                 },
                 {
-                    id: 'kg-1',
-                    label: 'K.G. - 1',
+                    id: 'jkg',
+                    label: 'JKG',
                     type: 'class',
                     children: [
-                        { id: 'kg1-a', label: 'A', type: 'section' },
-                        { id: 'kg1-b', label: 'B', type: 'section' },
+                        { id: 'jkg-a', label: 'A', type: 'section' },
+                        { id: 'jkg-b', label: 'B', type: 'section' },
                     ]
                 },
                 {
-                    id: 'kg-2',
-                    label: 'K.G. - 2',
+                    id: 'skg',
+                    label: 'SKG',
                     type: 'class',
                     children: [
-                        { id: 'kg2-a', label: 'A', type: 'section' },
-                        { id: 'kg2-b', label: 'B', type: 'section' },
+                        { id: 'skg-a', label: 'A', type: 'section' },
+                        { id: 'skg-b', label: 'B', type: 'section' },
                     ]
                 }
             ]
@@ -70,6 +74,8 @@ export default function ListOfClasses() {
             id: 'primary',
             label: 'Primary',
             type: 'category',
+            color: 'text-red-600',
+            bgColor: 'bg-red-50/50',
             children: [
                 ...[1, 2, 3, 4, 5].map(num => ({
                     id: `class-${num}`,
@@ -83,35 +89,47 @@ export default function ListOfClasses() {
             ]
         },
         {
-            id: 'middle-school',
-            label: 'Middle School',
+            id: 'middle',
+            label: 'Middle',
             type: 'category',
+            color: 'text-emerald-600',
+            bgColor: 'bg-emerald-50/60',
             children: [
-                {
-                    id: 'class-6',
-                    label: 'Class - 6',
-                    type: 'class',
+                ...[6, 7, 8].map(num => ({
+                    id: `class-${num}`,
+                    label: `Class - ${num}`,
+                    type: 'class' as const,
                     children: [
-                        { id: 'c6-a', label: 'A', type: 'section' },
-                        { id: 'c6-b', label: 'B', type: 'section' },
+                        { id: `c${num}-a`, label: 'A', type: 'section' as const },
                     ]
-                },
-                {
-                    id: 'class-7',
-                    label: 'Class - 7',
-                    type: 'class',
-                    children: [
-                        { id: 'c7-a', label: 'A', type: 'section' },
-                    ]
-                }
+                }))
             ]
         },
         {
-            id: 'high-school',
-            label: 'High School',
+            id: 'secondary',
+            label: 'Secondary',
             type: 'category',
+            color: 'text-gray-900',
+            bgColor: 'bg-gray-100/50',
             children: [
-                ...[8, 9, 10, 11, 12].map(num => ({
+                ...[9, 10].map(num => ({
+                    id: `class-${num}`,
+                    label: `Class - ${num}`,
+                    type: 'class' as const,
+                    children: [
+                        { id: `c${num}-a`, label: 'A', type: 'section' as const },
+                    ]
+                }))
+            ]
+        },
+        {
+            id: 'higher-secondary',
+            label: 'Higher Secondary',
+            type: 'category',
+            color: 'text-amber-600',
+            bgColor: 'bg-amber-50/50',
+            children: [
+                ...[11, 12].map(num => ({
                     id: `class-${num}`,
                     label: `Class - ${num}`,
                     type: 'class' as const,
@@ -133,8 +151,8 @@ export default function ListOfClasses() {
                 <div key={item.id} className="select-none">
                     <div 
                         onClick={() => hasChildren && toggle(item.id)}
-                        className={`flex items-center py-2 px-3 rounded-xl transition-all cursor-pointer group ${
-                            level === 0 ? 'bg-indigo-50/50 mb-1 hover:bg-indigo-50' : 
+                        className={`flex items-center py-2.5 px-4 rounded-xl transition-all cursor-pointer group mb-1.5 border border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-[1px] active:translate-x-[1px] active:shadow-none ${
+                            level === 0 ? (item.bgColor || 'bg-gray-50/50 hover:bg-gray-100') : 
                             level === 1 ? 'hover:bg-gray-50' : 'hover:bg-purple-50'
                         }`}
                         style={{ marginLeft: `${level * 24}px` }}
@@ -146,15 +164,15 @@ export default function ListOfClasses() {
                         </div>
                         
                         <div className={`mr-3 ${
-                            item.type === 'category' ? 'text-indigo-600' : 
+                            item.type === 'category' ? (item.color || 'text-indigo-600') : 
                             item.type === 'class' ? 'text-purple-600' : 'text-emerald-600'
                         }`}>
                             {item.type === 'category' ? <School size={18} strokeWidth={2} /> : 
                              item.type === 'class' ? <GraduationCap size={18} strokeWidth={2} /> : <Users size={16} strokeWidth={2} />}
                         </div>
 
-                        <span className={`text-sm font-semibold ${
-                            item.type === 'category' ? 'text-gray-900' : 
+                        <span className={`text-sm font-bold ${
+                            item.type === 'category' ? (item.color || 'text-gray-900') : 
                             item.type === 'class' ? 'text-gray-800' : 'text-gray-500'
                         }`}>
                             {item.label}

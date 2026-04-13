@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import logoImg from '../assets/logo.png';
 import {
   User,
   Lock,
@@ -26,7 +27,13 @@ import {
   UserCheck,
   CreditCard,
   FileSearch,
-  BookOpen
+  BookOpen,
+  Search,
+  ArrowRightLeft,
+  ShoppingCart,
+  Package,
+  MoreHorizontal,
+  Star
 } from 'lucide-react';
 
 export default function Login() {
@@ -40,11 +47,13 @@ export default function Login() {
   const navigate = useNavigate();
 
   // Redirect to dashboard if already authenticated
+  /*
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard');
     }
   }, [isAuthenticated, navigate]);
+  */
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,263 +88,279 @@ export default function Login() {
 
   const displayError = localError || error;
 
-  const ServiceCard = ({ icon: Icon, title, description, color, subHeader }: { icon: any, title: string, description: string, color: string, subHeader?: boolean }) => (
-    <div className={`flex ${subHeader ? 'flex-row items-center space-x-6 p-6' : 'flex-col items-center text-center p-6'} border border-gray-100 rounded-[1.2rem] bg-white shadow-[0_4px_15px_rgba(0,0,0,0.02)] hover:shadow-xl transition-all duration-300 relative overflow-hidden group h-full`}>
-      <div className={`${subHeader ? '' : 'mb-5'} transition-transform duration-500 group-hover:scale-110`}>
-        <Icon size={subHeader ? 56 : 52} style={{ color }} />
+  const FeatureCard = ({ icon: Icon, title, description, color }: { icon: any, title: string, description: string, color: string }) => (
+    <div className="bg-white py-6 px-4 rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center space-y-3 hover:shadow-md transition-shadow h-full">
+      <div className="p-2 rounded-xl" style={{ backgroundColor: `${color}20` }}>
+        <Icon size={32} style={{ color }} fill={`${color}40`} strokeWidth={2.5} />
       </div>
-      <div className={subHeader ? 'text-left' : ''}>
-        <h3 className={`${subHeader ? 'text-xl' : 'text-base'} font-black uppercase tracking-tight`} style={{ color }}>{title}</h3>
-        <p className="text-[11px] text-gray-500 font-extrabold leading-tight mt-1.5 uppercase opacity-80 whitespace-pre-line">
-          {description.replace('\\n', '\n')}
+      <div className="space-y-1.5">
+        <h3 className="text-[14px] font-[900] uppercase tracking-tighter" style={{ color }}>{title}</h3>
+        <p className="text-[11px] text-black font-[700] leading-tight">
+          {description}
         </p>
-      </div>
-      <div className="absolute top-0 right-0 p-1.5 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-700 pointer-events-none">
-         <Icon size={48} style={{ color }} />
       </div>
     </div>
   );
 
-  const RoleCard = ({ role, subtext, icon: Icon, color }: { role: string, subtext: string, icon: any, color: string }) => (
+  const RoleCard = ({ role, subtext, icon: Icon, color, isCustomIcon }: { role: string, subtext: string, icon: any, color: string, isCustomIcon?: boolean }) => (
     <button
       onClick={() => handleRoleLogin(role)}
-      className="flex flex-col items-center justify-center p-5 rounded-[1.2rem] border-b-[4px] hover:scale-[1.04] transition-all h-full w-full shadow-sm active:scale-95 group relative overflow-hidden"
-      style={{ backgroundColor: `${color}12`, borderBottomColor: `${color}` }}
+      className="flex flex-col items-center justify-center p-3 rounded-xl transition-all h-full w-full shadow-sm active:scale-95 group relative overflow-hidden"
+      style={{ backgroundColor: `${color}15` }}
     >
-      <div className="mb-3.5 transition-transform group-hover:rotate-12" style={{ color: color }}>
-        <Icon size={30} fill={color} fillOpacity={0.2} />
+      <div className="mb-1 transition-transform group-hover:scale-110" style={{ color: color }}>
+        {isCustomIcon ? (
+          <div className="relative">
+             <ShieldCheck size={24} />
+             <Star size={8} fill="currentColor" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white" />
+          </div>
+        ) : (
+          <Icon size={24} />
+        )}
       </div>
-      <span className="text-[12px] font-black uppercase text-gray-900 tracking-tight">{role}</span>
-      <span className="text-[10px] text-gray-400 font-black mt-1 uppercase tracking-tighter opacity-80">{subtext}</span>
-      <div className="absolute -bottom-2 -right-2 opacity-10 transition-transform group-hover:translate-y-[-5px]">
-         <Icon size={24} style={{ color }} />
-      </div>
+      <span className="text-[11px] font-black uppercase text-gray-900 tracking-tight leading-none">{role}</span>
+      <span className="text-[9px] text-black font-bold leading-none mt-1">{subtext}</span>
     </button>
   );
 
   return (
-    <div className="min-h-screen bg-[#F0F4F8] flex items-center justify-center p-0 md:p-6 lg:p-8 font-sans relative overflow-hidden selection:bg-[#0B2149] selection:text-white">
+    <div className="min-h-screen bg-gray-100 flex flex-col font-sans selection:bg-[#0B2149] selection:text-white">
       
-      {/* Background Subtle Gradient & Mesh */}
-      <div className="absolute inset-0 bg-white -z-20"></div>
-      <div className="absolute inset-0 bg-gradient-to-br from-[#F4F8FB] via-white to-[#EBF3FB] opacity-100 -z-10"></div>
-      <div className="absolute inset-0 opacity-[0.02] -z-10" style={{ backgroundImage: 'radial-gradient(#0B2149 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }}></div>
-      
-      {/* Container Overall Card */}
-      <div className="max-w-[1440px] w-full bg-white/95 backdrop-blur-3xl shadow-[0_60px_150px_-30px_rgba(11,33,73,0.3)] rounded-[3.5rem] overflow-hidden flex flex-col lg:flex-row relative z-10 border border-white/60">
+      <div className="flex-1 flex flex-col lg:flex-row w-full">
         
-        {/* LEFT SECTION (65% WIDTH) */}
-        <div className="lg:w-[65%] p-10 md:p-16 lg:p-24 flex flex-col space-y-14 bg-white relative">
+        {/* LEFT SECTION (Branding & Features) */}
+        <div className="lg:w-[65%] p-4 md:p-8 lg:p-10 flex flex-col justify-center">
           
-          {/* Detailed Image-Match Header */}
-          <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left space-y-8 md:space-y-0 md:space-x-14">
-            <div className="relative">
-              <div className="w-[160px] h-[160px] rounded-full border-[14px] border-[#D4AF37] p-2 flex items-center justify-center bg-gradient-to-br from-[#0c2d48] to-[#1e4463] shadow-2xl relative z-10 transition-all duration-700 hover:rotate-12 cursor-pointer group">
-                 <div className="text-8xl font-black text-[#D4AF37] tracking-tighter drop-shadow-2xl select-none transform scale-y-110">SD</div>
-              </div>
-              {/* Detailed Gold Crown & Wreath Overlays */}
-              <div className="absolute -top-10 left-1/2 -translate-x-1/2 text-[#D4AF37] z-20 drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)] animate-bounce font-black">
-                <Crown size={48} fill="currentColor" strokeWidth={0} />
-              </div>
-              <div className="absolute inset-x-[-22px] inset-y-[-18px] border-[#D4AF37]/35 border-[6px] rounded-full scale-[1.06] pointer-events-none shadow-[0_0_20px_rgba(212,175,55,0.2)]"></div>
-              {/* Circular text or subtle wreath could go here */}
+          {/* Header Area (Matched to Image Reference 2) */}
+          <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left space-y-4 md:space-y-0 md:space-x-8 mb-0">
+            {/* Business Logo Section */}
+            <div className="relative flex-shrink-0 group">
+               <div className="w-44 h-44 rounded-full p-0 flex items-center justify-center bg-transparent relative overflow-hidden transition-transform duration-500 hover:scale-105">
+                  {/* Logo Image */}
+                  <img 
+                    src={logoImg} 
+                    alt="S.D. Taxation Logo" 
+                    className="w-full h-full object-cover relative z-10"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://via.placeholder.com/120?text=SD';
+                    }}
+                  />
+               </div>
             </div>
             
-            <div className="flex-1 space-y-5">
-              <h1 className="text-7xl md:text-8xl lg:text-9xl font-black text-[#0B2149] tracking-tighter leading-[0.75] uppercase select-none drop-shadow-sm">
-                S. D. TAXATION <br />
-                <div className="flex items-center space-x-10 mt-6 mb-2">
-                   <div className="h-[4px] flex-grow bg-[#D4AF37] rounded-full shadow-sm"></div>
-                   <span className="text-[#D4AF37] tracking-[0.45em] text-4xl md:text-5xl font-black drop-shadow-md">ASSOCIATE</span>
-                   <div className="h-[4px] flex-grow bg-[#D4AF37] rounded-full shadow-sm"></div>
-                </div>
+            <div className="flex-1 pt-1">
+              <h1 className="text-5xl md:text-6xl font-[900] text-[#0B2149] tracking-tight leading-none uppercase mb-1 drop-shadow-sm">
+                S. D. TAXATION
               </h1>
               
-              <div className="flex flex-wrap gap-6 text-[15px] font-black text-[#0B2149] uppercase tracking-[0.45em] opacity-80 justify-center md:justify-start">
-                <span>TAX</span> • <span className="text-[#D4AF37]">COMPLIANCE</span> • <span>ACCOUNTING</span> • <span className="text-[#D4AF37]">ADVISORY</span>
+              <div className="flex items-center w-full px-1">
+                 <div className="h-[2.5px] flex-grow bg-[#D4AF37] rounded-full"></div>
+                 <span className="text-[#D4AF37] px-6 text-2xl md:text-3xl font-[800] tracking-[0.25em] uppercase">
+                   ASSOCIATE
+                 </span>
+                 <div className="h-[2.5px] flex-grow bg-[#D4AF37] rounded-full"></div>
               </div>
-              
-              <p className="text-[#0B2149] italic font-serif text-3xl md:text-4xl tracking-tight opacity-100 font-black drop-shadow-md pb-2">
-                "Your Trusted Partner in Compliance & Growth"
-              </p>
+
+              <div className="flex items-center justify-center md:justify-start space-x-3 text-[14px] font-[800] text-[#0B2149] uppercase tracking-wider py-1.5 opacity-90">
+                <span>TAX</span> 
+                <span className="text-[#D4AF37] font-black">•</span> 
+                <span>COMPLIANCE</span> 
+                <span className="text-[#D4AF37] font-black">•</span> 
+                <span>ACCOUNTING</span> 
+                <span className="text-[#D4AF37] font-black">•</span> 
+                <span>ADVISORY</span>
+              </div>
+
+              <div className="relative w-fit mx-auto md:mx-0 pt-0.5">
+                <p className="text-[#0B2149] italic font-serif text-lg md:text-xl font-[600] leading-tight">
+                  "Your Trusted Partner in Compliance & Growth"
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* Precision Software Grid Area */}
-          <div className="w-full bg-[#F4F9FF] rounded-[3rem] p-12 border border-blue-50/50 shadow-[inset_0_10px_40px_rgba(11,33,73,0.03)] relative overflow-hidden">
-            {/* Pattern Overlay */}
-            <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#0B2149 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
-            
-            <div className="bg-[#0B2149] text-white text-center py-4 px-24 rounded-full text-lg font-black uppercase tracking-[0.55em] mx-auto mb-16 w-fit shadow-[0_15px_30px_rgba(11,33,73,0.3)] border-t border-white/25 transform -translate-y-4 relative z-10">
+          {/* Feature Grid Container */}
+          <div className="bg-gray-50/50 rounded-2xl p-5 border border-gray-100 shadow-sm relative overflow-hidden flex flex-col h-fit">
+            <div className="bg-[#0B2149] text-white text-center py-2.5 px-16 rounded-xl text-xl font-[900] uppercase mx-auto mb-8 w-fit shadow-xl relative z-10 border border-white/5">
               Complete Business Management Software
             </div>
-            
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 relative z-10">
-              <ServiceCard icon={Users} title="HR" description="Manage Employennts,\n& Organization" color="#3182ce" />
-              <ServiceCard icon={Wallet} title="PAYROLL" description="Salary Processing, Payslips\n& Benefits" color="#2f855a" />
-              <ServiceCard icon={ShieldAlert} title="EPF" description="Provident Fund\nManagement" color="#c53030" />
-              <ServiceCard icon={Building2} title="ESIC" description="Employees' State\nInsurance" color="#2c7a7b" />
-              <ServiceCard icon={Briefcase} title="PT" description="Professional Tax\nManagement" color="#7c4dff" />
-              <ServiceCard icon={FileText} title="TDS" description="Tax Deducted at\nSource" color="#f1a100" />
-              <ServiceCard icon={TrendingUp} title="GST" description="GST Returns, Invoices\n& Compliance" color="#38a169" />
-              <ServiceCard icon={GraduationCap} title="FEES MANAGEMENT" description="School / Institution Fees\nCollection & Reports" color="#1a7fc1" />
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
+              <FeatureCard icon={Users} title="HR" description="Manage Employennts, & Organization" color="#3182ce" />
+              <FeatureCard icon={Wallet} title="PAYROLL" description="Salary Processing, Payslips & Benefits" color="#2f855a" />
+              <FeatureCard icon={ShieldAlert} title="EPF" description="Provident Fund Management" color="#c53030" />
+              <FeatureCard icon={Building2} title="ESIC" description="Employees' State Insurance" color="#2c7a7b" />
+              <FeatureCard icon={Briefcase} title="PT" description="Professional Tax Management" color="#7c4dff" />
+              <FeatureCard icon={FileText} title="TDS" description="Tax Deducted at Source" color="#f1a100" />
+              <FeatureCard icon={TrendingUp} title="GST" description="GST Returns, Invoices & Compliance" color="#38a169" />
+              <FeatureCard icon={GraduationCap} title="FEES MANAGEMENT" description="School / Institution Fees Collection & Reports" color="#1a7fc1" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-14 pt-14 border-t-2 border-gray-200/40 relative z-10">
-               <ServiceCard subHeader icon={Calculator} title="Accounting" description="Ledgers, Journal Entries, Reports & Financial\nManagement" color="#3182ce" />
-               <ServiceCard subHeader icon={BarChart3} title="Reports" description="Analytics, MIS, &\nStatutory Reports" color="#7c4dff" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+              <div className="bg-white p-3 rounded-xl border border-gray-100 shadow-sm flex items-center space-x-3">
+                <div className="p-2 bg-blue-50 rounded-lg text-blue-600">
+                  <Calculator size={24} />
+                </div>
+                <div>
+                  <h3 className="text-[12px] font-black text-blue-600 uppercase leading-none">Accounting</h3>
+                  <p className="text-[11px] text-black font-[700] leading-tight mt-1">
+                    Ledgers, Journal Entries, Reports & Financial Management
+                  </p>
+                </div>
+              </div>
+              <div className="bg-white p-3 rounded-xl border border-gray-100 shadow-sm flex items-center space-x-3">
+                <div className="p-2 bg-purple-50 rounded-lg text-purple-600">
+                  <BarChart3 size={24} />
+                </div>
+                <div>
+                  <h3 className="text-[12px] font-black text-purple-600 uppercase leading-none">ERP System</h3>
+                  <p className="text-[11px] text-black font-[700] leading-tight mt-1">
+                    Inventory, Stock & Resource Planning
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
 
-          {/* High-Fidelity Slogan Footer Text */}
-          <div className="w-full flex items-center justify-center pt-6">
-            <div className="h-[2px] flex-grow bg-gradient-to-r from-transparent to-gray-200 rounded-full"></div>
-            <span className="mx-14 text-[18px] font-black text-[#0B2149] uppercase tracking-[0.65em] opacity-70 whitespace-nowrap">
-              ONE PLATFORM • MULTIPLE SOLUTIONS • ENDLESS POSSIBILITIES
-            </span>
-            <div className="h-[2px] flex-grow bg-gradient-to-l from-transparent to-gray-200 rounded-full"></div>
+            <div className="mt-6 pt-0">
+               <div className="bg-[#0B2149] py-4 px-6 rounded-xl text-center shadow-xl border border-white/5">
+                  <span className="text-lg font-[900] text-white uppercase">
+                    ONE PLATFORM • MULTIPLE SOLUTIONS • ENDLESS POSSIBILITIES
+                  </span>
+               </div>
+            </div>
           </div>
         </div>
 
-        {/* RIGHT SECTION (35% WIDTH - LOGIN CARD) */}
-        <div className="lg:w-[35%] bg-[#0B2149] flex flex-col p-4 overflow-hidden relative">
-          
-          {/* Card Body with precise inward curves */}
-          <div className="bg-white rounded-[3rem] flex-grow flex flex-col shadow-2xl relative z-10 overflow-hidden shadow-[inset_0_2px_10px_rgba(255,255,255,1)]">
+        {/* RIGHT SECTION (Login Card) */}
+        <div className="lg:w-[35%] w-full min-h-0 p-4 md:p-6 lg:p-10 lg:pt-12 flex items-start justify-center bg-[#F4F7FB] border-l border-gray-200 shadow-[inset_10px_0_30_rgba(0,0,0,0.05)]">
+          <div className="bg-white w-full max-w-sm rounded-[2rem] shadow-[0_20px_50px_rgba(11,33,73,0.15)] overflow-hidden flex flex-col border-2 border-[#0B2149]/20 ring-1 ring-black/5 relative z-10 transition-transform duration-500 hover:scale-[1.01]">
             
-            {/* Header with Perfect Inward Deep Curve Styling */}
-            <div className="bg-[#0B2149] text-white pt-20 pb-24 px-14 text-center relative overflow-hidden transition-all duration-1000">
-              {/* Pattern Background for Right Card Header */}
-              <div className="absolute inset-0 opacity-[0.1]" style={{ backgroundImage: 'radial-gradient(#fff 1.5px, transparent 1.5px)', backgroundSize: '18px 18px' }}></div>
-              <div className="absolute inset-0 bg-gradient-to-b from-[#1a3d6e]/50 to-transparent"></div>
-              
-              <h2 className="text-5xl font-black uppercase tracking-tighter drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] relative z-10 animate-in fade-in slide-in-from-top-10 duration-1000">WELCOME BACK</h2>
-              <p className="text-white text-opacity-80 text-xl mt-4 font-black tracking-tight relative z-10 opacity-70">Sign in to Your Account</p>
-              
-              {/* The Distinctive Inward Curve - Image Match */}
-              <div className="absolute -bottom-1.5 left-0 right-0 h-14 bg-white rounded-t-[100%] scale-x-[1.3] translate-y-4 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]"></div>
+            {/* Header */}
+            <div className="bg-[#0B2149] bg-gradient-to-br from-[#0B2149] to-[#1a3d6e] text-white py-8 px-8 text-center relative overflow-hidden">
+              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle,white_1px,transparent_1px)] bg-[length:12px_12px]"></div>
+              <h2 className="text-2xl font-black uppercase tracking-tight relative z-10">WELCOME BACK</h2>
+              <p className="text-white/90 text-[13px] mt-1.5 font-[700] relative z-10 uppercase tracking-widest">Sign in to Your Account</p>
             </div>
 
-            {/* Login Context & Form */}
-            <div className="px-14 py-14 space-y-12 flex-grow flex flex-col">
-              
-              {displayError && (
-                <div className="p-5 bg-red-50 text-red-600 rounded-2xl text-[15px] font-black border-2 border-red-100 text-center animate-shake py-4 shadow-sm flex items-center justify-center space-x-3">
-                   <ShieldAlert size={20} />
-                   <span>{displayError}</span>
+            {/* Login Form */}
+            <div className="p-6 space-y-4 flex-grow">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {displayError && (
+                  <div className="p-3 bg-red-50 text-red-600 rounded-xl text-xs font-bold border border-red-100 text-center">
+                    {displayError}
+                  </div>
+                )}
+                
+                <div className="space-y-4">
+                  <div className="relative group">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#0B2149] transition-colors" size={16} />
+                    <input
+                      type="text"
+                      placeholder="Username / Email"
+                      className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm font-bold text-gray-800 outline-none focus:bg-white focus:border-gray-400 focus:ring-4 focus:ring-[#0B2149]/5 transition-all"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  
+                  <div className="relative group">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#0B2149] transition-colors" size={16} />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Password"
+                      className="w-full pl-10 pr-10 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm font-bold text-gray-800 outline-none focus:bg-white focus:border-gray-400 focus:ring-4 focus:ring-[#0B2149]/5 transition-all"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
                 </div>
-              )}
 
-              {/* Exact Role Grid Implementation */}
-              <div className="text-center space-y-10 flex-grow">
-                <h4 className="text-[17px] font-black text-[#0B2149] uppercase tracking-[0.6em] opacity-80">LOGIN AS</h4>
-                <div className="grid grid-cols-3 gap-6">
-                  <RoleCard role="SUPER ADMIN" subtext="Full Access" icon={Crown} color="#8b5cf6" />
-                  <RoleCard role="ADMIN" subtext="System Admin" icon={ShieldCheck} color="#3b82f6" />
-                  <RoleCard role="HR" subtext="Manage Staff" icon={Users} color="#10b981" />
-                  <RoleCard role="EMPLOYEE" subtext="Self Service" icon={Briefcase} color="#f59e0b" />
-                  <RoleCard role="ACCOUNTANT" subtext="Finance Mgmt" icon={Calculator} color="#06b6d4" />
-                  <RoleCard role="OTHER" subtext="Limited Access" icon={BarChart3} color="#64748b" />
+                <div className="flex items-center justify-between px-1">
+                  <label className="flex items-center space-x-2 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      className="w-3.5 h-3.5 rounded border-gray-300 text-[#0B2149] focus:ring-0 cursor-pointer"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                    />
+                    <span className="text-[11px] font-medium text-gray-600 group-hover:text-gray-900 transition-colors">Remember Me</span>
+                  </label>
+                  <button type="button" className="text-[11px] font-medium text-blue-600 hover:underline">Forgot Password?</button>
                 </div>
+
+                <button 
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-[#0B2149] text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#0c2d48] active:scale-[0.98] transition-all shadow-lg shadow-blue-900/20 disabled:opacity-70"
+                >
+                  {loading ? 'Logging in...' : 'LOGIN'}
+                </button>
+              </form>
+
+              <div className="relative flex items-center justify-center py-1">
+                <div className="w-full border-t border-gray-200"></div>
+                <span className="absolute px-4 bg-white text-[11px] font-[900] text-gray-600 uppercase">OR</span>
               </div>
 
-              {/* Official Brand Identity Footer */}
-              <div className="pt-12 border-t-2 border-gray-50 flex flex-col items-center space-y-8">
-                 <div className="text-center space-y-2">
-                    <p className="text-[20px] font-black text-[#0B2149] uppercase tracking-wide">S. D. TAXATION ASSOCIATE</p>
-                    <p className="text-[14px] text-gray-400 font-black uppercase tracking-[0.15em] opacity-80">Complete Business Management Software</p>
+              {/* Roles Section */}
+              <div className="space-y-3">
+                <h4 className="text-center text-[12px] font-[900] text-gray-600 uppercase">LOGIN AS</h4>
+                <div className="grid grid-cols-3 gap-2">
+                  <RoleCard role="SUPER ADMIN" subtext="Full System Access" icon={Crown} color="#8b5cf6" />
+                  <RoleCard role="ADMIN" subtext="System Administration" icon={ShieldCheck} color="#3b82f6" isCustomIcon />
+                  <RoleCard role="HR" subtext="Manage Employees" icon={Users} color="#10b981" />
+                  <RoleCard role="EMPLOYEE" subtext="View Profile & Payslips" icon={Briefcase} color="#f59e0b" />
+                  <RoleCard role="ACCOUNTANT" subtext="Accounting & Finance" icon={Calculator} color="#06b6d4" />
+                  <RoleCard role="OTHER" subtext="Limited Access" icon={MoreHorizontal} color="#64748b" />
+                </div>
+                          {/* Brand Footer Small */}
+              <div className="pt-4 border-t border-gray-100 text-center space-y-2">
+                 <div className="space-y-0.5">
+                   <p className="text-[18px] font-black text-black uppercase tracking-tight">S. D. TAXATION ASSOCIATE</p>
+                   <p className="text-[12px] text-black font-medium">Complete Business Management Software</p>
                  </div>
                  
-                 <div className="flex flex-col space-y-4 w-full text-gray-600 font-black text-[15px] tracking-tight">
-                    <div className="flex flex-col md:flex-row items-center justify-center md:space-x-12 space-y-4 md:space-y-0">
-                       <div className="flex items-center space-x-4 transition-all duration-300 hover:text-blue-500 hover:scale-105 cursor-pointer">
-                          <Mail size={24} className="text-[#0B2149] opacity-70" />
-                          <span className="uppercase font-extrabold tracking-tight">info@sdtaxation.com</span>
-                       </div>
-                       <div className="hidden md:block h-6 w-[2.5px] bg-gray-200 rounded-full"></div>
-                       <div className="flex items-center space-x-4 transition-all duration-300 hover:text-blue-500 hover:scale-105 cursor-pointer">
-                          <Phone size={24} className="text-[#0B2149] opacity-70" />
-                          <span className="uppercase font-extrabold tracking-tight">+91 98765 43210</span>
-                       </div>
+                 <div className="flex flex-col space-y-1 text-[13px] font-medium text-black">
+                    <div className="flex items-center justify-center space-x-3">
+                       <span className="flex items-center space-x-1 hover:text-blue-600 cursor-pointer">
+                          <Mail size={14} className="text-black" />
+                          <span>info@sdtaxation.com</span>
+                       </span>
+                       <div className="h-3 w-[1px] bg-gray-300"></div>
+                       <span className="flex items-center space-x-1 hover:text-blue-600 cursor-pointer">
+                          <Phone size={14} className="text-black" />
+                          <span>+91 98765 43210</span>
+                       </span>
                     </div>
-                    <div className="flex items-center justify-center space-x-4 transition-all duration-300 hover:text-blue-500 hover:scale-105 cursor-pointer group">
-                       <Globe size={26} className="text-[#0B2149] opacity-70 group-hover:rotate-12 transition-transform" />
-                       <span className="uppercase tracking-[0.35em] border-b-2 border-transparent hover:border-blue-500 font-black">www.sdtaxation.com</span>
-                    </div>
+                    <span className="flex items-center justify-center space-x-1 hover:text-blue-600 cursor-pointer">
+                       <Globe size={14} className="text-black" />
+                       <span>www.sdtaxation.com</span>
+                    </span>
                  </div>
-              </div>
+              </div>    </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* MARQUEE BOTTOM RIBBON - EXACT MATCH */}
-      <div className="fixed bottom-0 left-0 right-0 h-16 md:h-20 bg-[#0B2149] border-t-8 border-[#D4AF37] flex items-center justify-center overflow-hidden z-[60] shadow-[0_-20px_60px_-10px_rgba(11,33,73,0.6)]">
-         <div className="flex items-center space-x-28 whitespace-nowrap animate-marquee">
-            {['ACCURATE', 'RELIABLE', 'COMPLIANT', 'SECURE'].map((label, i) => (
-               <div key={i} className="flex items-center space-x-12 px-14 group">
-                  <div className="w-4 h-4 rounded-full bg-[#D4AF37] shadow-[0_0_20px_#D4AF37] group-hover:scale-150 transition-transform"></div>
-                  <span className="text-[20px] md:text-[24px] font-black text-white uppercase tracking-[0.65em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">{label}</span>
-               </div>
-            ))}
-            {/* Duplicates for perfect loop */}
-            {['ACCURATE', 'RELIABLE', 'COMPLIANT', 'SECURE'].map((label, i) => (
-               <div key={`dup-${i}`} className="flex items-center space-x-12 px-14 group">
-                  <div className="w-4 h-4 rounded-full bg-[#D4AF37] shadow-[0_0_20px_#D4AF37] group-hover:scale-150 transition-transform"></div>
-                  <span className="text-[20px] md:text-[24px] font-black text-white uppercase tracking-[0.65em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">{label}</span>
-               </div>
+      {/* Page Sticky Footer */}
+      <footer className="bg-[#0B2149] py-3 px-6 border-t-[4px] border-[#D4AF37] flex items-center justify-center">
+         <div className="flex flex-wrap items-center justify-center gap-x-10 md:gap-x-16 gap-y-2 text-white">
+            {['ACCURATE', 'RELIABLE', 'COMPLIANT', 'SECURE'].map((tag, i) => (
+              <div key={i} className="flex items-center space-x-4 md:space-x-6 group">
+                <div className="w-2 h-2 rounded-full bg-[#D4AF37] shadow-[0_0_10px_rgba(212,175,55,0.6)]"></div>
+                <span className="text-[12px] md:text-[14px] font-black uppercase tracking-[0.35em]">{tag}</span>
+              </div>
             ))}
          </div>
-      </div>
-
-      {/* Golden Wave Ribbon Layer (Bottom Left) */}
-      <div className="absolute bottom-0 left-[-15%] right-0 h-[150px] pointer-events-none z-[1] select-none">
-          <svg viewBox="0 0 1440 320" className="w-[130%] h-[220px] transform translate-y-24">
-            <path fill="#D4AF37" fillOpacity="1" d="M0,160L48,176C96,192,192,224,288,234.7C384,245,480,235,576,202.7C672,171,768,117,864,112C960,107,1056,149,1152,170.7C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-          </svg>
-      </div>
-
-      <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          display: flex;
-          animation: marquee 45s linear infinite;
-        }
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-8px); }
-          75% { transform: translateX(8px); }
-        }
-        .animate-shake {
-          animation: shake 0.25s ease-in-out 0s 2;
-        }
-        ::placeholder {
-           color: #cbd5e1 !important;
-           opacity: 1 !important;
-           font-weight: 900 !important;
-           letter-spacing: -0.025em;
-        }
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover, 
-        input:-webkit-autofill:focus, 
-        input:-webkit-autofill:active  {
-           -webkit-box-shadow: 0 0 0 60px #F9FBFF inset !important;
-           -webkit-text-fill-color: #0B2149 !important;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-           width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-           background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-           background: #D4AF3730;
-           border-radius: 10px;
-        }
-      `}</style>
+      </footer>
     </div>
   );
 }

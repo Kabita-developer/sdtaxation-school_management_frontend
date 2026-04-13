@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider, useNotification } from './contexts/NotificationContext';
@@ -39,6 +39,10 @@ import AccountVouchers from './pages/AccountVouchers';
 import AccountCostCentres from './pages/AccountCostCentres';
 import ERPReceipt from './pages/ERPReceipt';
 import ERPPayment from './pages/ERPPayment';
+import ERPContra from './pages/ERPContra';
+import ERPJournal from './pages/ERPJournal';
+import ERPSale from './pages/ERPSale';
+import ERPPurchase from './pages/ERPPurchase';
 import TransportFee from './pages/TransportFee';
 import HostalFee from './pages/HostalFee';
 import FeesMaster from './pages/FeesMaster';
@@ -109,6 +113,16 @@ function AppContent() {
 
   // ProtectedRoute component must be inside AppContent to access useAuth
   function ProtectedRoute({ children }: { children: React.ReactNode }) {
+    const { isAuthenticated, loading } = useAuth();
+
+    if (loading) {
+      return <LoadingScreen />;
+    }
+
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />;
+    }
+
     return <>{children}</>;
   }
 
@@ -116,6 +130,7 @@ function AppContent() {
     <>
       <Router>
         <Routes>
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />
@@ -224,7 +239,27 @@ function AppContent() {
           } />
           <Route path="erp/payment" element={
             <ProtectedRoute>
-              <Layout title="Payment"><ERPPayment /></Layout>
+              <Layout title=""><ERPPayment /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="erp/contra" element={
+            <ProtectedRoute>
+              <Layout title=""><ERPContra /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="erp/journal" element={
+            <ProtectedRoute>
+              <Layout title=""><ERPJournal /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="erp/sale" element={
+            <ProtectedRoute>
+              <Layout title=""><ERPSale /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="erp/purchase" element={
+            <ProtectedRoute>
+              <Layout title=""><ERPPurchase /></Layout>
             </ProtectedRoute>
           } />
           <Route path="/master" element={
@@ -235,14 +270,14 @@ function AppContent() {
             <Route index element={<Navigate to="/master/academy" replace />} />
             <Route path="account_create" element={<AccountLayout />}>
                 <Route index element={<AccountMaster />} />
-                <Route path="account-groups" element={<AccountGroups />} />
-                <Route path="account-ledgers" element={<AccountLedgers />} />
-                <Route path="account-vouchers" element={<AccountVouchers />} />
-                <Route path="account-cost-centres" element={<AccountCostCentres />} />
+                <Route path="groups" element={<AccountMaster />} />
+                <Route path="ledgers" element={<AccountMaster />} />
+                <Route path="vouchers" element={<AccountMaster />} />
+                <Route path="cost-centres" element={<AccountMaster />} />
             </Route>
             <Route path="academy" element={<AcademyFeeLayout />}>
                 <Route index element={<AcademyFee />} />
-                <Route path="class_group" element={<ClassGroupCreate />} />
+                <Route path="subject_group" element={<ClassGroupCreate />} />
                 <Route path="class-create" element={<ClassNameCreate />} />
                 <Route path="section-create" element={<SectionCreate />} />
                 <Route path="subject-create" element={<SubjectCreate />} />
@@ -375,7 +410,7 @@ function AppContent() {
               <CompanySubscriptions />
             </ProtectedRoute>
           } />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </Router>
       <NotificationContainer
