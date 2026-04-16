@@ -50,12 +50,12 @@ const FeesManagementLayout = () => {
             onClick: () => navigate('/fees-management/Transport_fee'),
             variant: 'white' as const,
             subMenu: [
-                { label: 'Fees Master', icon: Receipt, onClick: () => navigate('/fees-management/fees_master') },
-                { label: 'Pickup Point', icon: MapPin, onClick: () => navigate('/fees-management/pickup-point') },
-                { label: 'Routes', icon: Map, onClick: () => navigate('/fees-management/routes') },
-                { label: 'Vehicles', icon: Truck, onClick: () => navigate('/fees-management/Transport_fee#vehicles') },
-                { label: 'Assign Vehicle', icon: Car, onClick: () => navigate('/fees-management/Transport_fee#assign_vehicle') },
-                { label: 'Route Pickup Point', icon: Navigation, onClick: () => navigate('/fees-management/Transport_fee#route_pickup_point') },
+                { label: 'Fees Master', icon: Receipt, onClick: () => navigate('/transport/fees_master') },
+                { label: 'Pickup Point', icon: MapPin, onClick: () => navigate('/transport/pickup-point') },
+                { label: 'Routes', icon: Map, onClick: () => navigate('/transport/routes') },
+                { label: 'Vehicles', icon: Truck, onClick: () => navigate('/transport/vehicles') },
+                { label: 'Assign Vehicle', icon: Car, onClick: () => navigate('/transport/assign_vehicle') },
+                { label: 'Route Pickup Point', icon: Navigation, onClick: () => navigate('/transport/route_pickup_point') },
                 { label: 'Student Transport Fees', icon: DollarSign, onClick: () => navigate('/fees-management/Transport_fee#student_transport_fees') },
             ]
         },
@@ -63,13 +63,13 @@ const FeesManagementLayout = () => {
         {
             label: 'Fees Master',
             icon: BookOpen,
-            onClick: () => navigate('/fees-management/fees_master'),
+            onClick: () => navigate('/transport/fees_master'),
             variant: 'white' as const,
             subMenu: [
-                { label: 'Fees Group', icon: FolderOpen, onClick: () => navigate('/fees-management/fees_master') },
-                { label: 'Fees Type', icon: Tag, onClick: () => navigate('/fees-management/fees_master') },
-                { label: 'Fees Discount Details List', icon: Percent, onClick: () => navigate('/fees-management/fees_master') },
-                { label: 'Fees Reminder', icon: Bell, onClick: () => navigate('/fees-management/fees_master') },
+                { label: 'Fees Group', icon: FolderOpen, onClick: () => navigate('/transport/fees_master') },
+                { label: 'Fees Type', icon: Tag, onClick: () => navigate('/transport/fees_master') },
+                { label: 'Fees Discount Details List', icon: Percent, onClick: () => navigate('/transport/fees_master') },
+                { label: 'Fees Reminder', icon: Bell, onClick: () => navigate('/transport/fees_master') },
             ]
         },
         { label: 'Class Master', icon: Layers, onClick: () => navigate('/fees-management/class_master'), variant: 'white' as const },
@@ -77,7 +77,7 @@ const FeesManagementLayout = () => {
     ];
 
     return (
-        <Layout title="" shortcuts={[]}>
+        <Layout title="" shortcuts={feesShortcuts}>
             <Outlet />
         </Layout>
     );

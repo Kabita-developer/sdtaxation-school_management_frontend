@@ -541,12 +541,12 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
       label: 'Transport', 
       icon: Truck,
       subMenu: [
-        { path: '/fees-management/fees_master', label: 'Fees Master' },
-        { path: '/fees-management/pickup-point', label: 'Pickup Point' },
-        { path: '/fees-management/routes', label: 'Routes' },
-        { path: '/fees-management/Transport_fee#vehicles', label: 'Vehicles' },
-        { path: '/fees-management/Transport_fee#assign_vehicle', label: 'Assign Vehicle' },
-        { path: '/fees-management/Transport_fee#route_pickup_point', label: 'Route Pickup Point' },
+        { path: '/transport/fees_master', label: 'Fees Master' },
+        { path: '/transport/pickup-point', label: 'Pickup Point' },
+        { path: '/transport/routes', label: 'Routes' },
+        { path: '/transport/vehicles', label: 'Vehicles' },
+        { path: '/transport/assign_vehicle', label: 'Assign Vehicle' },
+        { path: '/transport/route_pickup_point', label: 'Route Pickup Point' },
         { path: '/fees-management/Transport_fee#student_transport_fees', label: 'Student Transport Fees' },
       ]
     },

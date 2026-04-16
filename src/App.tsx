@@ -76,6 +76,8 @@ import Profile from './pages/Profile';
 import SubscriptionPlans from './pages/SubscriptionPlans';
 import CompanySubscriptions from './pages/CompanySubscriptions';
 import TransportRoutes from './pages/TransportRoutes';
+import Vehicles from './pages/Vehicles';
+import AssignVehicle from './pages/AssignVehicle';
 import CollectFees from './pages/CollectFees';
 import OfflineBankPayments from './pages/OfflineBankPayments';
 import SearchFeesPayment from './pages/SearchFeesPayment';
@@ -85,6 +87,8 @@ import FeesDiscount from './pages/FeesDiscount';
 import FeesCarryForward from './pages/FeesCarryForward';
 import FeesReminder from './pages/FeesReminder';
 import ListOfClasses from './pages/ListOfClasses';
+import PromoteStudents from './pages/PromoteStudents';
+import RoutePickupPoint from './pages/RoutePickupPoint';
 import { Loader2 } from 'lucide-react';
 
 function LoadingScreen() {
@@ -285,6 +289,8 @@ function AppContent() {
                 <Route path="fees-type" element={<FeesType />} />
                 <Route path="online-admission" element={<OnlineAdmission />} />
                 <Route path="disabled-students" element={<DisabledStudents />} />
+                <Route path="assign-teacher" element={<AssignTeacher />} />
+                <Route path="promote-students" element={<PromoteStudents />} />
                 <Route path="bulk-delete" element={<BulkDelete />} />
             </Route>
           </Route>
@@ -297,11 +303,8 @@ function AppContent() {
             <Route index element={<FeesManagement />} />
             <Route path="academy_fee" element={<Navigate to="/master/academy" replace />} />
             <Route path="Transport_fee" element={<TransportFee />} />
-            <Route path="routes" element={<TransportRoutes />} />
-            <Route path="pickup-point" element={<PickupPoint />} />
             <Route path="hostal_fee" element={<HostalFee />} />
 
-            <Route path="fees_master" element={<FeesMaster />} />
             <Route path="class_master" element={<ClassMaster />} />
             <Route path="collect-fees" element={<CollectFees />} />
             <Route path="offline-bank-payments" element={<OfflineBankPayments />} />
@@ -312,6 +315,19 @@ function AppContent() {
             <Route path="fees-carry-forward" element={<FeesCarryForward />} />
             <Route path="fees-reminder" element={<FeesReminder />} />
             <Route path="list-of-classes" element={<ListOfClasses />} />
+          </Route>
+
+          <Route path="/transport" element={
+            <ProtectedRoute>
+              <FeesManagementLayout />
+            </ProtectedRoute>
+          }>
+            <Route path="fees_master" element={<FeesMaster />} />
+            <Route path="pickup-point" element={<PickupPoint />} />
+            <Route path="routes" element={<TransportRoutes />} />
+            <Route path="vehicles" element={<Vehicles />} />
+            <Route path="assign_vehicle" element={<AssignVehicle />} />
+            <Route path="route_pickup_point" element={<RoutePickupPoint />} />
           </Route>
 
           <Route path="/student_information/admission-create" element={

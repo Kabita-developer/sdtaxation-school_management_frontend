@@ -15,7 +15,8 @@ import {
     Car,
     Navigation,
     DollarSign,
-    CreditCard
+    CreditCard,
+    X
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -34,12 +35,12 @@ export default function TransportFee() {
     const [searchTerm, setSearchTerm] = useState('');
 
     const transportActions = [
-        { label: 'Fees Master', icon: Receipt, onClick: () => navigate('/fees-management/fees_master'), color: 'text-blue-600', bg: 'bg-blue-50' },
-        { label: 'Pickup Point', icon: MapPin, onClick: () => navigate('/fees-management/pickup-point'), color: 'text-indigo-600', bg: 'bg-indigo-50' },
-        { label: 'Routes', icon: Map, onClick: () => navigate('/fees-management/routes'), color: 'text-purple-600', bg: 'bg-purple-50' },
-        { label: 'Vehicles', icon: Truck, onClick: () => navigate('/fees-management/Transport_fee#vehicles'), color: 'text-teal-600', bg: 'bg-teal-50' },
-        { label: 'Assign Vehicle', icon: Car, onClick: () => navigate('/fees-management/Transport_fee#assign_vehicle'), color: 'text-pink-600', bg: 'bg-pink-50' },
-        { label: 'Route Pickup Point', icon: Navigation, onClick: () => navigate('/fees-management/Transport_fee#route_pickup_point'), color: 'text-orange-600', bg: 'bg-orange-50' },
+        { label: 'Fees Master', icon: Receipt, onClick: () => navigate('/transport/fees_master'), color: 'text-blue-600', bg: 'bg-blue-50' },
+        { label: 'Pickup Point', icon: MapPin, onClick: () => navigate('/transport/pickup-point'), color: 'text-indigo-600', bg: 'bg-indigo-50' },
+        { label: 'Routes', icon: Map, onClick: () => navigate('/transport/routes'), color: 'text-purple-600', bg: 'bg-purple-50' },
+        { label: 'Vehicles', icon: Truck, onClick: () => navigate('/transport/vehicles'), color: 'text-teal-600', bg: 'bg-teal-50' },
+        { label: 'Assign Vehicle', icon: Car, onClick: () => navigate('/transport/assign_vehicle'), color: 'text-pink-600', bg: 'bg-pink-50' },
+        { label: 'Route Pickup Point', icon: Navigation, onClick: () => navigate('/transport/route_pickup_point'), color: 'text-orange-600', bg: 'bg-orange-50' },
         { label: 'Student Transport Fees', icon: DollarSign, onClick: () => navigate('/fees-management/Transport_fee#student_transport_fees'), color: 'text-cyan-600', bg: 'bg-cyan-50' },
     ];
 
@@ -59,10 +60,10 @@ export default function TransportFee() {
     ];
 
     return (
-        <div className="space-y-6 text-left">
+        <div className="space-y-6 text-left animate-in fade-in duration-500">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-black text-gray-900 uppercase tracking-tight">Transport Fee Registry</h1>
+                    <h1 className="text-2xl font-black text-gray-900 tracking-tight">Transport Fee Registry</h1>
                     <p className="text-xs text-gray-500 mt-1 font-medium">Manage routes, vehicles and collection tracking</p>
                 </div>
                 <button
@@ -129,7 +130,7 @@ export default function TransportFee() {
                             <input
                                 type="text"
                                 placeholder="Search student or route..."
-                                className="pl-8 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 w-56 font-medium"
+                                className="pl-8 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 w-56 font-medium font-bold"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
@@ -149,7 +150,7 @@ export default function TransportFee() {
                                 <th className="px-6 py-4 text-[10px] font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100">
+                        <tbody className="divide-y divide-gray-100 leading-tight">
                             {records.filter(r => r.student.toLowerCase().includes(searchTerm.toLowerCase()) || r.route.toLowerCase().includes(searchTerm.toLowerCase())).map((r) => (
                                 <tr key={r.id} className="hover:bg-gray-50 transition-colors">
                                     <td className="px-6 py-4">
@@ -176,7 +177,7 @@ export default function TransportFee() {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <div className="flex items-center text-[11px] text-gray-500 font-medium">
+                                        <div className="flex items-center text-[11px] text-gray-500 font-bold">
                                             <Calendar size={12} className="mr-1.5 text-gray-400" /> {r.date}
                                         </div>
                                     </td>
@@ -200,130 +201,48 @@ export default function TransportFee() {
             {/* Add Transport Fee Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-[999] flex items-center justify-center p-4">
-                    <div
-                        className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity"
-                        onClick={() => setIsModalOpen(false)}
-                    ></div>
-
+                    <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onClick={() => setIsModalOpen(false)}></div>
                     <div className="relative bg-white rounded-2xl shadow-2xl border border-gray-100 max-w-lg w-full overflow-hidden transform transition-all animate-in fade-in zoom-in duration-300 font-sans">
                         <div className="bg-indigo-600 px-6 py-2 flex items-center justify-between">
                             <h2 className="text-white font-black uppercase tracking-widest flex items-center text-sm">
-                                <Plus size={18} className="mr-2" />
-                                Add Transport Fee
+                                <Plus size={18} className="mr-2" /> Add Transport Fee
                             </h2>
-                            <button
-                                onClick={() => setIsModalOpen(false)}
-                                className="text-indigo-100 hover:text-white transition-colors"
-                            >
-                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
+                            <button onClick={() => setIsModalOpen(false)} className="text-indigo-100 hover:text-white transition-colors"><X size={24} /></button>
                         </div>
-
-                        <form className="p-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div className="space-y-1 md:col-span-2">
+                        <form className="p-4 flex flex-col items-start font-bold">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
+                                <div className="space-y-1 md:col-span-2 flex flex-col items-start">
                                     <label className="text-[10px] font-black text-black uppercase tracking-widest ml-1">Student Name</label>
-                                    <div className="relative">
+                                    <div className="relative w-full">
                                         <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                                        <input
-                                            type="text"
-                                            placeholder="Enter student's full name"
-                                            className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-bold text-black placeholder:text-black/30"
-                                            value={formData.studentName}
-                                            onChange={(e) => setFormData({ ...formData, studentName: e.target.value })}
-                                        />
+                                        <input type="text" placeholder="Enter student's full name" className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-bold text-black border-gray-400" value={formData.studentName} onChange={(e) => setFormData({ ...formData, studentName: e.target.value })} />
                                     </div>
                                 </div>
-
-                                <div className="space-y-1 md:col-span-2">
+                                <div className="space-y-1 md:col-span-2 flex flex-col items-start">
                                     <label className="text-[10px] font-black text-black uppercase tracking-widest ml-1">Route Name</label>
-                                    <div className="relative">
+                                    <div className="relative w-full">
                                         <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                                        <input
-                                            type="text"
-                                            placeholder="Example: Green Valley - Campus"
-                                            className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-bold text-black placeholder:text-black/30"
-                                            value={formData.route}
-                                            onChange={(e) => setFormData({ ...formData, route: e.target.value })}
-                                        />
+                                        <input type="text" placeholder="Example: Green Valley - Campus" className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-bold text-black border-gray-400" value={formData.route} onChange={(e) => setFormData({ ...formData, route: e.target.value })} />
                                     </div>
                                 </div>
-
-                                <div className="space-y-1">
+                                <div className="space-y-1 flex flex-col items-start">
                                     <label className="text-[10px] font-black text-black uppercase tracking-widest ml-1">Fee Month</label>
-                                    <div className="relative">
+                                    <div className="relative w-full">
                                         <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                                        <input
-                                            type="month"
-                                            className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-bold text-black"
-                                            value={formData.month}
-                                            onChange={(e) => setFormData({ ...formData, month: e.target.value })}
-                                        />
+                                        <input type="month" className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-bold text-black border-gray-400" value={formData.month} onChange={(e) => setFormData({ ...formData, month: e.target.value })} />
                                     </div>
                                 </div>
-
-                                <div className="space-y-1">
+                                <div className="space-y-1 flex flex-col items-start">
                                     <label className="text-[10px] font-black text-black uppercase tracking-widest ml-1">Amount (₹)</label>
-                                    <div className="relative">
+                                    <div className="relative w-full">
                                         <Receipt className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                                        <input
-                                            type="number"
-                                            placeholder="0.00"
-                                            className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-bold text-black placeholder:text-black/30"
-                                            value={formData.amount}
-                                            onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-black uppercase tracking-widest ml-1">Payment Status</label>
-                                    <div className="relative">
-                                        <Clock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                                        <select
-                                            className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-bold text-black appearance-none"
-                                            value={formData.status}
-                                            onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                                        >
-                                            <option>Paid</option>
-                                            <option>Pending</option>
-                                            <option>Overdue</option>
-                                        </select>
+                                        <input type="number" placeholder="0.00" className="w-full pl-10 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-bold text-black border-gray-400" value={formData.amount} onChange={(e) => setFormData({ ...formData, amount: e.target.value })} />
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="mt-4 space-y-1">
-                                <label className="text-[10px] font-black text-black uppercase tracking-widest ml-1">Payment Description</label>
-                                <textarea
-                                    rows={2}
-                                    placeholder="Add any specific transportation notes..."
-                                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-bold text-black placeholder:text-black/30"
-                                    value={formData.description}
-                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                ></textarea>
-                            </div>
-
-                            <div className="mt-4 flex items-center space-x-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="flex-1 py-1.5 border border-gray-200 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all active:scale-95"
-                                >
-                                    Discard
-                                </button>
-                                <button
-                                    type="submit"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setIsModalOpen(false);
-                                    }}
-                                    className="flex-2 py-1.5 bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 active:scale-95 px-6"
-                                >
-                                    Add Fee Record
-                                </button>
+                            <div className="mt-4 flex items-center space-x-3 w-full">
+                                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-1.5 border border-gray-200 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all font-bold border-gray-400">Discard</button>
+                                <button type="submit" onClick={(e) => { e.preventDefault(); setIsModalOpen(false); }} className="flex-2 py-1.5 bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg px-6 font-bold">Add Fee Record</button>
                             </div>
                         </form>
                     </div>

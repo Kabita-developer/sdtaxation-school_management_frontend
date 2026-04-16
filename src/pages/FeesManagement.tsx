@@ -53,7 +53,7 @@ export default function FeesManagement() {
             title: 'Accounting Master',
             desc: 'Central configuration for all financial leadgers.',
             icon: BookOpen,
-            path: '/fees-management/fees_master',
+            path: '/transport/fees_master',
             color: 'from-amber-500 to-orange-600',
             stats: 'Admin Only'
         }

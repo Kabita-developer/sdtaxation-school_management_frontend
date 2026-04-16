@@ -8,6 +8,7 @@ import {
     GraduationCap,
     List,
     UserCheck,
+    TrendingUp,
 } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -28,6 +29,7 @@ const AcademyFeeLayout = () => {
         { label: 'Section Create', icon: SplitSquareVertical, onClick: () => navigate(isActive('/section-create') ? '/master/academy' : '/master/academy/section-create'), isActive: isActive('/section-create'), color: 'text-indigo-600', bg: 'bg-indigo-50' },
         { label: 'Subject Create', icon: BookMarked, onClick: () => navigate(isActive('/subject-create') ? '/master/academy' : '/master/academy/subject-create'), isActive: isActive('/subject-create'), color: 'text-rose-600', bg: 'bg-rose-50' },
         { label: 'Assign Class Teacher', icon: UserCheck, onClick: () => navigate(isActive('/assign-teacher') ? '/master/academy' : '/master/academy/assign-teacher'), isActive: isActive('/assign-teacher'), color: 'text-cyan-600', bg: 'bg-cyan-50' },
+        { label: 'Promote Students', icon: TrendingUp, onClick: () => navigate(isActive('/promote-students') ? '/master/academy' : '/master/academy/promote-students'), isActive: isActive('/promote-students'), color: 'text-blue-600', bg: 'bg-blue-50' },
         { label: 'Fees Group', icon: GraduationCap, onClick: () => navigate(isActive('/fees-group') ? '/master/academy' : '/master/academy/fees-group'), isActive: isActive('/fees-group'), color: 'text-emerald-600', bg: 'bg-emerald-50' },
         { label: 'Fees Type', icon: List, onClick: () => navigate(isActive('/fees-type') ? '/master/academy' : '/master/academy/fees-type'), isActive: isActive('/fees-type'), color: 'text-amber-600', bg: 'bg-amber-50' },
     ];
