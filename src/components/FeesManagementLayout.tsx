@@ -47,7 +47,7 @@ const FeesManagementLayout = () => {
         {
             label: 'Transport Fee',
             icon: Download,
-            onClick: () => navigate('/fees-management/Transport_fee'),
+            onClick: () => navigate('/transport/student_transport_fees'),
             variant: 'white' as const,
             subMenu: [
                 { label: 'Fees Master', icon: Receipt, onClick: () => navigate('/transport/fees_master') },
@@ -56,7 +56,7 @@ const FeesManagementLayout = () => {
                 { label: 'Vehicles', icon: Truck, onClick: () => navigate('/transport/vehicles') },
                 { label: 'Assign Vehicle', icon: Car, onClick: () => navigate('/transport/assign_vehicle') },
                 { label: 'Route Pickup Point', icon: Navigation, onClick: () => navigate('/transport/route_pickup_point') },
-                { label: 'Student Transport Fees', icon: DollarSign, onClick: () => navigate('/fees-management/Transport_fee#student_transport_fees') },
+                { label: 'Student Transport Fees', icon: DollarSign, onClick: () => navigate('/transport/student_transport_fees') },
             ]
         },
         { label: 'Hostal Fee', icon: History, onClick: () => navigate('/fees-management/hostal_fee'), variant: 'white' as const },

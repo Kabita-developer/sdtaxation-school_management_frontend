@@ -547,7 +547,7 @@ export default function Layout({ children, title, shortcuts = [] }: LayoutProps)
         { path: '/transport/vehicles', label: 'Vehicles' },
         { path: '/transport/assign_vehicle', label: 'Assign Vehicle' },
         { path: '/transport/route_pickup_point', label: 'Route Pickup Point' },
-        { path: '/fees-management/Transport_fee#student_transport_fees', label: 'Student Transport Fees' },
+        { path: '/transport/student_transport_fees', label: 'Student Transport Fees' },
       ]
     },
     { 

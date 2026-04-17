@@ -301,8 +301,6 @@ function AppContent() {
             </ProtectedRoute>
           }>
             <Route index element={<FeesManagement />} />
-            <Route path="academy_fee" element={<Navigate to="/master/academy" replace />} />
-            <Route path="Transport_fee" element={<TransportFee />} />
             <Route path="hostal_fee" element={<HostalFee />} />
 
             <Route path="class_master" element={<ClassMaster />} />
@@ -328,6 +326,7 @@ function AppContent() {
             <Route path="vehicles" element={<Vehicles />} />
             <Route path="assign_vehicle" element={<AssignVehicle />} />
             <Route path="route_pickup_point" element={<RoutePickupPoint />} />
+            <Route path="student_transport_fees" element={<TransportFee />} />
           </Route>
 
           <Route path="/student_information/admission-create" element={

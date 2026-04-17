@@ -38,6 +38,8 @@ export default function RoutePickupPoint() {
     const [isEditing, setIsEditing] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [recordToDelete, setRecordToDelete] = useState<any>(null);
+    const [isViewing, setIsViewing] = useState(false);
+    const [viewRecord, setViewRecord] = useState<any>(null);
     const [deleteLoading, setDeleteLoading] = useState(false);
 
     const [formData, setFormData] = useState({
@@ -50,6 +52,9 @@ export default function RoutePickupPoint() {
     const [visibleColumns, setVisibleColumns] = useState({
         route: true,
         points: true,
+        fees: true,
+        distance: true,
+        pickupTime: true,
         action: true
     });
 
@@ -346,6 +351,67 @@ export default function RoutePickupPoint() {
                 </div>
             )}
 
+
+            {/* View Modal */}
+            {isViewing && viewRecord && (
+                <div 
+                    className="fixed inset-0 z-[999] flex items-start justify-center bg-black/60 backdrop-blur-sm px-4 overflow-y-auto pt-16 pb-10"
+                    onClick={() => { 
+                        setIsViewing(false); 
+                        setViewRecord(null); 
+                    }}
+                >
+                    <div 
+                        className="bg-white w-full max-w-4xl rounded-lg shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 relative"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Modal Header */}
+                        <div className="px-5 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 flex items-center justify-between">
+                            <h3 className="text-lg font-medium text-white tracking-tight">Order From School Location</h3>
+                            <button 
+                                onClick={() => { 
+                                    setIsViewing(false); 
+                                    setViewRecord(null); 
+                                }}
+                                className="text-white hover:bg-white/20 p-1 rounded-lg transition-all"
+                            >
+                                <X size={20} strokeWidth={3} />
+                            </button>
+                        </div>
+
+                        {/* Modal Body */}
+                        <div className="p-6">
+                            <div className="border border-gray-300 rounded-lg overflow-hidden shadow-sm">
+                                <table className="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr className="bg-gray-50 border-b border-gray-300">
+                                            <th className="px-6 py-4 text-sm font-bold text-gray-800 border-r border-gray-300 last:border-0 w-[80px]">S.No.</th>
+                                            <th className="px-6 py-4 text-sm font-bold text-gray-800 border-r border-gray-300 last:border-0">Pickup Point</th>
+                                            <th className="px-6 py-4 text-sm font-bold text-gray-800 border-r border-gray-300 last:border-0">Distance (km)</th>
+                                            <th className="px-6 py-4 text-sm font-bold text-gray-800 border-r border-gray-300 last:border-0">Pickup Time</th>
+                                            <th className="px-6 py-4 text-sm font-bold text-gray-800 border-r border-gray-300 last:border-0 text-right">Monthly Fees (₹)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-200">
+                                        {viewRecord.points.map((point: any, index: number) => (
+                                            <tr key={index} className="hover:bg-indigo-50/30 transition-colors">
+                                                <td className="px-6 py-4 text-sm font-medium text-gray-600 border-r border-gray-300 last:border-0">{index + 1}</td>
+                                                <td className="px-6 py-4 text-sm font-medium text-gray-800 border-r border-gray-300 last:border-0">{point.name}</td>
+                                                <td className="px-6 py-4 text-sm font-medium text-gray-600 border-r border-gray-300 last:border-0">{point.distance}</td>
+                                                <td className="px-6 py-4 text-sm font-medium text-gray-600 border-r border-gray-300 last:border-0">{point.time}</td>
+                                                <td className="px-6 py-4 text-sm font-medium text-gray-900 border-r border-gray-300 last:border-0 text-right">
+                                                    {parseFloat(point.fees).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Delete Confirmation Modal */}
             {isDeleting && (
                 <div 
@@ -448,12 +514,22 @@ export default function RoutePickupPoint() {
                                                     <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-400 rounded-xl shadow-2xl z-[110] py-3 px-4 animate-in fade-in zoom-in-95 duration-200">
                                                         <h4 className="text-xs font-bold text-gray-500 mb-3 tracking-wider uppercase">Visible Columns</h4>
                                                         <div className="space-y-2">
-                                                            {Object.entries(visibleColumns).map(([key, value]) => (
-                                                                <div key={key} onClick={() => setVisibleColumns(prev => ({ ...prev, [key]: !value }))} className="flex items-center justify-between cursor-pointer group">
-                                                                    <span className="text-xs font-bold text-gray-700 capitalize">{key}</span>
-                                                                    <div className={`w-5 h-5 rounded-md flex items-center justify-center transition-all ${value ? 'bg-indigo-600' : 'bg-gray-100 group-hover:bg-gray-200'}`}><Check size={12} className="text-white" /></div>
-                                                                </div>
-                                                            ))}
+                                                            {Object.entries(visibleColumns).map(([key, value]) => {
+                                                                const labels: Record<string, string> = {
+                                                                    route: 'Route',
+                                                                    points: 'Pickup Point',
+                                                                    fees: 'Monthly Fees ($)',
+                                                                    distance: 'Distance (km)',
+                                                                    pickupTime: 'Pickup Time',
+                                                                    action: 'Action'
+                                                                };
+                                                                return (
+                                                                    <div key={key} onClick={() => setVisibleColumns(prev => ({ ...prev, [key]: !value }))} className="flex items-center justify-between cursor-pointer group">
+                                                                        <span className="text-xs font-bold text-gray-700">{labels[key]}</span>
+                                                                        <div className={`w-5 h-5 rounded-md flex items-center justify-center transition-all ${value ? 'bg-indigo-600' : 'bg-gray-100 group-hover:bg-gray-200'}`}><Check size={12} className="text-white" /></div>
+                                                                    </div>
+                                                                );
+                                                            })}
                                                         </div>
                                                     </div>
                                                 )}
@@ -468,9 +544,9 @@ export default function RoutePickupPoint() {
                                             <tr className="bg-gray-50/50">
                                                 {visibleColumns.route && <th className="px-8 py-4 text-sm font-bold text-gray-900 border-b border-gray-300 tracking-tight">Route</th>}
                                                 {visibleColumns.points && <th className="px-8 py-4 text-sm font-bold text-gray-900 border-b border-gray-300 tracking-tight">Pickup Point</th>}
-                                                <th className="px-8 py-4 text-sm font-bold text-gray-900 border-b border-gray-300 tracking-tight">Monthly Fees ($)</th>
-                                                <th className="px-8 py-4 text-sm font-bold text-gray-900 border-b border-gray-300 tracking-tight">Distance (km)</th>
-                                                <th className="px-8 py-4 text-sm font-bold text-gray-900 border-b border-gray-300 tracking-tight">Pickup Time</th>
+                                                {visibleColumns.fees && <th className="px-8 py-4 text-sm font-bold text-gray-900 border-b border-gray-300 tracking-tight">Monthly Fees ($)</th>}
+                                                {visibleColumns.distance && <th className="px-8 py-4 text-sm font-bold text-gray-900 border-b border-gray-300 tracking-tight">Distance (km)</th>}
+                                                {visibleColumns.pickupTime && <th className="px-8 py-4 text-sm font-bold text-gray-900 border-b border-gray-300 tracking-tight">Pickup Time</th>}
                                                 {visibleColumns.action && <th className="px-8 py-4 text-sm font-bold text-gray-900 border-b border-gray-300 text-right pr-12 print-hide tracking-tight">Action</th>}
                                             </tr>
                                         </thead>
@@ -479,38 +555,44 @@ export default function RoutePickupPoint() {
                                                 <React.Fragment key={record.id}>
                                                     {record.points.map((point, index) => (
                                                         <tr key={`${record.id}-${index}`} className="hover:bg-indigo-50/20 transition-all group">
-                                                            {index === 0 && (
+                                                            {index === 0 && visibleColumns.route && (
                                                                 <td 
                                                                     rowSpan={record.points.length} 
                                                                     className="px-8 py-6 border-b border-gray-200 align-middle bg-white group-hover:bg-indigo-50/5"
                                                                 >
-                                                                    {visibleColumns.route && <span className="text-sm text-gray-800 tracking-tight">{record.route}</span>}
+                                                                    <span className="text-sm text-gray-800 tracking-tight">{record.route}</span>
                                                                 </td>
                                                             )}
-                                                            <td className="px-8 py-6 border-b border-gray-200 align-middle">
-                                                                {visibleColumns.points && <span className="text-sm text-gray-800 tracking-tight">{point.name}</span>}
-                                                            </td>
-                                                            <td className="px-8 py-6 border-b border-gray-200 align-middle">
-                                                                <span className="text-sm text-gray-800 tracking-tight">{point.fees}</span>
-                                                            </td>
-                                                            <td className="px-8 py-6 border-b border-gray-200 align-middle">
-                                                                <span className="text-sm text-gray-800 tracking-tight">{point.distance}</span>
-                                                            </td>
-                                                            <td className="px-8 py-6 border-b border-gray-200 align-middle">
-                                                                <span className="text-sm text-gray-800 tracking-tight">{point.time}</span>
-                                                            </td>
-                                                            {index === 0 && (
+                                                            {visibleColumns.points && (
+                                                                <td className="px-8 py-6 border-b border-gray-200 align-middle">
+                                                                    <span className="text-sm text-gray-800 tracking-tight">{point.name}</span>
+                                                                </td>
+                                                            )}
+                                                            {visibleColumns.fees && (
+                                                                <td className="px-8 py-6 border-b border-gray-200 align-middle">
+                                                                    <span className="text-sm text-gray-800 tracking-tight">{point.fees}</span>
+                                                                </td>
+                                                            )}
+                                                            {visibleColumns.distance && (
+                                                                <td className="px-8 py-6 border-b border-gray-200 align-middle">
+                                                                    <span className="text-sm text-gray-800 tracking-tight">{point.distance}</span>
+                                                                </td>
+                                                            )}
+                                                            {visibleColumns.pickupTime && (
+                                                                <td className="px-8 py-6 border-b border-gray-200 align-middle">
+                                                                    <span className="text-sm text-gray-800 tracking-tight">{point.time}</span>
+                                                                </td>
+                                                            )}
+                                                            {index === 0 && visibleColumns.action && (
                                                                 <td 
                                                                     rowSpan={record.points.length} 
                                                                     className="px-8 py-6 border-b border-gray-200 text-right pr-12 align-middle print-hide bg-white group-hover:bg-indigo-50/5"
                                                                 >
-                                                                    {visibleColumns.action && (
-                                                                        <div className="flex items-center justify-end space-x-2">
-                                                                            <button title="View details" className="p-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl transition-all shadow-sm"><Eye size={16} /></button>
-                                                                            <button onClick={() => handleEdit(record)} title="Edit mapping" className="p-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-all shadow-sm"><Edit2 size={16} /></button>
-                                                                            <button onClick={() => { setRecordToDelete(record); setIsDeleting(true); }} title="Dissociate" className="p-2.5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl transition-all shadow-sm"><Trash2 size={16} /></button>
-                                                                        </div>
-                                                                    )}
+                                                                    <div className="flex items-center justify-end space-x-2">
+                                                                        <button onClick={() => { setViewRecord(record); setIsViewing(true); }} title="View details" className="p-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl transition-all shadow-sm"><Eye size={16} /></button>
+                                                                        <button onClick={() => handleEdit(record)} title="Edit mapping" className="p-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-all shadow-sm"><Edit2 size={16} /></button>
+                                                                        <button onClick={() => { setRecordToDelete(record); setIsDeleting(true); }} title="Dissociate" className="p-2.5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl transition-all shadow-sm"><Trash2 size={16} /></button>
+                                                                    </div>
                                                                 </td>
                                                             )}
                                                         </tr>
